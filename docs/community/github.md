@@ -8,7 +8,7 @@ Chat with other operators, track development, and contribute.
 
     ---
 
-    Discord community is moving to a new server (transition started **July 21**). Join, then use the channel and role selector to enable **InfiniDysk - SuperFork** for release notifications and development channels — plus setup help, streaming tips, and informal discussion.
+    Join, then use the channel and role selector to enable **InfiniDysk - SuperFork** for release notifications and development channels — plus setup help, streaming tips, and informal discussion.
 
     [:octicons-arrow-right-24: discord.gg/DAya7W6QMa](https://discord.gg/DAya7W6QMa)
 

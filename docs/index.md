@@ -36,10 +36,10 @@ Mount NZBs as a virtual filesystem and stream directly from Usenet — without d
 
 </div>
 
-!!! info "NzbDAV is becoming InfiniDysk"
+!!! info "NzbDAV is now InfiniDysk"
 
-    The documentation now lives at www.infinidysk.com. The repository and
-    Docker image will move later; no deployment change is needed yet.
+    Same project, maintainers, and release history under a new name. Switch your
+    image to `ghcr.io/infinidysk/infinidysk` and keep everything else.
     [Read the rename FAQ](community/renaming-to-infinidysk.md).
 
 InfiniDysk is a **WebDAV server** that mounts NZB documents as a browsable virtual filesystem. Content streams on demand from your Usenet provider. A **SABnzbd-compatible API** lets Sonarr, Radarr, and similar tools use it as a drop-in download client — so you can build an effectively infinite media library without storing full files on disk.
@@ -193,7 +193,7 @@ Then open `http://localhost:3000` (self-hosted) or your DUMB service URL, create
 
 Chat on Discord, track releases on GitHub, and file issues when you need a durable bug report.
 
-Discord community transition started July 21. After joining, use the channel and role selector to enable InfiniDysk - SuperFork for release notifications and development channels.
+After joining Discord, use the channel and role selector to enable InfiniDysk - SuperFork for release notifications and development channels.
 
 [Join Discord](https://discord.gg/DAya7W6QMa){ .md-button .md-button--primary }
 [Repository](https://github.com/infinidysk/infinidysk){ .md-button }
