@@ -76,4 +76,4 @@ Persistent state lives under `/config` (DB, settings, blobs, backups).
 
 ## Related
 
-[Import strategies](import-strategies.md) · [Features overview](../features/index.md) · [Environment variables](../configuration/environment-variables.md) · [Code boundaries](../decisions/0001-code-boundaries.md)
+[Import strategies](import-strategies.md) · [Features overview](../features/index.md) · [Environment variables](../configuration/environment-variables.md) · [Code boundaries](https://github.com/infinidysk/infinidysk/blob/main/docs/decisions/0001-code-boundaries.md)

@@ -31,9 +31,6 @@ jobs:
       - name: Install documentation dependencies
         run: pip install -r docs-requirements.txt
 
-      - name: Exclude agent-only reference docs
-        run: rm -rf docs/reference
-
       - name: Build documentation
         run: zensical build --clean --strict
 
