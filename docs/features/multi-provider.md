@@ -13,7 +13,7 @@ Each provider has type (pool / backup-only / disabled), SSL, connection limits, 
 
 ## Circuit breakers and storage groups
 
-Failing providers are skipped temporarily, for a cooldown that doubles on each consecutive trip up to a ceiling. Both bounds default to 60s and 5 minutes and are set with the `usenet.circuit-breaker.*` config keys. See [Usenet configuration](../configuration/usenet.md). **Storage group** labels mark resellers that share the same upstream storage — after a clean article miss on one, siblings in the group are skipped for that request (connection errors never trigger this).
+Failing providers are skipped temporarily, for a cooldown that doubles on each consecutive trip up to a ceiling. Both bounds default to 60s and 5 minutes and are set with the `usenet.circuit-breaker.*` config keys. See [Usenet configuration](../configuration/usenet.md). **Storage group** labels mark resellers that share the same upstream storage — after a clean article miss or an article rejected by yEnc validation on one, siblings in the group are skipped for that request (connection errors never trigger this; rejected articles are not remembered across requests).
 
 After three consecutive trips [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }, the header alert explains that missing-article checks are paused and asks you to fix or disable the provider in Usenet settings.
 
