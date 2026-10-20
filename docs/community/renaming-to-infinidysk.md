@@ -1,6 +1,6 @@
-# NzbDAV is becoming InfiniDysk
+# NzbDAV is now InfiniDysk
 
-**InfiniDysk** is the new name for this project. The product, maintainers, release
+**InfiniDysk** is the name of the project formerly known as NzbDAV. The product, maintainers, release
 history, and commitment to streaming directly from Usenet remain the same.
 
 The tagline **"The NzbDAV SuperFork"** keeps that lineage visible while giving
@@ -9,8 +9,8 @@ confused with the original `nzbdav-dev/nzbdav` repository.
 
 ## Why the new name?
 
-The current name describes two implementation details — NZB documents and
-WebDAV — but it does not capture the result: an effectively infinite media
+The old name described two implementation details — NZB documents and
+WebDAV — but it did not capture the result: an effectively infinite media
 library with almost none of the media stored locally.
 
 **InfiniDysk** combines that idea with an intentionally distinctive spelling:
