@@ -193,7 +193,7 @@ Then open `http://localhost:3000` (self-hosted) or your DUMB service URL, create
 
 Chat on Discord, track releases on GitHub, and file issues when you need a durable bug report.
 
-Discord community transition started July 21. After joining, use the channel and role selector to enable InfiniDysk - SuperFork for release notifications and development channels.
+After joining Discord, use the channel and role selector to enable InfiniDysk - SuperFork for release notifications and development channels.
 
 [Join Discord](https://discord.gg/DAya7W6QMa){ .md-button .md-button--primary }
 [Repository](https://github.com/infinidysk/infinidysk){ .md-button }
