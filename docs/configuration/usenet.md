@@ -15,7 +15,7 @@ Add one or more accounts. Each provider supports:
 | Control | What it does | Default / notes |
 |---------|--------------|-----------------|
 | Nickname | Friendly label instead of hostname | optional |
-| Storage group | Same label → skip siblings after a clean article miss or rejected article | optional; only same upstream |
+| Storage group | Same label → skip siblings after a clean article miss or a yEnc validation rejection (rejections apply to the current request only and are not remembered across requests) | optional; only same upstream |
 | Host / Port | NNTP endpoint | port often `563` |
 | Username / Password | Credentials | prefer SSL |
 | Provider Connection Limit | Provider-wide ceiling for all pooled connections, including transfers, metadata, and warm sockets | do not exceed the account allowance |
