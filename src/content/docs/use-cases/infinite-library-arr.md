@@ -31,6 +31,6 @@ sequenceDiagram
 
 ## Operations
 
-- Retention and orphan cleanup — [Operations](/operations/retention-cleanup/)
+- Retention and unlinked-file cleanup — [Operations](/operations/retention-cleanup/)
 - Deletion surprises — [Deletion audit](/operations/deletion-audit/)
 - Speed tuning — Max Download Connections on [WebDAV](/configuration/webdav/)

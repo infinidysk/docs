@@ -31,7 +31,7 @@ Older than `0.6.0` installs may hit larger schema migrations — take a full `/c
 
 ## Community-reported: other forks
 
-Operators have also **successfully migrated** to infinidysk from these forks by the same `/config` volume swap. These are **community-validated**, not a guarantee for every divergent commit on those repos:
+Operators have also **migrated** to infinidysk from these forks by the same `/config` volume swap. These are **community-validated**, not a guarantee for every divergent commit on those repos:
 
 | Source | Notes |
 |--------|--------|

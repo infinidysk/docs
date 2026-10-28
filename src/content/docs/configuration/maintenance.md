@@ -1,7 +1,7 @@
 ---
 title: "Maintenance"
 ---
-Database housekeeping, scheduled orphan cleanup, and one-off tools.
+Database housekeeping, scheduled unlinked-file cleanup, and one-off tools.
 
 :::tip[Headless ENV]
 Map config keys below to `NZBDAV_CONFIG__...` with the

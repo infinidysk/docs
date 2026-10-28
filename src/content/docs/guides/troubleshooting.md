@@ -194,7 +194,7 @@ Allow Docker DNS or LAN hosts under **Trusted local hosts** — [SABnzbd API](/f
 
 ## Why did files disappear?
 
-See [Deletion audit](/operations/deletion-audit/) — history retention ≠ deleting mounts; orphan cleanup and Arr actions can remove content. History rows disappearing after import are usually the Arr or a `/completed-symlinks` folder delete, not infinidysk deleting the file. If Remove Orphaned Files lists imported files, check that **Library Directory** is your organized library root, not the rclone mount.
+See [Deletion audit](/operations/deletion-audit/) — history retention ≠ deleting mounts; unlinked-file cleanup and Arr actions can remove content. History rows disappearing after import are usually the Arr or a `/completed-symlinks` folder delete, not infinidysk deleting the file. If Remove Orphaned Files lists imported files, check that **Library Directory** is your organized library root, not the rclone mount.
 
 ## Plex marks old episodes as newly added <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 

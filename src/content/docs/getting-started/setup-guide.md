@@ -1,5 +1,5 @@
 ---
-title: "Setup Guide"
+title: "Setup guide"
 description: "Use infinidysk's guided setup for Plex symlinks or Emby/Jellyfin STRM playback, Arr ingestion, backups, and library health."
 ---
 

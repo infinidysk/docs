@@ -144,7 +144,7 @@ The setting is advanced-only and has no Settings control. Configure
 `NZBDAV_CONFIG__USENET__SEGMENT_CACHE__WRITE_BEHIND_MB`, then restart the
 container. Set it back to `0` and restart to restore inline writes.
 
-### Segment Cache and rclone read-ahead
+### Segment cache and rclone read-ahead
 
 Symlink libraries stream through an rclone mount. When that mount runs with
 `--vfs-read-ahead`, rclone already buffers ahead of playback, and Segment Cache only

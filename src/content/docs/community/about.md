@@ -9,7 +9,7 @@ Playback quality depends on the full stack. UsenetSharp, RapidYencSharp, and Sha
 
 ## Heritage
 
-This project is a maintained fork of [nzbdav-dev/nzbdav](https://github.com/nzbdav-dev/nzbdav), with an **official drop-in upgrade path from `v0.6.4`**. Operators have also successfully migrated from community forks such as [Pukabyte/nzbdav](https://github.com/Pukabyte/nzbdav) and [qooode/nzbdavex](https://github.com/qooode/nzbdavex). See [Migration paths](/getting-started/migration/) for steps and caveats. Ideas and contributions were also absorbed from elfhosted, kha-kis, mrghxst, and others.
+This project is a maintained fork of [nzbdav-dev/nzbdav](https://github.com/nzbdav-dev/nzbdav), with an **official drop-in upgrade path from `v0.6.4`**. Operators have also migrated from community forks such as [Pukabyte/nzbdav](https://github.com/Pukabyte/nzbdav) and [qooode/nzbdavex](https://github.com/qooode/nzbdavex). See [Migration paths](/getting-started/migration/) for steps and caveats. Ideas and contributions were also absorbed from elfhosted, kha-kis, mrghxst, and others.
 
 Historical stack announcement notes: [0.7.x coordinated release](/community/history/release-0.7/). Prefer the [Changelog](/community/changelog/) for current releases.
 

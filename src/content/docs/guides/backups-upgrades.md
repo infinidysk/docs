@@ -1,7 +1,7 @@
 ---
 title: "Backups and upgrades"
 ---
-## In-app Backup & Restore {#in-app-backup-restore}
+## In-app backup and restore {#in-app-backup-restore}
 
 **Settings → Backup & Restore** dumps SQLite databases (`db.sqlite`, `warden.db`) as `.sql` under `{CONFIG_PATH}/backups/`. Metrics history (`metrics.sqlite`) is not included and is left unchanged by a restore.
 

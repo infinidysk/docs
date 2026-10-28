@@ -1,5 +1,5 @@
 ---
-title: "Rclone Server"
+title: "Rclone server"
 ---
 Notify rclone RC when WebDAV files change (useful with high `dir-cache-time`).
 

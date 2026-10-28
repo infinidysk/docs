@@ -41,7 +41,7 @@ matched `addurl` requests, is configured under [Indexers](/configuration/indexer
 Generated STRM files are deleted together with their content (history
 delete-with-files, health repair, Remove Orphaned Files). Sidecars under the
 configured completed-downloads directory never count as library links for
-orphan cleanup — even when that directory sits inside the Library Directory.
+unlinked-file cleanup — even when that directory sits inside the Library Directory.
 
 ## Sampled article checks <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 

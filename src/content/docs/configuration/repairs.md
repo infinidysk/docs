@@ -302,7 +302,7 @@ damage budget applies.
 ## Replacement-loop protection <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.4">since 0.9.4</a>
 
 When Arr imports a download instantly (for example over an rclone mount), a broken release can
-import successfully before any health check runs. Marking an already-imported download failed does
+import before any health check runs. Marking an already-imported download failed does
 not reliably blocklist it, so Arr could re-grab the identical release and loop. Two safeguards
 break that cycle:
 

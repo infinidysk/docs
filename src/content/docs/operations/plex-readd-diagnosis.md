@@ -32,7 +32,7 @@ WHERE RepairStatus IN (1, 2)
 ORDER BY CreatedAt DESC;
 ```
 
-`RepairStatus` values: `1` = Arr remove-and-blocklist, `2` = deleted as orphan/force. Also grep container logs for:
+`RepairStatus` values: `1` = Arr remove-and-blocklist, `2` = deleted as unlinked/force. Also grep container logs for:
 
 ```bash
 grep "dav-delete" /var/log/docker.log  # or docker logs nzbdav 2>&1 | grep dav-delete

@@ -1,5 +1,5 @@
 ---
-title: "Arr Apps"
+title: "Arr instances"
 ---
 Supported Arr app credentials and automatic stuck-queue handling. Radarr and
 Sonarr are supported today; this settings area is intended to accommodate
@@ -103,7 +103,7 @@ Disabling an instance opts it out of stuck-queue actions, Arr-linked repairs, an
 
 ## Blocklisted re-grab protection <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a>
 
-When a queue rule successfully applies **Remove, Blocklist** or **Remove, Blocklist, Search**,
+When a queue rule applies **Remove, Blocklist** or **Remove, Blocklist, Search**,
 infinidysk remembers a bounded sample of article IDs from the removed download. A later NZB
 containing any remembered article is failed in the download queue before import or Usenet article
 requests, even when another indexer supplied it under a different release name. Plain **Remove**

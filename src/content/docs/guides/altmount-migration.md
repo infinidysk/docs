@@ -96,7 +96,7 @@ The dry-run plan classifies every symlink found during the library walk:
 | `unreadable` | The link was found, but its target could not be read or classified. It remains unchanged and may still point at Altmount. Review directory permissions and filenames that are not valid UTF-8, and check whether another process changed the entry during the scan. Applying other rewrites requires explicit acknowledgement of these gaps. |
 | `already-nzbdav` | Already points to infinidysk and needs no change. |
 | `not-altmount` | Does not correlate to scanned Altmount content and is left unchanged. |
-| `applied` | Successfully repointed to infinidysk. |
+| `applied` | Repointed to infinidysk. |
 | `failed` | A verified rewrite was attempted but could not be completed. |
 | `removed` | An orphaned Altmount symlink was removed after its original target was backed up. |
 
@@ -120,7 +120,7 @@ Orphan-removal archives appear in the same **Restore Symlinks** control as rewri
 | No categories discovered | In Basic mode, check the `sabnzbd.categories` block in `config.yaml`; inline flow-style lists such as `categories: [...]` are not supported. In Advanced mode, omit an unusable config and continue to Scan so categories can be discovered from stores. |
 | `store_missing` | Mount the `.nzbs` tree and set **Altmount Store Root** to the directory that contains `.nzbs`. |
 | A release is already migrated | It is not resubmitted; retained provenance can still be used for symlink matching. |
-| Start migration is disabled | Resolve blocking collisions, map or exclude every category, and successfully refresh the review tables. |
+| Start migration is disabled | Resolve blocking collisions, map or exclude every category, and refresh the review tables. |
 | Reset is disabled | Cancel active work and wait for the session to reach a non-active state. A paused run is still active. |
 | A symlink is `orphan`, `unreadable`, or `failed` | Review its match/target details. The wizard will not guess or overwrite a link that cannot be verified safely. |
 | Removed links are still shown as present in Sonarr or Radarr | Run the relevant **Refresh & Scan** or refresh job so the Arr detects the missing paths before starting re-grabs. |
