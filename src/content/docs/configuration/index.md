@@ -13,17 +13,13 @@ Settings marked <a class="since" href="https://github.com/infinidysk/infinidysk/
 
 ## Settings hub
 
-<div class="grid cards" markdown>
-
--   **Providers & search** — [Usenet](/configuration/usenet/) · [Indexers](/configuration/indexers/) · [Search profiles](/configuration/profiles/)
--   **Queue & import** — [Queue](/configuration/queue/) · [SABnzbd](/configuration/sabnzbd/)
--   **Playback & files** — [Streaming](/configuration/streaming/) · [WebDAV](/configuration/webdav/)
--   **Automation** — [Watchdog](/configuration/watchdog/) · [Preflight](/configuration/preflight/) · [Watchtower](/configuration/watchtower/) · [Warden](/configuration/warden/)
--   **Integrations** — [Arr Apps](/configuration/arrs/) · [Rclone](/configuration/rclone/)
--   **System** — [Health & repairs](/configuration/repairs/) · [Maintenance](/configuration/maintenance/) · [Backup](/configuration/backup/) · [Support](/configuration/support/) · [Migration (experimental)](/guides/altmount-migration/) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
--   **Headless / ops** — [OIDC / SSO](/configuration/oidc/) · [Headless ENV config](/configuration/headless/) · [Environment variables](/configuration/environment-variables/)
-
-</div>
+- **Providers & search** — [Usenet](/configuration/usenet/) · [Indexers](/configuration/indexers/) · [Search profiles](/configuration/profiles/)
+- **Queue & import** — [Queue](/configuration/queue/) · [SABnzbd](/configuration/sabnzbd/)
+- **Playback & files** — [Streaming](/configuration/streaming/) · [WebDAV](/configuration/webdav/)
+- **Automation** — [Watchdog](/configuration/watchdog/) · [Preflight](/configuration/preflight/) · [Watchtower](/configuration/watchtower/) · [Warden](/configuration/warden/)
+- **Integrations** — [Arr Apps](/configuration/arrs/) · [Rclone](/configuration/rclone/)
+- **System** — [Health & repairs](/configuration/repairs/) · [Maintenance](/configuration/maintenance/) · [Backup](/configuration/backup/) · [Support](/configuration/support/) · [Migration (experimental)](/guides/altmount-migration/) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
+- **Headless / ops** — [OIDC / SSO](/configuration/oidc/) · [Headless ENV config](/configuration/headless/) · [Environment variables](/configuration/environment-variables/)
 
 :::tip[Config vs env]
 Most tunables are UI/`ConfigItems` keys. Map any documented config key to `NZBDAV_CONFIG__...` with the [naming rule](/configuration/headless/#naming-algorithm) for authoritative headless setup. Separate domains (frontend admin account, Warden `warden.db`, restore actions) are not part of that overlay — see [headless out of scope](/configuration/headless/#what-is-out-of-scope-v09). Process variables (`CONFIG_PATH`, ports, auth cookies) and legacy Settings *fallbacks* stay on [environment variables](/configuration/environment-variables/).

@@ -3,55 +3,21 @@ title: "Getting started"
 description: "Get started with InfiniDysk, the NzbDAV SuperFork. Install with Docker, complete first-run setup, and connect Sonarr or Radarr in minutes."
 ---
 
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
 :::note[Docs track latest]
 These pages describe the **latest** InfiniDysk release. Features and settings marked with a <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> pill (or similar) need at least that version — check your image tag or **Settings → About** before following a new workflow.
 :::
 
 Choose a path based on where you are:
 
-<div class="grid cards" markdown>
-
--   :material-docker:{ .lg .middle } __Install with Docker__
-
-    ---
-
-    Persistent Compose deploy, health checks, reverse-proxy notes.
-
-    [:octicons-arrow-right-24: Docker](/getting-started/docker/)
-
--   :material-swap-horizontal:{ .lg .middle } __Migrate from another build__
-
-    ---
-
-    Official path from nzbdav-dev `v0.6.4`, plus community forks (Pukabyte, NzbDavEx).
-
-    [:octicons-arrow-right-24: Migration](/getting-started/migration/)
-
--   :material-account-cog:{ .lg .middle } __First run__
-
-    ---
-
-    New installs continue from account creation; existing installs open the guide after the first administrator login following upgrade.
-
-    [:octicons-arrow-right-24: First run](/getting-started/first-run/) · [Setup Guide](/getting-started/setup-guide/)
-
--   :material-sync:{ .lg .middle } __Connect *Arr__
-
-    ---
-
-    Add InfiniDysk as a SABnzbd download client in Sonarr and Radarr.
-
-    [:octicons-arrow-right-24: Connect Radarr/Sonarr](/getting-started/connect-arr/)
-
--   :material-map:{ .lg .middle } __Understand the flow__
-
-    ---
-
-    How queue → mount → stream works with media servers.
-
-    [:octicons-arrow-right-24: Architecture](/guides/architecture/)
-
-</div>
+<CardGrid>
+	<LinkCard title="Install with Docker" description="Persistent Compose deploy, health checks, reverse-proxy notes." href="/getting-started/docker/" />
+	<LinkCard title="Migrate from another build" description="Official path from nzbdav-dev v0.6.4, plus community forks (Pukabyte, NzbDavEx)." href="/getting-started/migration/" />
+	<LinkCard title="First run" description="New installs continue from account creation; existing installs open the guide after the first administrator login following upgrade." href="/getting-started/first-run/" />
+	<LinkCard title="Connect *Arr" description="Add InfiniDysk as a SABnzbd download client in Sonarr and Radarr." href="/getting-started/connect-arr/" />
+	<LinkCard title="Understand the flow" description="How queue → mount → stream works with media servers." href="/guides/architecture/" />
+</CardGrid>
 
 ## Prerequisites
 

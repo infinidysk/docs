@@ -77,7 +77,33 @@
 	border-radius: var(--radius-lg);
 }
 
-.sl-link-button,
+.site-title {
+	color: var(--sl-color-white);
+}
+
+.sl-link-button {
+	border-radius: var(--radius-md);
+}
+
+.sl-link-button.primary,
+.sl-link-button.primary:hover {
+	background: oklch(0.6 0.19 248);
+	border-color: oklch(0.6 0.19 248);
+	color: oklch(0.99 0 0);
+}
+
+.sl-link-button.primary:hover {
+	background: oklch(0.55 0.19 248);
+}
+
+.sl-link-button.secondary {
+	border-color: var(--sl-color-gray-5);
+}
+
+.sl-link-button.secondary:hover {
+	background: var(--sl-color-gray-6);
+}
+
 .sl-markdown-content :is(pre, table, img),
 .card,
 .sl-link-card {
