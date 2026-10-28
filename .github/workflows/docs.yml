@@ -110,7 +110,9 @@ jobs:
           set -o pipefail
           output="$(npx --yes wrangler@4.154.0 preview --name "$PREVIEW_NAME" --json)"
           printf '%s\n' "$output"
-          echo "url=$(printf '%s' "$output" | jq -er '.preview.urls[0]')" >> "$GITHUB_OUTPUT"
+          # Wrangler prints asset upload progress to stdout before the JSON.
+          url="$(printf '%s\n' "$output" | sed -n '/^{/,$p' | jq -er '.preview.urls[0]')"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
 
       - name: Comment Preview URL
         env:
