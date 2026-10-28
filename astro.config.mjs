@@ -69,6 +69,8 @@ export default defineConfig({
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/infinidysk/infinidysk' },
 				{ icon: 'discord', label: 'Discord', href: discord },
+				{ icon: 'heart', label: 'Sponsor on GitHub', href: 'https://github.com/sponsors/hoivikaj' },
+				{ icon: 'patreon', label: 'Patreon', href: 'https://www.patreon.com/hoivikaj' },
 			],
 			editLink: { baseUrl: 'https://github.com/infinidysk/docs/edit/main/' },
 			head: [
