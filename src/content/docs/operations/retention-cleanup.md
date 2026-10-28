@@ -1,5 +1,6 @@
-# Retention and cleanup
-
+---
+title: "Retention and cleanup"
+---
 ## Database retention
 
 | Setting / env | Default | Effect |
@@ -10,7 +11,7 @@
 
 Configure in **Settings → Maintenance**.
 
-## Metrics database [since 1.1.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0){ .nzbdav-since }
+## Metrics database <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
 
 InfiniDysk stores streaming and provider metrics in a separate SQLite file (`metrics.sqlite` under `CONFIG_PATH`). Size grows with throughput because each article fetch writes a raw row to `SegmentFetches`.
 
@@ -31,7 +32,7 @@ Blobs under `{CONFIG_PATH}/blobs/` remain while referenced by queue, history, or
 
 Scheduled history retention and the **Prune Completed History** task delete SAB history rows only (`deleteFiles: false`). They do not delete WebDAV mounts, but they do clear each mount's history link (`HistoryItemId`). **Remove Orphaned Files** then deletes those mounts only if they also have no library symlink or STRM.
 
-## Missing streaming payloads [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+## Missing streaming payloads <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 A database restore without the matching `blobs/` directory can leave mounted files whose streaming metadata no longer exists. Health checks report these as **Action needed** and back off to weekly checks after three consecutive confirmations. This is local data loss, not evidence that the Usenet release is bad.
 
@@ -43,7 +44,7 @@ Back up `/config` and pause Arr imports before running cleanup. Restore the miss
 
 ## Orphaned files
 
-**Remove Orphaned Files** (Maintenance) deletes WebDAV files that are not linked from the library directory and are no longer tied to a SAB history row. Generated STRM sidecars owned by an orphaned item are deleted with it [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }. Supports dry run. Schedule optional daily cleanup — set container `TZ`. Direct WebDAV or rclone playback is not a library link, and neither are sidecars under the configured completed-downloads directory [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since } — those are InfiniDysk's own outputs, not library links, even when the completed-downloads directory sits inside the Library Directory.
+**Remove Orphaned Files** (Maintenance) deletes WebDAV files that are not linked from the library directory and are no longer tied to a SAB history row. Generated STRM sidecars owned by an orphaned item are deleted with it <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>. Supports dry run. Schedule optional daily cleanup — set container `TZ`. Direct WebDAV or rclone playback is not a library link, and neither are sidecars under the configured completed-downloads directory <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> — those are InfiniDysk's own outputs, not library links, even when the completed-downloads directory sits inside the Library Directory.
 
 **Library Directory** must be the organized library root that contains your Arr-imported symlinks or STRMs (the parent of your Radarr/Sonarr root folders). It must be visible inside the InfiniDysk container. Do not point it at the rclone mount (`rclone.mount-dir`) or at `/completed-symlinks` — that folder is InfiniDysk's virtual view of current History rows, so scanning it cannot protect files after history is cleared. Remove Orphaned Files aborts (dry run included) when Library Directory is the mount or a path inside it.
 
@@ -55,4 +56,4 @@ History entries disappearing after an Arr import are client-initiated cleanup, n
 
 Optional copies of incoming NZBs (SABnzbd settings) prune by `api.nzb-backup-retention-days`.
 
-[Deletion audit](deletion-audit.md) · [Maintenance](../configuration/maintenance.md)
+[Deletion audit](/operations/deletion-audit/) · [Maintenance](/configuration/maintenance/)

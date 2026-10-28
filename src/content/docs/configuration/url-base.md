@@ -1,4 +1,7 @@
-# URL base (sub-path hosting) [since 0.10.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0){ .nzbdav-since }
+---
+title: "URL base (sub-path hosting)"
+---
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
 Host the app under a reverse-proxy sub-path — e.g. `https://example.com/nzbdav/` —
 without any `sub_filter` response rewriting in the proxy.
@@ -51,12 +54,12 @@ misparse the mount prefix as a route pattern.
   `<public origin><URL_BASE>/auth/oidc/callback` (derived automatically from
   `general.base-url` when set).
 
-!!! warning "Managed environments"
-
-    Environments that manage the deployment for you and assume root hosting —
-    DUMB's embedded-UI proxying, for example — should leave this setting unset.
-    Enabling it changes every frontend URL, including the ones such
-    integrations construct for you.
+:::caution[Managed environments]
+Environments that manage the deployment for you and assume root hosting —
+DUMB's embedded-UI proxying, for example — should leave this setting unset.
+Enabling it changes every frontend URL, including the ones such
+integrations construct for you.
+:::
 
 ## Minimal nginx example
 

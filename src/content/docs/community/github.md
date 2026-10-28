@@ -1,5 +1,6 @@
-# Community
-
+---
+title: "Community"
+---
 Chat with other operators, track development, and contribute.
 
 <div class="grid cards" markdown>
@@ -64,7 +65,7 @@ Chat with other operators, track development, and contribute.
 
 Prefer **Issues** for bugs and feature requests that need tracking; use **Discord** for quicker chat. The site header also shows live GitHub stars / forks / latest release when available.
 
-## Feature request voting [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }
+## Feature request voting <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
 Want a capability prioritized? Open a **Feature** request on GitHub (Issue Type: Feature), then react with a thumbs-up (👍) on the **issue body** — not on comments.
 

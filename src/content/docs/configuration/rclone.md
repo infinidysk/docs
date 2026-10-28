@@ -1,12 +1,13 @@
-# Rclone Server
-
+---
+title: "Rclone Server"
+---
 Notify rclone RC when WebDAV files change (useful with high `dir-cache-time`).
 
-!!! tip "Headless ENV"
-
-    Map config keys below to `NZBDAV_CONFIG__...` with the
-    [naming algorithm](headless.md#naming-algorithm)
-    (`rclone.host` → `NZBDAV_CONFIG__RCLONE__HOST`).
+:::tip[Headless ENV]
+Map config keys below to `NZBDAV_CONFIG__...` with the
+[naming algorithm](/configuration/headless/#naming-algorithm)
+(`rclone.host` → `NZBDAV_CONFIG__RCLONE__HOST`).
+:::
 
 | Control | Config key | Default | Effect |
 |---------|------------|---------|--------|
@@ -20,6 +21,6 @@ API response (`POST core/version`). It works with an already-saved (masked) pass
 not need to re-enter it after reload. Failures show a reason (authentication, HTTP status, or
 network error). Password may be left empty when the RC server has no auth.
 
-Mount directory for symlink imports is configured on the [SABnzbd](sabnzbd.md) tab (`rclone.mount-dir`).
+Mount directory for symlink imports is configured on the [SABnzbd](/configuration/sabnzbd/) tab (`rclone.mount-dir`).
 
-[Mounting WebDAV](../guides/mounting-webdav.md)
+[Mounting WebDAV](/guides/mounting-webdav/)

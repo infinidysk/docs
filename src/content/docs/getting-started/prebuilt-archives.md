@@ -1,10 +1,13 @@
-# Prebuilt Linux archives [since 0.10.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0){ .nzbdav-since }
+---
+title: "Prebuilt Linux archives"
+---
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
 Prebuilt release archives run InfiniDysk directly on Linux without Docker or a
 source build. They include the compiled backend, frontend, production Node.js
 dependencies, and rapidyenc native library.
 
-Archives follow the same [release channels and tags](index.md#release-channels-and-tags)
+Archives follow the same [release channels and tags](/getting-started/#release-channels-and-tags)
 as the Docker image: stable builds below, `rc` and `dev` builds under
 [Pre-release testing](#pre-release-testing).
 
@@ -45,7 +48,7 @@ CONFIG_PATH=/var/lib/infinidysk ./run.sh
 
 Other container environment variables are supported, including `PORT`,
 `LOG_LEVEL`, and the
-[headless Settings overlay](../configuration/headless.md).
+[headless Settings overlay](/configuration/headless/).
 
 ## Pre-release testing
 
@@ -70,7 +73,7 @@ pre-release:
 
 `dev` builds are unversioned, refresh whenever the maintainer validates a
 snapshot on non-production, and may be non-functional — see
-[Release channels and tags](index.md#release-channels-and-tags).
+[Release channels and tags](/getting-started/#release-channels-and-tags).
 
 ## Upgrade
 

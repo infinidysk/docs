@@ -1,5 +1,6 @@
-# Import strategies
-
+---
+title: "Import strategies"
+---
 Choose how Radarr/Sonarr import completed jobs. Set this under **Settings → SABnzbd → Import Strategy**.
 
 === "Symlinks — Plex"
@@ -7,7 +8,7 @@ Choose how Radarr/Sonarr import completed jobs. Set this under **Settings → SA
     Best when the media server needs real filesystem entries (classic Plex libraries).
 
     1. Set **Rclone Mount Directory** to the host path of the WebDAV mount (e.g. `/mnt/remote/nzbdav`).
-    2. Run an [rclone sidecar](mounting-webdav.md) with `--links` so `*.rclonelink` files become symlinks into `.ids`.
+    2. Run an [rclone sidecar](/guides/mounting-webdav/) with `--links` so `*.rclonelink` files become symlinks into `.ids`.
     3. Point \*Arr root folders at paths that see those symlinks.
 
     A bounded rclone VFS cache can smooth seeking without storing full media forever.
@@ -23,7 +24,7 @@ Choose how Radarr/Sonarr import completed jobs. Set this under **Settings → SA
     STRM files contain authenticated streaming URLs; keep Base URL and WebDAV credentials correct.
 
     Jellyfin fills in duration and audio/subtitle languages for STRM items only after first playback —
-    see [Media servers](media-servers.md#emby-jellyfin).
+    see [Media servers](/guides/media-servers/#emby-jellyfin).
 
 ## Path consistency
 
@@ -31,8 +32,8 @@ The completed path InfiniDysk reports must appear **at the same absolute path** 
 
 ## Switching strategies
 
-Maintenance tools can convert STRM → symlinks or recreate STRM sidecars — see [Maintenance](../configuration/maintenance.md). Back up first.
+Maintenance tools can convert STRM → symlinks or recreate STRM sidecars — see [Maintenance](/configuration/maintenance/). Back up first.
 
 ## Related
 
-[Mounting WebDAV](mounting-webdav.md) · [Media servers](media-servers.md) · [SABnzbd settings](../configuration/sabnzbd.md)
+[Mounting WebDAV](/guides/mounting-webdav/) · [Media servers](/guides/media-servers/) · [SABnzbd settings](/configuration/sabnzbd/)

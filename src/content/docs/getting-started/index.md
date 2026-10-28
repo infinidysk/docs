@@ -1,12 +1,11 @@
 ---
+title: "Getting started"
 description: "Get started with InfiniDysk, the NzbDAV SuperFork. Install with Docker, complete first-run setup, and connect Sonarr or Radarr in minutes."
 ---
 
-# Getting started
-
-!!! note "Docs track latest"
-
-    These pages describe the **latest** InfiniDysk release. Features and settings marked with a [since 0.8.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0){ .nzbdav-since } pill (or similar) need at least that version — check your image tag or **Settings → About** before following a new workflow.
+:::note[Docs track latest]
+These pages describe the **latest** InfiniDysk release. Features and settings marked with a <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> pill (or similar) need at least that version — check your image tag or **Settings → About** before following a new workflow.
+:::
 
 Choose a path based on where you are:
 
@@ -18,7 +17,7 @@ Choose a path based on where you are:
 
     Persistent Compose deploy, health checks, reverse-proxy notes.
 
-    [:octicons-arrow-right-24: Docker](docker.md)
+    [:octicons-arrow-right-24: Docker](/getting-started/docker/)
 
 -   :material-swap-horizontal:{ .lg .middle } __Migrate from another build__
 
@@ -26,7 +25,7 @@ Choose a path based on where you are:
 
     Official path from nzbdav-dev `v0.6.4`, plus community forks (Pukabyte, NzbDavEx).
 
-    [:octicons-arrow-right-24: Migration](migration.md)
+    [:octicons-arrow-right-24: Migration](/getting-started/migration/)
 
 -   :material-account-cog:{ .lg .middle } __First run__
 
@@ -34,7 +33,7 @@ Choose a path based on where you are:
 
     New installs continue from account creation; existing installs open the guide after the first administrator login following upgrade.
 
-    [:octicons-arrow-right-24: First run](first-run.md) · [Setup Guide](setup-guide.md)
+    [:octicons-arrow-right-24: First run](/getting-started/first-run/) · [Setup Guide](/getting-started/setup-guide/)
 
 -   :material-sync:{ .lg .middle } __Connect *Arr__
 
@@ -42,7 +41,7 @@ Choose a path based on where you are:
 
     Add InfiniDysk as a SABnzbd download client in Sonarr and Radarr.
 
-    [:octicons-arrow-right-24: Connect Radarr/Sonarr](connect-arr.md)
+    [:octicons-arrow-right-24: Connect Radarr/Sonarr](/getting-started/connect-arr/)
 
 -   :material-map:{ .lg .middle } __Understand the flow__
 
@@ -50,7 +49,7 @@ Choose a path based on where you are:
 
     How queue → mount → stream works with media servers.
 
-    [:octicons-arrow-right-24: Architecture](../guides/architecture.md)
+    [:octicons-arrow-right-24: Architecture](/guides/architecture/)
 
 </div>
 
@@ -64,14 +63,14 @@ Choose a path based on where you are:
 
 | Option | Who it’s for | Start here |
 |--------|----------------|------------|
-| **Self-hosted Docker** | You run Compose (or Unraid/etc.) and wire *Arr / rclone yourself | [Docker](docker.md) |
+| **Self-hosted Docker** | You run Compose (or Unraid/etc.) and wire *Arr / rclone yourself | [Docker](/getting-started/docker/) |
 | **[DUMB](https://dumbarr.com/)** (Debrid Unlimited Media Bridge) | You want InfiniDysk as a **fully supported core module** with guided onboarding and Arr wiring | [InfiniDysk on dumbarr.com](https://dumbarr.com/services/core/nzbdav/) |
 
 DUMB treats InfiniDysk as a first-class Usenet WebDAV / SABnzbd-compatible workflow service (`core_service: nzbdav`), including automatic Arr download-client and symlink-path integration when you select it during onboarding. Prefer DUMB’s own docs for stack-specific paths and ports; use this site for InfiniDysk Settings, features, and troubleshooting.
 
 ## Release channels and tags
 
-Docker images and [prebuilt Linux archives](prebuilt-archives.md) follow the same release train. Choose a tag based on how much change you want to absorb:
+Docker images and [prebuilt Linux archives](/getting-started/prebuilt-archives/) follow the same release train. Choose a tag based on how much change you want to absorb:
 
 | Tag | Definition |
 |-----|------------|
@@ -82,15 +81,15 @@ Docker images and [prebuilt Linux archives](prebuilt-archives.md) follow the sam
 
 For reproducible deployments, pin an exact version tag (`v1.2.3`) or a rolling minor/major alias (`v1.2`, `v1`). Versioned `v*-rc.*` pre-releases and image tags are removed when the stable release ships; the rolling `rc` and `dev` tags persist.
 
-!!! note "Building from source"
-
-    Cloning the repository and running from source remains possible — see [Contributing](../community/contributing.md) — but it is a development workflow, not a supported deployment method. Releases are tested as the published Docker image and prebuilt Linux archives; source builds are not part of release testing.
+:::note[Building from source]
+Cloning the repository and running from source remains possible — see [Contributing](/community/contributing/) — but it is a development workflow, not a supported deployment method. Releases are tested as the published Docker image and prebuilt Linux archives; source builds are not part of release testing.
+:::
 
 ## After install
 
 | Goal | Next |
 |------|------|
-| Plex + symlinks | [Import strategies](../guides/import-strategies.md) → [Mounting WebDAV](../guides/mounting-webdav.md) |
-| Emby/Jellyfin + STRM | [Import strategies](../guides/import-strategies.md) → [Media servers](../guides/media-servers.md) |
-| Stremio on demand | [Stremio](../guides/stremio.md) |
-| Tune Settings | [Configuration](../configuration/index.md) |
+| Plex + symlinks | [Import strategies](/guides/import-strategies/) → [Mounting WebDAV](/guides/mounting-webdav/) |
+| Emby/Jellyfin + STRM | [Import strategies](/guides/import-strategies/) → [Media servers](/guides/media-servers/) |
+| Stremio on demand | [Stremio](/guides/stremio/) |
+| Tune Settings | [Configuration](/configuration/) |

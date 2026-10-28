@@ -1,8 +1,9 @@
 ---
+title: "Setup Guide"
 description: "Use InfiniDysk's guided setup for Plex symlinks or Emby/Jellyfin STRM playback, Arr ingestion, backups, and library health."
 ---
 
-# Setup Guide <span class="nzbdav-since">since 1.3.0</span>
+<span class="since">since 1.3.0</span>
 
 InfiniDysk opens **Setup Guide** after the first administrator signs in on a new
 installation. Existing installations continue to open on **Overview** after an
@@ -26,7 +27,7 @@ Choose the playback shape used for future imports:
 | **STRM · Emby/Jellyfin** | InfiniDysk Segment Cache is enabled | Completed Downloads Dir and media-server-reachable Base URL |
 
 Changing strategy does not convert existing imports. Review the warning before
-applying, then use the appropriate [Maintenance](../configuration/maintenance.md)
+applying, then use the appropriate [Maintenance](/configuration/maintenance/)
 tool or a deliberate migration plan for existing files.
 
 Segment Cache is analogous in purpose to rclone VFS caching for direct WebDAV
@@ -59,7 +60,7 @@ reach it. `127.0.0.1:5572` is valid only when both processes share a network
 namespace. On a network that is not isolated and trusted, replace `--rc-no-auth`
 with `--rc-user` and `--rc-pass` and enter those credentials in the guide.
 
-See [Mounting WebDAV](../guides/mounting-webdav.md) for the complete Compose example.
+See [Mounting WebDAV](/guides/mounting-webdav/) for the complete Compose example.
 
 ## Content ingestion
 
@@ -67,8 +68,8 @@ Select one or more methods:
 
 - **Arr apps** — register Radarr or Sonarr with InfiniDysk, test each connection,
   and follow the displayed SABnzbd download-client values inside each Arr app.
-- **Built-in Search** — finish configuring [Indexers](../configuration/indexers.md)
-  and [Search Profiles](../configuration/profiles.md) afterward.
+- **Built-in Search** — finish configuring [Indexers](/configuration/indexers/)
+  and [Search Profiles](/configuration/profiles/) afterward.
 - **Manual NZB** — upload a smoke-test NZB from Queue after setup.
 
 External connection tests are advisory because services may still be starting.

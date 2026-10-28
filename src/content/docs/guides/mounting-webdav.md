@@ -1,8 +1,9 @@
-# Mounting WebDAV
-
+---
+title: "Mounting WebDAV"
+---
 Symlink imports need the InfiniDysk WebDAV tree on the host filesystem. Use rclone (sidecar or host mount).
 
-The guided [Setup Guide](../getting-started/setup-guide.md) shows these sidecar
+The guided [Setup Guide](/getting-started/setup-guide/) shows these sidecar
 flags, configures RC notifications, tests the connection, and disables InfiniDysk
 Segment Cache for Symlink/Plex libraries.
 
@@ -32,7 +33,8 @@ user = your-webdav-user
 pass = your-obscured-password
 ```
 
-!!! important
+:::caution
+:::
 
   The rclone sidecar is a backend service and shares the Compose network with
   InfiniDysk. Point it directly at the backend on port `8080`. Sending WebDAV
@@ -46,11 +48,11 @@ pass = your-obscured-password
 chmod 600 rclone.conf
 ```
 
-!!! note
+:::note
+Rclone's obscured password is not strong encryption — protect the file.
+:::
 
-    Rclone's obscured password is not strong encryption — protect the file.
-
-### Frontend proxy warning [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+### Frontend proxy warning <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 If the frontend detects an rclone client on port `3000`, it emits an operator warning
 at most once every 30 minutes and shows a non-dismissible warning in the admin UI.
@@ -127,4 +129,4 @@ Append to the mount command:
 
 Then **Settings → Rclone Server**: enable notifications, host `http://nzbdav_rclone:5572`, matching credentials. Raise `--dir-cache-time` once RC works.
 
-[Rclone settings](../configuration/rclone.md)
+[Rclone settings](/configuration/rclone/)

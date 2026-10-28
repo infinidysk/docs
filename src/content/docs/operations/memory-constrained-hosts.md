@@ -1,5 +1,6 @@
-# Memory-constrained hosts
-
+---
+title: "Memory-constrained hosts"
+---
 InfiniDysk has a .NET backend and a Node frontend. Size the limit for both
 processes, plus sockets, TLS, SQLite, and native allocations—not only the
 managed .NET heap.
@@ -79,7 +80,7 @@ glibc-specific; the shipped Alpine image uses musl and does not use
 - Lower provider **Max connections** and explicit download/queue connection
   limits before reducing buffers. NNTP I/O is asynchronous; it does not create
   a dedicated OS thread per socket.
-- Disable [warm connections](../features/connection-warming.md) or shorten the
+- Disable [warm connections](/features/connection-warming/) or shorten the
   idle timeout if many pooled sockets are unnecessary.
 - Lower **Streaming body batch width** and set an explicit **In-flight article
   budget** to reduce active decoded-pipe retention.

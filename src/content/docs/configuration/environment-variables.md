@@ -1,12 +1,15 @@
-# Environment variables
-
+---
+title: "Environment variables"
+---
 Advanced reference for **process / container** wiring and **legacy Settings fallbacks**. Most day-to-day tunables live in the Settings UI (SQLite).
 
-!!! tip "Authoritative headless Settings [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }"
+:::tip[Authoritative headless Settings]
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
-    To drive every Settings (`ConfigItems`) value from the environment — with read-only UI locks and values kept out of SQLite — use the **`NZBDAV_CONFIG__...`** overlay documented in **[Headless environment configuration](headless.md)**. That page includes a fully hydrated Compose example.
+To drive every Settings (`ConfigItems`) value from the environment — with read-only UI locks and values kept out of SQLite — use the **`NZBDAV_CONFIG__...`** overlay documented in **[Headless environment configuration](/configuration/headless/)**. That page includes a fully hydrated Compose example.
 
-    Precedence when both are present: **`NZBDAV_CONFIG__...` > SQLite/UI > legacy fallbacks on this page > defaults**.
+Precedence when both are present: **`NZBDAV_CONFIG__...` > SQLite/UI > legacy fallbacks on this page > defaults**.
+:::
 
 ## Container / entrypoint
 
@@ -38,7 +41,7 @@ Advanced reference for **process / container** wiring and **legacy Settings fall
 | `NZBDAV_VERSION` / `NZBDAV_COMMIT_SHA` | image build | Version display |
 | `SERVICE_PROVIDER` | unset | Hosted-service branding and UI navigation feature gating |
 
-## `SERVICE_PROVIDER` [since 0.10.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0){ .nzbdav-since }
+## `SERVICE_PROVIDER` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
 Hosted InfiniDysk services can identify the service provider and mark selected
 navigation destinations as unavailable. Disabled destinations remain visible in
@@ -90,14 +93,14 @@ or restrict backend capabilities when enforcement is required.
 | `LOG_LEVEL` | Information | Serilog minimum level |
 | `LOG_BUFFER_SIZE` | `2000` | In-memory log buffer for UI (100–50000) |
 | `STREAM_TRACE_EVENTS` | `0` (off) | Opt-in stream trace capacity, always-on with no expiry; the Settings → Support toggle can also set capacity (20k–200k) for timed captures |
-| `ENABLE_API_DOCS` [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since } | `false` | Enables the contributor-facing Scalar reference at `/scalar/` and its admin-only OpenAPI document at `/openapi/admin.json`; never enabled by default in Docker |
+| `ENABLE_API_DOCS` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a> | `false` | Enables the contributor-facing Scalar reference at `/scalar/` and its admin-only OpenAPI document at `/openapi/admin.json`; never enabled by default in Docker |
 | `TRUSTED_PROXY_CIDRS` | loopback | Comma-separated IPs/CIDRs trusted for forwarded headers |
 | `DISABLE_WEBDAV_AUTH` | unset | Disables WebDAV auth (**dangerous**) |
 | `RESET_ADMIN_PASSWORD` | unset | `true` deletes the admin account on next startup, forcing re-onboarding. **Remove after use.** |
-| `USENET_DISABLE_CRC_VALIDATION` [since 0.8.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0){ .nzbdav-since } | unset | `1` skips yEnc CRC checks (emergency) |
+| `USENET_DISABLE_CRC_VALIDATION` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> | unset | `1` skips yEnc CRC checks (emergency) |
 | `THREADPOOL_MIN_THREADS` | `max(2×CPU, 50)` | Override min worker/IOCP threads |
 | `THREADPOOL_MAX_THREADS` | `max(50×CPU, 1000)` | Override max threads |
-| `NZBDAV_SEGMENT_BUFFER_POOL` [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since } | `bounded-capacity` | Segment-buffer retention. Unset and `bounded-capacity` use the production 32–256 MiB idle-byte cap without a per-class ceiling; idle buffers are kept while streams are active and released once the pool has been quiet for 30 seconds. `bounded-legacy` restores the previous two-minute expiry and 64-buffer class ceiling as a restart-only rollback. `shared` uses `ArrayPool<byte>.Shared` as an emergency escape hatch. Unknown values log a Warning and use `bounded-capacity`. |
+| `NZBDAV_SEGMENT_BUFFER_POOL` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `bounded-capacity` | Segment-buffer retention. Unset and `bounded-capacity` use the production 32–256 MiB idle-byte cap without a per-class ceiling; idle buffers are kept while streams are active and released once the pool has been quiet for 30 seconds. `bounded-legacy` restores the previous two-minute expiry and 64-buffer class ceiling as a restart-only rollback. `shared` uses `ArrayPool<byte>.Shared` as an emergency escape hatch. Unknown values log a Warning and use `bounded-capacity`. |
 | `DOTNET_GCHeapHardLimit` | runtime default | .NET managed-heap ceiling; hexadecimal bytes |
 | `DOTNET_GCHeapHardLimitPercent` | runtime/container default | .NET managed-heap ceiling as a hexadecimal percentage |
 | `DOTNET_GCRegionRange` | runtime default | .NET regions-GC virtual reservation; hexadecimal bytes |
@@ -105,26 +108,26 @@ or restrict backend capabilities when enforcement is required.
 | `DOTNET_GCConserveMemory` | `0` | .NET heap-conservation level (0–9). Read only at process start; a change requires a restart. Higher values compact the LOH more aggressively and can increase collection frequency and pause duration — start as a measured canary, not a fleet default. |
 | `DOTNET_gcServer` | image default (`1`) | Enables (`1`) or disables (`0`) server GC |
 | `MAX_REQUEST_BODY_SIZE` | 300 MiB | Max request body bytes |
-| `QUEUE_ITEM_STUCK_MINUTES` [since 1.1.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0){ .nzbdav-since } | `5` | Minutes without queue progress before the stuck-item watchdog pauses and cancels the worker |
+| `QUEUE_ITEM_STUCK_MINUTES` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a> | `5` | Minutes without queue progress before the stuck-item watchdog pauses and cancels the worker |
 | `NZBDAV_VERSION` | `0.0.0` | Reported app version |
-| `DOTNET_DbgEnableMiniDump` | off | Opt-in crash dumps — [Logs](../operations/logs-crash-dumps.md) |
+| `DOTNET_DbgEnableMiniDump` | off | Opt-in crash dumps — [Logs](/operations/logs-crash-dumps/) |
 
 `PORT` and `ASPNETCORE_URLS` control listeners inside the container; they do not
 change Docker's published host port. For normal Compose deployments, leave the
 internal ports unchanged and use a `HOST_PORT:CONTAINER_PORT` mapping. See
-[Change the published port](../getting-started/docker.md#change-the-published-port)
+[Change the published port](/getting-started/docker/#change-the-published-port)
 for bridge networking, host networking, healthcheck, and DUMB examples.
 
 `DOTNET_*` variables are .NET runtime settings rather than InfiniDysk
 configuration. Environment-variable numeric values are hexadecimal where the
-.NET runtime requires it. See [Memory-constrained hosts](../operations/memory-constrained-hosts.md)
+.NET runtime requires it. See [Memory-constrained hosts](/operations/memory-constrained-hosts/)
 before setting heap or region limits, especially on a host that enforces
 `ulimit -v`.
 
 ## Settings fallbacks (when UI empty)
 
 These apply only when the matching Settings value is empty **and** no
-[`NZBDAV_CONFIG__...`](headless.md) overlay supplies that key.
+[`NZBDAV_CONFIG__...`](/configuration/headless/) overlay supplies that key.
 
 | Variable | Related setting | Default if both empty |
 |----------|-----------------|-----------------------|
@@ -132,11 +135,11 @@ These apply only when the matching Settings value is empty **and** no
 | `CATEGORIES` | Categories | `audio,software,tv,movies` |
 | `NZB_GRAB_USER_AGENT` | User Agent / retrieve UA | `SABnzbd/5.1.0` |
 | `NZB_SEARCH_USER_AGENT` | Search User-Agent | `nzbdav/{version}` |
-| `TRUSTED_INTERNAL_HOSTS` [since 0.8.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0){ .nzbdav-since } | Trusted local hosts | none |
+| `TRUSTED_INTERNAL_HOSTS` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> | Trusted local hosts | none |
 | `MOUNT_DIR` | Rclone Mount Directory | `/mnt/nzbdav` |
 | `WEBDAV_USER` | WebDAV User | `admin` |
 | `WEBDAV_PASSWORD` | WebDAV Password | none (hashed when set) |
-| `RESOLUTION_CACHE_TTL_HOURS` [since 0.8.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0){ .nzbdav-since } | Search link lifetime | `168` |
+| `RESOLUTION_CACHE_TTL_HOURS` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> | Search link lifetime | `168` |
 | `DATABASE_HISTORY_RETENTION_DAYS` | History retention | `90` |
 | `DATABASE_HEALTHCHECK_RETENTION_DAYS` | Health-check retention | `30` |
 | `DATABASE_MAINTENANCE_INTERVAL_HOURS` | Retention sweep cadence | `6` |
@@ -144,7 +147,7 @@ These apply only when the matching Settings value is empty **and** no
 ## Example Compose snippet
 
 Operational wiring only — for a full Settings-via-ENV stack see the
-[headless Compose example](headless.md#fully-hydrated-compose-example).
+[headless Compose example](/configuration/headless/#fully-hydrated-compose-example).
 
 ```yaml
 environment:
@@ -156,6 +159,6 @@ environment:
   TRUSTED_INTERNAL_HOSTS: "prowlarr"
 ```
 
-!!! danger "Security"
-
-    Never enable `DISABLE_FRONTEND_AUTH` or `DISABLE_WEBDAV_AUTH` on a network-exposed instance. Prefer TLS + strong WebDAV passwords + `SECURE_COOKIES=true`.
+:::danger[Security]
+Never enable `DISABLE_FRONTEND_AUTH` or `DISABLE_WEBDAV_AUTH` on a network-exposed instance. Prefer TLS + strong WebDAV passwords + `SECURE_COOKIES=true`.
+:::

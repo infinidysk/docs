@@ -1,14 +1,15 @@
-# WebDAV
-
+---
+title: "WebDAV"
+---
 WebDAV settings contain client credentials and filesystem presentation. Tune
 playback connections, buffering, caching, and retries under
-[Streaming](streaming.md).
+[Streaming](/configuration/streaming/).
 
-!!! tip "Headless ENV"
-
-    Map config keys below to `NZBDAV_CONFIG__...` with the
-    [naming algorithm](headless.md#naming-algorithm)
-    (`webdav.pass` → `NZBDAV_CONFIG__WEBDAV__PASS`).
+:::tip[Headless ENV]
+Map config keys below to `NZBDAV_CONFIG__...` with the
+[naming algorithm](/configuration/headless/#naming-algorithm)
+(`webdav.pass` → `NZBDAV_CONFIG__WEBDAV__PASS`).
+:::
 
 ## Access
 
@@ -29,6 +30,6 @@ other applications that mount or read InfiniDysk.
 | Show hidden files | `webdav.show-hidden-files` | off | Show dot-prefixed names in Files |
 | Preview par2 files | `webdav.preview-par2-files` | off | Render PAR2 file descriptors as text in Files |
 
-[Mounting WebDAV](../guides/mounting-webdav.md) ·
-[Streaming settings](streaming.md) ·
-[WebDAV filesystem](../features/webdav-filesystem.md)
+[Mounting WebDAV](/guides/mounting-webdav/) ·
+[Streaming settings](/configuration/streaming/) ·
+[WebDAV filesystem](/features/webdav-filesystem/)

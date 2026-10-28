@@ -1,10 +1,11 @@
-# Migration paths
-
+---
+title: "Migration paths"
+---
 InfiniDysk is designed as a **drop-in upgrade** from the NZB/WebDAV streaming lineage that started with [nzbdav-dev/nzbdav](https://github.com/nzbdav-dev/nzbdav). Migrations keep your `/config` volume (SQLite settings, queue/history metadata, blobs) and swap the container image.
 
-!!! warning "Back up first"
-
-    Always snapshot the host directory mapped to `/config` before changing images. Schema migrations apply automatically on startup and some are irreversible — see [Backups and upgrades](../guides/backups-upgrades.md).
+:::caution[Back up first]
+Always snapshot the host directory mapped to `/config` before changing images. Schema migrations apply automatically on startup and some are irreversible — see [Backups and upgrades](/guides/backups-upgrades/).
+:::
 
 ## Official: nzbdav-dev/nzbdav `v0.6.4`
 
@@ -16,13 +17,13 @@ InfiniDysk is designed as a **drop-in upgrade** from the NZB/WebDAV streaming li
 4. Start the new container and wait for database maintenance / health to pass.
 5. Confirm **Settings** (Usenet, WebDAV, SABnzbd API key), then spot-check queue/history and a WebDAV playback.
 
-!!! warning "Migrating behind a reverse proxy"
+:::caution[Migrating behind a reverse proxy]
+If you access InfiniDysk through a trusted reverse proxy, enable **Trust reverse-proxy headers** <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a> under **Settings → General → Reverse proxy**, then click **Save**. The change applies without restarting.
 
-    If you access InfiniDysk through a trusted reverse proxy, enable **Trust reverse-proxy headers** [since 1.4.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0){ .nzbdav-since } under **Settings → General → Reverse proxy**, then click **Save**. The change applies without restarting.
+If you cannot sign in to change the setting, set `TRUST_PROXY=1` in the InfiniDysk container environment. In Compose, add `TRUST_PROXY: "1"` to the service's `environment` mapping, then recreate the container and retry signing in. This environment override enables proxy-header trust and locks the Settings toggle while configured; it does not save an enabled value to Settings.
 
-    If you cannot sign in to change the setting, set `TRUST_PROXY=1` in the InfiniDysk container environment. In Compose, add `TRUST_PROXY: "1"` to the service's `environment` mapping, then recreate the container and retry signing in. This environment override enables proxy-header trust and locks the Settings toggle while configured; it does not save an enabled value to Settings.
-
-    Enable this only behind a trusted proxy that sends correct `X-Forwarded-Host` and `X-Forwarded-Proto` headers. See [Reverse proxy](docker.md#reverse-proxy) for configuration details and the **Base URL** alternative.
+Enable this only behind a trusted proxy that sends correct `X-Forwarded-Host` and `X-Forwarded-Proto` headers. See [Reverse proxy](/getting-started/docker/#reverse-proxy) for configuration details and the **Base URL** alternative.
+:::
 
 *Arr download-client settings usually stay the same (host, port `3000`, API key) if networking is unchanged.
 
@@ -63,4 +64,4 @@ If something fails, restore the `/config` backup and reopen the previous image �
 
 ## Related
 
-- [Migrate from Altmount (experimental)](../guides/altmount-migration.md) [since 0.10.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0){ .nzbdav-since } · [Docker](docker.md) · [First run](first-run.md) · [Compare alternatives](../guides/compare.md) · [About](../community/about.md)
+- [Migrate from Altmount (experimental)](/guides/altmount-migration/) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a> · [Docker](/getting-started/docker/) · [First run](/getting-started/first-run/) · [Compare alternatives](/guides/compare/) · [About](/community/about/)

@@ -1,5 +1,6 @@
-# Multi-provider failover
-
+---
+title: "Multi-provider failover"
+---
 ## Goals
 
 - Survive provider outages and article misses.
@@ -13,10 +14,10 @@
 3. Mark pure backups as **Backup Only**. The Overview **Providers** card labels them **Backup**.
 4. Set **storage groups** only for true same-upstream resellers.
 5. Optional data caps + usage offsets when migrating mid-block.
-6. Run Auto-tune / benchmarks; consider [NNTP pipelining](../features/nntp-pipelining.md).
+6. Run Auto-tune / benchmarks; consider [NNTP pipelining](/features/nntp-pipelining/).
 
 ## Streaming priority
 
 Under WebDAV, **Streaming Priority** allocates bandwidth share vs queue downloads so interactive playback wins under load.
 
-[Usenet settings](../configuration/usenet.md) · [Multi-provider feature](../features/multi-provider.md)
+[Usenet settings](/configuration/usenet/) · [Multi-provider feature](/features/multi-provider/)

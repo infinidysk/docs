@@ -1,5 +1,6 @@
-# Stremio via AIOStreams
-
+---
+title: "Stremio via AIOStreams"
+---
 Stream Usenet on demand in Stremio using [AIOStreams](https://github.com/Viren070/AIOStreams). Upstream guide: [AIOStreams Usenet docs](https://docs.aiostreams.viren070.me/guides/usenet/).
 
 There are two supported setups. Choose one. Do not combine them for the same indexers.
@@ -44,9 +45,9 @@ Then in **Addons → Marketplace → Usenet → Newznab**, add each indexer (URL
 
 **Save & Install** in AIOStreams, then install the addon in Stremio.
 
-## Repairs without *Arr [since 1.2.5](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5){ .nzbdav-since }
+## Repairs without *Arr <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a>
 
-**Background Repairs** is on by default [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }: health checks, PAR2 reconstruction of recoverable gaps,
+**Background Repairs** is on by default <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>: health checks, PAR2 reconstruction of recoverable gaps,
 and limited damage tolerance run without a Library Directory or *Arr. Those are only necessary to
 replace linked library items. To auto-remove a broken unlinked item after repeated playback failures,
 set **Repair After Streaming Failures** above `0`; the default (`0`) keeps the item and marks it
@@ -60,4 +61,4 @@ set **Repair After Streaming Failures** above `0`; the default (`0`) keeps the i
 
 ## Related
 
-[Search profiles](../configuration/profiles.md) · [Indexer search](../features/indexer-search.md) · [Streaming-only use case](../use-cases/streaming-only.md) · [Watchtower](../features/watchtower.md)
+[Search profiles](/configuration/profiles/) · [Indexer search](/features/indexer-search/) · [Streaming-only use case](/use-cases/streaming-only/) · [Watchtower](/features/watchtower/)

@@ -1,22 +1,23 @@
-# SABnzbd API compatibility
-
+---
+title: "SABnzbd API compatibility"
+---
 InfiniDysk implements the SABnzbd-compatible operations used by Sonarr, Radarr, and similar download clients. It is not a complete replacement for SABnzbd's administrative API.
 
 ## Supported operations
 
 - `version`, `status`, `fullstatus`, `get_config`, and `get_cats`
-- `server_stats` and `warnings` [since 1.1.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0){ .nzbdav-since }
+- `server_stats` and `warnings` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
 - `addfile` and `addurl`
-- `queue` listing and `queue&name=delete`, `queue&name=pause`, `queue&name=resume`, `queue&name=priority`, `queue&name=move`, and `queue&name=change_cat` [since 1.1.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0){ .nzbdav-since }
-- `switch` for placing one queued job at another job's position or an absolute queue index [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
-- `pause` / `resume` (also `queue&name=pause` / `queue&name=resume`) and `speedlimit` [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }
-- `change_cat` for per-job category changes on queued items [since 1.1.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0){ .nzbdav-since }
-- `retry` for failed history re-queue (single or bulk) [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }
+- `queue` listing and `queue&name=delete`, `queue&name=pause`, `queue&name=resume`, `queue&name=priority`, `queue&name=move`, and `queue&name=change_cat` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
+- `switch` for placing one queued job at another job's position or an absolute queue index <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
+- `pause` / `resume` (also `queue&name=pause` / `queue&name=resume`) and `speedlimit` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
+- `change_cat` for per-job category changes on queued items <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
+- `retry` for failed history re-queue (single or bulk) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 - `history` listing and `history&name=delete`
 
 Queue and history filters accept both `cat` and `category`. The default category sentinel returned by `get_cats` is `*`.
 
-## Queue and history search [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
+## Queue and history search <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 Queue and history listing accept a literal, case-insensitive `search` term over
 both the job name and NZB filename. Search is not regular-expression syntax.
@@ -31,7 +32,7 @@ history also supports `completed`. Text sorting is case-insensitive. Unknown
 sort values retain the endpoint's normal order. Queue display sorting never
 changes download priority or physical queue order.
 
-## Pause, resume, and speed limit [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }
+## Pause, resume, and speed limit <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
 `mode=pause` / `mode=resume` stop and restart **new** queue dequeues. Workers already downloading finish naturally unless a per-job pause cancels them. WebDAV mounts keep serving — pause does not interrupt playback. Queue JSON reports `paused` accurately. Items added with SAB priority `-2` (Paused) are skipped until their priority changes; queue slots report `status: Paused` for those jobs.
 
@@ -53,7 +54,7 @@ shortcut for move-to-top.
 
 `mode=speedlimit` is **accepted and stored** and reflected in queue JSON (`speedlimit` / `speedlimit_abs`). Byte-accurate download throttling is **not** enforced yet — that work is tracked in [#375](https://github.com/infinidysk/infinidysk/issues/375).
 
-Queue JSON reports live throughput for in-progress jobs [since 1.1.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0){ .nzbdav-since }: per-slot `timeleft` (`H:MM:SS`, or `D:HH:MM:SS` past 24h), plus queue-level `timeleft`, `kbpersec` (KB/s), and `speed` (human units such as `1.3 M`). Queued and paused slots report `0:00:00`. `status` / `fullstatus` include `paused`, `speedlimit`, and `speedlimit_abs`; live speed stays on `mode=queue`.
+Queue JSON reports live throughput for in-progress jobs <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>: per-slot `timeleft` (`H:MM:SS`, or `D:HH:MM:SS` past 24h), plus queue-level `timeleft`, `kbpersec` (KB/s), and `speed` (human units such as `1.3 M`). Queued and paused slots report `0:00:00`. `status` / `fullstatus` include `paused`, `speedlimit`, and `speedlimit_abs`; live speed stays on `mode=queue`.
 
 ## Intentional differences
 
@@ -69,7 +70,7 @@ Queue JSON reports live throughput for in-progress jobs [since 1.1.0](https://gi
 - `server_stats` aggregates provider bandwidth from retained `ProviderHourly` rollups (plus folded lifetime totals for all-time bytes). The per-server `daily` map and article counters are bounded by the hourly retention window — pruned buckets are not reconstructed.
 - `warnings` returns recent Warning-and-above log entries from the in-memory buffer. `name=clear` is accepted for SAB client compatibility but does not clear the buffer (support packs rely on it). Use Settings → Support to collect the full warning log.
 
-## `addurl` and private / LAN hosts [since 0.8.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0){ .nzbdav-since }
+## `addurl` and private / LAN hosts <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a>
 
 `mode=addurl` fetches the NZB from the URL the download client supplies. Before each hop (including redirects), InfiniDysk rejects destinations that resolve to a non-public IP — an SSRF guard that also blocks Docker DNS / RFC1918 indexers unless allowlisted.
 
@@ -84,7 +85,7 @@ Allow destinations under **Settings → SABnzbd → Trusted local hosts** (`api.
 
 Only list hosts you control. Prefer `mode=addfile` when the client can upload the NZB itself.
 
-The same allowlist can be set with `TRUSTED_INTERNAL_HOSTS` when the UI setting is empty — [Environment variables](../configuration/environment-variables.md).
+The same allowlist can be set with `TRUSTED_INTERNAL_HOSTS` when the UI setting is empty — [Environment variables](/configuration/environment-variables/).
 
 ## Delete behavior
 
@@ -94,4 +95,4 @@ History delete accepts UUIDs, `value=all`, or `value=failed`. The admin UI can d
 
 A History row vanishing after a successful Arr import is expected SAB-client cleanup, not a missing mount. Typical triggers: the Arr's **Remove Completed** download-client option, InfiniDysk **Automatic Queue Management** rules (those send `removeFromClient=true`, independent of Remove Completed), or a WebDAV DELETE of a `/completed-symlinks/<category>/<release>` folder. Those paths remove the history row and clear `HistoryItemId`; the WebDAV files stay.
 
-[SABnzbd settings](../configuration/sabnzbd.md)
+[SABnzbd settings](/configuration/sabnzbd/)

@@ -1,5 +1,6 @@
-# Backups and upgrades
-
+---
+title: "Backups and upgrades"
+---
 ## In-app Backup & Restore
 
 **Settings → Backup & Restore** dumps SQLite databases (`db.sqlite`, `warden.db`) as `.sql` under `{CONFIG_PATH}/backups/`. Metrics history (`metrics.sqlite`) is not included and is left unchanged by a restore.
@@ -8,17 +9,17 @@
 - Download as zip; upload a previous zip/`.sql`.
 - Restore stages import, creates a pre-restore safety backup, then restarts into maintenance to swap DBs.
 
-!!! warning "Blobs are not in the SQL dump"
+:::caution[Blobs are not in the SQL dump]
+Mounted content depends on `{CONFIG_PATH}/blobs/`. Back up that directory separately if you need a full restore of WebDAV content.
+:::
 
-    Mounted content depends on `{CONFIG_PATH}/blobs/`. Back up that directory separately if you need a full restore of WebDAV content.
-
-See [Backup settings](../configuration/backup.md).
+See [Backup settings](/configuration/backup/).
 
 ## PostgreSQL main database
 
 When `DATABASE_PROVIDER=postgres`, the in-app backup includes only the local
 `warden.db`. Back up the main database with `pg_dump`; see
-[PostgreSQL](../operations/postgresql.md).
+[PostgreSQL](/operations/postgresql/).
 
 ## Config volume
 
@@ -37,9 +38,9 @@ docker compose up -d
 
 Database migrations apply automatically on startup. **Back up `/config` before upgrading across versions that include schema migrations.** Irreversible migrations appear under Breaking Changes in the changelog; routine additive migrations are noted in the release announcement instead.
 
-Coming from nzbdav-dev `v0.6.4` or a community fork? See [Migration paths](../getting-started/migration.md).
+Coming from nzbdav-dev `v0.6.4` or a community fork? See [Migration paths](/getting-started/migration/).
 
-Tags: `latest` (current stable), `lts` (trails `latest` by a few releases), `rc` (release candidate), and `dev` (unversioned tip snapshot), plus pinned version tags — see [Release channels and tags](../getting-started/index.md#release-channels-and-tags), [GitHub Releases](https://github.com/infinidysk/infinidysk/releases), and [Changelog](../community/changelog.md).
+Tags: `latest` (current stable), `lts` (trails `latest` by a few releases), `rc` (release candidate), and `dev` (unversioned tip snapshot), plus pinned version tags — see [Release channels and tags](/getting-started/#release-channels-and-tags), [GitHub Releases](https://github.com/infinidysk/infinidysk/releases), and [Changelog](/community/changelog/).
 
 ## Watchtower / Arr updates
 

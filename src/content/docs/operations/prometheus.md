@@ -1,4 +1,7 @@
-# Prometheus metrics [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
+---
+title: "Prometheus metrics"
+---
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 InfiniDysk exposes Prometheus metrics at `/metrics`. The endpoint includes standard
 .NET process/runtime metrics plus `nzbdav_` metrics for active streaming, seek
@@ -48,7 +51,7 @@ nzbdav_nntp_pool_connections{state=~"transfer_active|metadata_active"}
 nzbdav_nntp_pool_max_connections{limit=~"transfer_effective|metadata_max"}
 ```
 
-## Health-check admission [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+## Health-check admission <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 The process-wide verification gate exports a bounded `state` label for current
 admission and a bounded `limit` label for its effective connection ceiling:

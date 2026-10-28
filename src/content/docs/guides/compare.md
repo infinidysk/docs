@@ -1,8 +1,7 @@
 ---
+title: "Compare InfiniDysk to alternatives"
 description: "InfiniDysk vs NzbDAV vs AltMount vs SABnzbd/NZBGet — honest feature comparison and migration guidance for Usenet streaming."
 ---
-
-# Compare InfiniDysk to alternatives
 
 This is an honest orientation for people choosing how to get Usenet content into a media library or player. Categories evolve quickly — verify current capabilities in each project's docs before you migrate.
 
@@ -19,7 +18,7 @@ InfiniDysk is intended for **legally obtained or public domain** content only.
 | Stack | .NET + React admin UI | Go (+ built-in rclone/FUSE options) | Python / C++ download clients |
 | Best when | You want a deep ops UI, automation (Watchtower/Warden/Watchdog), STRM without FUSE, owned streaming libraries | You want a lean Go binary, built-in mount/rclone, built-in Stremio addon | You want offline PAR2 repair, portable files, and the traditional Usenet workflow |
 
-Upstream [nzbdav-dev/nzbdav](https://github.com/nzbdav-dev/nzbdav) is the project this tree forked from. InfiniDysk continues that model while owning the UsenetSharp / RapidYenc / SharpCompress stack in-tree. Treat community forks such as [Pukabyte/nzbdav](https://github.com/Pukabyte/nzbdav) and [NzbDavEx](https://github.com/qooode/nzbdavex) as siblings in the same idea-space — and see [Migration paths](../getting-started/migration.md) if you are moving an existing `/config` to this build.
+Upstream [nzbdav-dev/nzbdav](https://github.com/nzbdav-dev/nzbdav) is the project this tree forked from. InfiniDysk continues that model while owning the UsenetSharp / RapidYenc / SharpCompress stack in-tree. Treat community forks such as [Pukabyte/nzbdav](https://github.com/Pukabyte/nzbdav) and [NzbDavEx](https://github.com/qooode/nzbdavex) as siblings in the same idea-space — and see [Migration paths](/getting-started/migration/) if you are moving an existing `/config` to this build.
 
 ## Feature comparison
 
@@ -59,7 +58,7 @@ Classic **SABnzbd** still wins if you need bulletproof offline PAR2 repair and a
 
 ### Stremio / on-demand play
 
-**AltMount** documents a built-in Stremio addon with Prowlarr search. **InfiniDysk** pairs with [AIOStreams](stremio.md) and optional Newznab/Addon/JSON [search profiles](../configuration/profiles.md). Classic SAB is a poor fit for pure on-demand streaming.
+**AltMount** documents a built-in Stremio addon with Prowlarr search. **InfiniDysk** pairs with [AIOStreams](/guides/stremio/) and optional Newznab/Addon/JSON [search profiles](/configuration/profiles/). Classic SAB is a poor fit for pure on-demand streaming.
 
 ### Operators who already live in SABnzbd
 
@@ -77,8 +76,8 @@ Stay on **SABnzbd/NZBGet** until you outgrow disk or want instant play. Migratin
 
 ## Related reading
 
-- [Architecture](architecture.md) — how InfiniDysk fits *Arr and players
-- [Import strategies](import-strategies.md) — symlink vs STRM
-- [Getting started](../getting-started/index.md)
+- [Architecture](/guides/architecture/) — how InfiniDysk fits *Arr and players
+- [Import strategies](/guides/import-strategies/) — symlink vs STRM
+- [Getting started](/getting-started/)
 
 External docs: [AltMount](https://javi11.github.io/altmount/) · [SABnzbd](https://sabnzbd.org/)

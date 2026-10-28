@@ -1,4 +1,7 @@
-# PostgreSQL [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
+---
+title: "PostgreSQL"
+---
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 InfiniDysk defaults to SQLite. For deployments where concurrent metadata writers
 need a server database, the main operational database can use an externally
@@ -25,7 +28,7 @@ use `/config/db.sqlite` unchanged.
 Only the main operational store uses PostgreSQL. `metrics.sqlite`, `warden.db`,
 and `usenet-migration.db` remain in `/config`.
 
-## Database contract file [since 1.2.6](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.6){ .nzbdav-since }
+## Database contract file <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.6">since 1.2.6</a>
 
 The runtime writes a machine-readable database contract to
 `/config/db-contract.json` after every successful migration pass (startup and

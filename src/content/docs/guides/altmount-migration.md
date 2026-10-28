@@ -1,16 +1,19 @@
-# Migrate from Altmount [since 0.10.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0){ .nzbdav-since }
+---
+title: "Migrate from Altmount"
+---
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
-!!! warning "Experimental"
-
-    The AltMount migration wizard is **experimental**. Keep AltMount available until you have verified playback from InfiniDysk, back up `/config` before you start, and expect rough edges. The migration ledger (`usenet-migration.db`) is disposable and is not included in Backup & Restore.
+:::caution[Experimental]
+The AltMount migration wizard is **experimental**. Keep AltMount available until you have verified playback from InfiniDysk, back up `/config` before you start, and expect rough edges. The migration ledger (`usenet-migration.db`) is disposable and is not included in Backup & Restore.
+:::
 
 The guided migration under **Settings → System → Migration (experimental)** imports an existing Altmount library by rebuilding each release's NZB and submitting it through InfiniDysk's normal queue. It does not modify Altmount metadata or store files.
 
 Both legacy raw-protobuf metadata and Altmount v3-prefixed `.meta` formats are supported, including v3 stores. The wizard follows each file's recorded `store_ref`; **Altmount Store Root** can remap its `.nzbs/...` suffix when the library was copied from another host or mounted at a different container path. Pre-v0.3.0 (v1) releases without a store are migrated from the original NZB when it still exists on disk (including `.nzb.gz` under `.nzbs/`).
 
-!!! warning "Back up and keep Altmount data available"
-
-    Back up both applications before beginning. Mount the Altmount metadata, config, and store paths read-only when possible, and keep the old service available until migrated releases play correctly from InfiniDysk. The optional symlink step needs write access to the media library and a writable backup directory.
+:::caution[Back up and keep Altmount data available]
+Back up both applications before beginning. Mount the Altmount metadata, config, and store paths read-only when possible, and keep the old service available until migrated releases play correctly from InfiniDysk. The optional symlink step needs write access to the media library and a writable backup directory.
+:::
 
 ## Before you start
 
@@ -49,9 +52,9 @@ The single data-directory field expands as follows:
 
 Enter an absolute **container path** and select **Detect paths** when you use a custom mount. The path cannot be the container filesystem root or contain `.` or `..` navigation segments. The Store Root intentionally matches the selected data directory in Basic mode; Scan later verifies the `.nzbs/` store data referenced by the metadata.
 
-!!! note "DUMB-managed installations"
-
-    Category lists written by DUMB-managed Altmount installations are supported, including valid YAML lists whose `- name:` markers align with `categories:`. Map the complete Altmount data directory into the InfiniDysk container, then enter that container path in Basic mode.
+:::note[DUMB-managed installations]
+Category lists written by DUMB-managed Altmount installations are supported, including valid YAML lists whose `- name:` markers align with `categories:`. Map the complete Altmount data directory into the InfiniDysk container, then enter that container path in Basic mode.
+:::
 
 Use **Advanced mode** when metadata, `config.yaml`, and the store are split across mounts or do not follow the single-directory layout. It preserves the three manual path fields from the original wizard and exposes **Submit Workers** and **Max Queue Depth**. Metadata Root is required; `config.yaml` and Store Root are optional. If you omit `config.yaml`, categories can still be discovered from the store during Scan.
 
@@ -59,9 +62,9 @@ Use **Advanced mode** when metadata, `config.yaml`, and the store are split acro
 
 Create a new InfiniDysk category for migration imports, or one per media type/source category when you want separate rollback boundaries. Names such as `altmount-migration-movies` and `altmount-migration-tv` make their purpose clear. Map each included Altmount category to one of these dedicated categories, and exclude anything you do not intend to migrate.
 
-!!! warning "Do not reuse an Arr-monitored category"
-
-    Reusing a category already configured in Sonarr or Radarr is strongly discouraged. During migration, that Arr can observe and act on the wizard's queue and history entries, which may trigger imports, renames, retries, or other automation while the migration is still running. Avoiding that interference otherwise requires stopping the Arr or disabling InfiniDysk as its download client.
+:::caution[Do not reuse an Arr-monitored category]
+Reusing a category already configured in Sonarr or Radarr is strongly discouraged. During migration, that Arr can observe and act on the wizard's queue and history entries, which may trigger imports, renames, retries, or other automation while the migration is still running. Avoiding that interference otherwise requires stopping the Arr or disabling InfiniDysk as its download client.
+:::
 
 InfiniDysk places each imported release under `/content/<target-category>/<release>`. A migration-only category therefore also creates a clean rollback boundary: all content introduced by the migration is isolated beneath a known category directory. If migration imports share a production category with unrelated InfiniDysk content, there is no safe category-wide cleanup when reversing the migration.
 
@@ -135,9 +138,9 @@ A complete reversal is safest when the migration used dedicated categories conta
 6. **Refresh the applications.** Run **Refresh & Scan** in each affected Arr and refresh the media server. Confirm the restored files are present and no migrated InfiniDysk paths remain in use before resuming automation.
 7. **Remove migration bookkeeping last.** After the rollback is verified, open **Manage Migration Data** in the wizard and select **Forget all migration records**. This removes the saved migration provenance and plan but does not delete WebDAV content, SAB history, symlinks, or backup archives. Keep the archives until you are satisfied that the rollback is complete.
 
-!!! danger "Keep deletion scoped to the migration category"
-
-    Never delete `/content` itself, and never bulk-delete a category that also contains normal InfiniDysk releases. If an existing production category was reused, identify and remove the migrated release folders individually; the category no longer provides a safe rollback boundary. Deleting folders from Explore is recursive and cannot be undone by the symlink restore archive.
+:::danger[Keep deletion scoped to the migration category]
+Never delete `/content` itself, and never bulk-delete a category that also contains normal InfiniDysk releases. If an existing production category was reused, identify and remove the migrated release folders individually; the category no longer provides a safe rollback boundary. Deleting folders from Explore is recursive and cannot be undone by the symlink restore archive.
+:::
 
 Deleting the release folders does not remove their SAB history entries. After the library and content rollback is verified, you may separately remove the migration-category history entries and remove the temporary categories from InfiniDysk settings if you no longer need them.
 
@@ -153,4 +156,4 @@ Decypharr is torrent/debrid-first with its own usenet mode, so a full import pat
 
 ## Related
 
-[Migration paths](../getting-started/migration.md) · [Backups and upgrades](backups-upgrades.md) · [SABnzbd settings](../configuration/sabnzbd.md)
+[Migration paths](/getting-started/migration/) · [Backups and upgrades](/guides/backups-upgrades/) · [SABnzbd settings](/configuration/sabnzbd/)

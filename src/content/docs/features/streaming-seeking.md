@@ -1,5 +1,6 @@
-# Streaming and seeking
-
+---
+title: "Streaming and seeking"
+---
 Players issue HTTP range requests; InfiniDysk fetches the corresponding Usenet articles and serves bytes on demand.
 
 ## Performance levers
@@ -8,23 +9,23 @@ Players issue HTTP range requests; InfiniDysk fetches the corresponding Usenet a
 |------|----------|
 | Connection budget | **WebDAV → Max Download Connections**, per-stream presets, streaming priority vs queue |
 | Latency | Segment timeout/retries, article buffer size, idle connection timeout |
-| Throughput | [NNTP pipelining](nntp-pipelining.md) (queue + WebDAV toggles), provider connection counts |
+| Throughput | [NNTP pipelining](/features/nntp-pipelining/) (queue + WebDAV toggles), provider connection counts |
 | Local smoothing | Optional segment cache; rclone VFS cache for symlink mounts |
 
-Tune methodically — [First run](../getting-started/first-run.md) and speed notes in the old setup guide live under WebDAV: raise connections until speed plateaus without pegging CPU.
+Tune methodically — [First run](/getting-started/first-run/) and speed notes in the old setup guide live under WebDAV: raise connections until speed plateaus without pegging CPU.
 
 ## Playback automation
 
-[Watchdog](warden-watchdog-preflight.md) retries alternate releases when playback fails. [Preflight](warden-watchdog-preflight.md) can warm candidates ahead of a click. [Watchtower](watchtower.md) resolves list titles before you need them.
+[Watchdog](/features/warden-watchdog-preflight/) retries alternate releases when playback fails. [Preflight](/features/warden-watchdog-preflight/) can warm candidates ahead of a click. [Watchtower](/features/watchtower/) resolves list titles before you need them.
 
-## Conflicting yEnc metadata [since 1.4.2](https://github.com/infinidysk/infinidysk/releases/tag/v1.4.2){ .nzbdav-since }
+## Conflicting yEnc metadata <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.2">since 1.4.2</a>
 
 A confirmed numbered omission is different from an unproved metadata conflict.
 When sparse NZB numbering and the articles' yEnc geometry corroborate an omitted
 interior part, import preserves its missing slot so later bytes keep their offsets.
 Sparse labels alone are not enough: a complete post numbered `1,3` remains a
 two-article file when its headers describe two contiguous parts. See
-[Degraded damage tolerance](../configuration/repairs.md#degraded-damage-tolerance-since-120)
+[Degraded damage tolerance](/configuration/repairs/#degraded-damage-tolerance-since-120)
 for gap filling, repair limits, and the reimport requirement for existing mounts.
 This layout check is not a PAR2 identity proof and does not excuse conflicting
 article metadata.

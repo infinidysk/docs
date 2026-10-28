@@ -1,5 +1,6 @@
-# Logs and crash dumps
-
+---
+title: "Logs and crash dumps"
+---
 ## Container logs
 
 ```bash
@@ -11,7 +12,7 @@ When a process exits, the entrypoint logs the exit code. Values above `128` enco
 
 The admin UI also offers a live log viewer.
 
-## Stream traces [since 0.10.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0){ .nzbdav-since }
+## Stream traces <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
 Capture per-segment playback events while reproducing buffering or seek stalls:
 
@@ -23,11 +24,11 @@ Capture per-segment playback events while reproducing buffering or seek stalls:
 6. Turning tracing on again resumes a retained capture (same capacity). Use **Discard captured traces** first only when you intentionally want a fresh capture at a different size.
 7. Retained traces are released automatically an hour after tracing stops, or immediately via **Discard captured traces**. UI-enabled tracing always resets on restart, and nothing is written to disk outside the support pack.
 
-### Incomplete captures [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }
+### Incomplete captures <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
 When recorded events exceed capacity, the ring keeps only the newest events. The Support UI and banner warn when the buffer is nearly full or has overflowed. Support packs set `sections.streamTraces` to `included-truncated` and include an `OVERFLOW.txt` note with retained/overwritten counts and the retained time window. Session summaries can outlive their events — check per-session `eventsComplete` in `sessions.json`.
 
-Setting `STREAM_TRACE_EVENTS` still enables tracing from startup with no expiry, which is handy for local dev. Dump a single session with `./scripts/dump-stream-trace.sh` — see [Contributing](../community/contributing.md).
+Setting `STREAM_TRACE_EVENTS` still enables tracing from startup with no expiry, which is handy for local dev. Dump a single session with `./scripts/dump-stream-trace.sh` — see [Contributing](/community/contributing/).
 
 ## .NET crash dumps (opt-in)
 

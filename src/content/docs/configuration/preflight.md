@@ -1,12 +1,13 @@
-# Preflight
-
+---
+title: "Preflight"
+---
 Background warm-up of top search results before the user clicks.
 
-!!! tip "Headless ENV"
-
-    Map config keys below to `NZBDAV_CONFIG__...` with the
-    [naming algorithm](headless.md#naming-algorithm)
-    (`preflight.mode` → `NZBDAV_CONFIG__PREFLIGHT__MODE`).
+:::tip[Headless ENV]
+Map config keys below to `NZBDAV_CONFIG__...` with the
+[naming algorithm](/configuration/headless/#naming-algorithm)
+(`preflight.mode` → `NZBDAV_CONFIG__PREFLIGHT__MODE`).
+:::
 
 | Control | Config key | Default | Effect |
 |---------|------------|---------|--------|
@@ -15,4 +16,4 @@ Background warm-up of top search results before the user clicks.
 | Keep preflight state for (seconds) | `preflight.ttl-seconds` | `120` | Warm TTL |
 | Skip if indexer wait exceeds (seconds) | `preflight.indexer-max-wait-seconds` | `5` | Avoid queueing behind rate limits |
 
-Watchtower can also warm the same cache path for list titles — [Watchtower](watchtower.md).
+Watchtower can also warm the same cache path for list titles — [Watchtower](/configuration/watchtower/).

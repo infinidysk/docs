@@ -1,10 +1,13 @@
-# Headless environment configuration [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }
+---
+title: "Headless environment configuration"
+---
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
 Authoritative, opt-in configuration of every user-owned Settings (`ConfigItems`) value via `NZBDAV_CONFIG__...` environment variables. Designed for infrastructure-as-code / Docker Compose deployments where the Settings UI should not own those values.
 
-!!! tip "Operational vs headless"
-
-    Process wiring (`CONFIG_PATH`, `PORT`, `LOG_LEVEL`, cookies, …) and legacy Settings *fallbacks* (`WEBDAV_USER`, `MOUNT_DIR`, …) stay on the [Environment variables](environment-variables.md) page. This page covers only the new authoritative `ConfigItems` overlay.
+:::tip[Operational vs headless]
+Process wiring (`CONFIG_PATH`, `PORT`, `LOG_LEVEL`, cookies, …) and legacy Settings *fallbacks* (`WEBDAV_USER`, `MOUNT_DIR`, …) stay on the [Environment variables](/configuration/environment-variables/) page. This page covers only the new authoritative `ConfigItems` overlay.
+:::
 
 ## What is in scope
 
@@ -23,7 +26,7 @@ These remain separate persistence / operational domains — they are **not** dri
 
 ## Naming algorithm
 
-Take the Settings config key (documented on each [configuration](index.md) page), then:
+Take the Settings config key (documented on each [configuration](/configuration/) page), then:
 
 1. Replace every `-` with `_`
 2. Replace every `.` with `__`
@@ -74,20 +77,20 @@ When a key is ENV-managed:
 - Unknown `NZBDAV_CONFIG__...` names, or invalid values for keys with schema validation (booleans, integers, enums such as `repair.healthcheck-depth`, and JSON blobs), abort startup with a **single-line** error that names the variable and **never** prints its value
 - Unknown or miscased properties **inside** a structured JSON value (`usenet.providers`, `arr.instances`, `indexers.instances`, `profiles.instances`) also abort startup, reporting the JSON path of the offending property (**property names only**, never values) so a typo is not silently dropped
 - Structured values are therefore **not forward compatible**: a Compose file cannot carry a property intended for a newer image, and rolling back to an image that predates a property fails startup rather than ignoring it
-- Free-form string keys (categories, paths, import strategy labels, some mode strings) are not fully schema-checked at ENV load — use the allowed values from the matching [Settings reference](index.md) page
+- Free-form string keys (categories, paths, import strategy labels, some mode strings) are not fully schema-checked at ENV load — use the allowed values from the matching [Settings reference](/configuration/) page
 - Empty ENV values are ignored (same as omitting the variable); they do **not** clear a SQLite value
 - Changing ENV configuration requires a **container restart or recreate** (including after `.env` changes)
 - Logs list managed **key names** only (not secret values)
 
 ## Secrets
 
-!!! danger "Runtime visibility"
-
-    Even when Compose uses `${WEBDAV_PASS:?missing}` placeholders, resolved secrets are visible to the container runtime and inspection tools (`docker inspect`, orchestrator secret mounts that materialize as env, etc.). Prefer an uncommitted `.env` file or orchestrator secret injection. **Never** commit real credentials or paste resolved values into docs, issues, or logs.
+:::danger[Runtime visibility]
+Even when Compose uses `${WEBDAV_PASS:?missing}` placeholders, resolved secrets are visible to the container runtime and inspection tools (`docker inspect`, orchestrator secret mounts that materialize as env, etc.). Prefer an uncommitted `.env` file or orchestrator secret injection. **Never** commit real credentials or paste resolved values into docs, issues, or logs.
+:::
 
 Headless stacks must still set **`FRONTEND_BACKEND_API_KEY`** for frontend↔backend proxy authentication. Mirror the same value into **`NZBDAV_CONFIG__API__KEY`** so *Arr/SAB and the Settings UI agree on the download-client API key.
 
-`NZBDAV_CONFIG__WEBDAV__PASS` accepts plaintext; InfiniDysk hashes it at overlay load (same as the Settings UI). The example uses a Compose-only placeholder name `WEBDAV_PASS` — the legacy fallback variable remains **`WEBDAV_PASSWORD`** ([environment variables](environment-variables.md)). Other secrets in JSON (Usenet `Pass`, indexer / *Arr API keys, profile tokens) remain in the ENV JSON as supplied.
+`NZBDAV_CONFIG__WEBDAV__PASS` accepts plaintext; InfiniDysk hashes it at overlay load (same as the Settings UI). The example uses a Compose-only placeholder name `WEBDAV_PASS` — the legacy fallback variable remains **`WEBDAV_PASSWORD`** ([environment variables](/configuration/environment-variables/)). Other secrets in JSON (Usenet `Pass`, indexer / *Arr API keys, profile tokens) remain in the ENV JSON as supplied.
 
 ## Fully hydrated Compose example
 
@@ -179,20 +182,20 @@ services:
       - /mnt:/mnt
 ```
 
-!!! note "JSON and Compose escaping"
+:::note[JSON and Compose escaping]
+Multi-line `>-` YAML folds to a single line. Nested `${...}` inside JSON strings are expanded by Compose before the container starts.
 
-    Multi-line `>-` YAML folds to a single line. Nested `${...}` inside JSON strings are expanded by Compose before the container starts.
+Use **PascalCase** property names exactly as the Settings UI persists them (`Providers`, `Type`, `Host`, `RadarrInstances`, `Indexers`, `Profiles`, …). camelCase or misspelled keys abort startup with an error naming the JSON path of the offending property, so a typo cannot leave you with empty or partial configuration.
 
-    Use **PascalCase** property names exactly as the Settings UI persists them (`Providers`, `Type`, `Host`, `RadarrInstances`, `Indexers`, `Profiles`, …). camelCase or misspelled keys abort startup with an error naming the JSON path of the offending property, so a typo cannot leave you with empty or partial configuration.
+Provider `Type` for **Pool Connections** is `1` (`0` = Disabled, `2` = BackupAndStats, `3` = BackupOnly — see [Usenet](/configuration/usenet/)). Omit `ProviderId` in ENV JSON — InfiniDysk preserves matching SQLite ids by host/port/user, and otherwise derives one from host, port and user, so a pure ENV-only install keeps the same ids across restarts.
 
-    Provider `Type` for **Pool Connections** is `1` (`0` = Disabled, `2` = BackupAndStats, `3` = BackupOnly — see [Usenet](usenet.md)). Omit `ProviderId` in ENV JSON — InfiniDysk preserves matching SQLite ids by host/port/user, and otherwise derives one from host, port and user, so a pure ENV-only install keeps the same ids across restarts.
+Provider `MaxConnections` is the provider-wide connection ceiling. Optional
+`MaxTransferConnections` enables operation-aware budgeting and must be between `1` and
+`MaxConnections`; omit it to preserve legacy shared-pool scheduling. See
+[Usenet connection budgets](/configuration/usenet/).
 
-    Provider `MaxConnections` is the provider-wide connection ceiling. Optional
-    `MaxTransferConnections` enables operation-aware budgeting and must be between `1` and
-    `MaxConnections`; omit it to preserve legacy shared-pool scheduling. See
-    [Usenet connection budgets](usenet.md).
-
-    Passwords containing `"`, `\`, or `$` can break JSON after Compose substitution; prefer `.env` values without those characters or inject secrets outside inline JSON.
+Passwords containing `"`, `\`, or `$` can break JSON after Compose substitution; prefer `.env` values without those characters or inject secrets outside inline JSON.
+:::
 
 ### After start
 
@@ -220,7 +223,7 @@ PROFILE_TOKEN=
 
 ## Related pages
 
-- [Environment variables](environment-variables.md) — process + legacy fallbacks
-- [Docker](../getting-started/docker.md) — Compose basics
-- [First run](../getting-started/first-run.md) — admin account (still UI / out of ENV scope)
-- Feature Settings references: [Usenet](usenet.md) · [Indexers](indexers.md) · [Profiles](profiles.md) · [Queue](queue.md) · [SABnzbd](sabnzbd.md) · [Streaming](streaming.md) · [WebDAV](webdav.md) · [Preflight](preflight.md) · [Watchdog](watchdog.md) · [Watchtower](watchtower.md) · [Warden](warden.md) · [Arr Apps](arrs.md) · [Rclone](rclone.md) · [Health & repairs](repairs.md) · [Maintenance](maintenance.md) · [Backup](backup.md)
+- [Environment variables](/configuration/environment-variables/) — process + legacy fallbacks
+- [Docker](/getting-started/docker/) — Compose basics
+- [First run](/getting-started/first-run/) — admin account (still UI / out of ENV scope)
+- Feature Settings references: [Usenet](/configuration/usenet/) · [Indexers](/configuration/indexers/) · [Profiles](/configuration/profiles/) · [Queue](/configuration/queue/) · [SABnzbd](/configuration/sabnzbd/) · [Streaming](/configuration/streaming/) · [WebDAV](/configuration/webdav/) · [Preflight](/configuration/preflight/) · [Watchdog](/configuration/watchdog/) · [Watchtower](/configuration/watchtower/) · [Warden](/configuration/warden/) · [Arr Apps](/configuration/arrs/) · [Rclone](/configuration/rclone/) · [Health & repairs](/configuration/repairs/) · [Maintenance](/configuration/maintenance/) · [Backup](/configuration/backup/)

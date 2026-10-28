@@ -1,19 +1,20 @@
-# Queue
-
+---
+title: "Queue"
+---
 Queue settings control how many NZBs can wait and process at once, plus the
 provider connections available to active imports.
 
-!!! tip "Headless ENV"
-
-    Map config keys below to `NZBDAV_CONFIG__...` with the
-    [naming algorithm](headless.md#naming-algorithm)
-    (`queue.worker-count` → `NZBDAV_CONFIG__QUEUE__WORKER_COUNT`).
+:::tip[Headless ENV]
+Map config keys below to `NZBDAV_CONFIG__...` with the
+[naming algorithm](/configuration/headless/#naming-algorithm)
+(`queue.worker-count` → `NZBDAV_CONFIG__QUEUE__WORKER_COUNT`).
+:::
 
 ## Processing capacity
 
 | Control | Config key | Default | Effect |
 |---------|------------|---------|--------|
-| Concurrent Queue Downloads [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since } | `queue.worker-count` | `1` | Process 1–10 NZBs concurrently; the oldest active item is preferred |
+| Concurrent Queue Downloads <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a> | `queue.worker-count` | `1` | Process 1–10 NZBs concurrently; the oldest active item is preferred |
 | Queue Download Connections | `usenet.max-queue-connections` | blank = all | Provider connections shared by queue workers and background health checks |
 
 Adding workers does not add provider capacity. Additional workers use spare
@@ -25,14 +26,14 @@ The headless-only `usenet.max-queue-connections-preset` supports
 An explicit `usenet.max-queue-connections` value takes precedence.
 
 Playback has a separate connection budget and priority policy under
-[Streaming](streaming.md).
+[Streaming](/configuration/streaming/).
 
 ## Queue admission
 
 | Control | Config key | Default | Effect |
 |---------|------------|---------|--------|
-| Maximum queued jobs [since 0.10.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0){ .nzbdav-since } | `queue.max-items` | `0` (unlimited) | Reject new SAB submissions at this queue depth |
-| Resume threshold [since 0.10.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0){ .nzbdav-since } | `queue.resume-threshold` | `0` | Resume admission at or below this depth |
+| Maximum queued jobs <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a> | `queue.max-items` | `0` (unlimited) | Reject new SAB submissions at this queue depth |
+| Resume threshold <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a> | `queue.resume-threshold` | `0` | Resume admission at or below this depth |
 
 At the maximum, InfiniDysk returns the standard SAB-compatible
 `{"status": false, "error": "..."}` response without storing the NZB. Sonarr
@@ -44,7 +45,7 @@ The resume threshold adds hysteresis after the maximum is reached. Set it to
 submissions that replace an existing queue item remain allowed because they do
 not increase queue depth.
 
-## Download schedule [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+## Download schedule <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 | Control | Config key | Default | Effect |
 |---------|------------|---------|--------|
@@ -52,7 +53,7 @@ not increase queue depth.
 
 Empty or disabled JSON is today's unrestricted behavior. Enabled schedules need at least one window. Weekdays are `0` (Sunday) through `6` (Saturday). Minutes are half-open `[start, end)` in the host's local timezone (container `TZ`). `end` before `start` is overnight. Active imports finish if a window closes; WebDAV playback is never gated. The scheduler never writes `queue.paused` — SAB `mode=pause|resume` remains the manual override. When only the schedule is closed, SAB `queue.paused` is `true` and `pause_int` is whole seconds until the next open window. Manual pause reports `pause_int` as `0`.
 
-## Reordering [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
+## Reordering <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 Use the Queue page's up, down, or top controls to change waiting-job order.
 Controls work across page boundaries and preserve the selected job while the
@@ -64,7 +65,7 @@ Active downloads remain pinned and are never interrupted by reordering. A job
 can be promoted to the first waiting position, but cannot displace an active
 worker.
 
-## Stuck-item watchdog [since 1.1.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0){ .nzbdav-since }
+## Stuck-item watchdog <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
 
 Each active queue worker runs a progress watchdog. A worker is treated as stuck
 only when it makes no visible progress **and** fetches no segments for
@@ -82,4 +83,4 @@ release that wedges after a brief burst of progress still fails over.
 Tune the stall budget with `QUEUE_ITEM_STUCK_MINUTES` when long phases legitimately
 hold progress (large archives, full article-existence health checks).
 
-[SABnzbd settings](sabnzbd.md) · [Streaming settings](streaming.md)
+[SABnzbd settings](/configuration/sabnzbd/) · [Streaming settings](/configuration/streaming/)

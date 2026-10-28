@@ -1,0 +1,128 @@
+/* Tokens follow infinidysk-rs DESIGN.md. */
+
+:root {
+	--sl-font: 'Geist Variable', ui-sans-serif, system-ui, sans-serif;
+	--sl-font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+	--radius-sm: 3.6px;
+	--radius-md: 4.8px;
+	--radius-lg: 6px;
+	--radius-xl: 8.4px;
+
+	/* Dark */
+	--sl-color-accent-low: oklch(0.28 0.07 248);
+	--sl-color-accent: oklch(0.64 0.18 248);
+	--sl-color-accent-high: oklch(0.84 0.08 248);
+	--sl-color-white: oklch(0.97 0.003 260);
+	--sl-color-gray-1: oklch(0.92 0.004 260);
+	--sl-color-gray-2: oklch(0.82 0.01 260);
+	--sl-color-gray-3: oklch(0.68 0.015 260);
+	--sl-color-gray-4: oklch(0.45 0.015 260);
+	--sl-color-gray-5: oklch(0.28 0.013 260);
+	--sl-color-gray-6: oklch(0.195 0.013 260);
+	--sl-color-black: oklch(0.165 0.012 260);
+	--sl-color-bg-nav: oklch(0.14 0.012 260);
+	--sl-color-bg-sidebar: oklch(0.14 0.012 260);
+	--sl-color-hairline: oklch(1 0 0 / 9%);
+	--sl-color-hairline-light: oklch(1 0 0 / 9%);
+	--sl-color-hairline-shade: oklch(1 0 0 / 9%);
+
+	/* Aside hues map to DESIGN status colours: note, tip, caution, danger. */
+	--sl-color-blue-low: var(--sl-color-accent-low);
+	--sl-color-blue: var(--sl-color-accent);
+	--sl-color-blue-high: var(--sl-color-accent-high);
+	--sl-color-purple-low: oklch(0.27 0.05 145);
+	--sl-color-purple: oklch(0.7 0.16 145);
+	--sl-color-purple-high: oklch(0.86 0.09 145);
+	--sl-color-orange-low: oklch(0.29 0.05 70);
+	--sl-color-orange: oklch(0.75 0.15 70);
+	--sl-color-orange-high: oklch(0.88 0.08 70);
+	--sl-color-red-low: oklch(0.28 0.07 27);
+	--sl-color-red: oklch(0.66 0.2 27);
+	--sl-color-red-high: oklch(0.86 0.07 27);
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: oklch(0.93 0.035 248);
+	--sl-color-accent: oklch(0.52 0.19 248);
+	--sl-color-accent-high: oklch(0.38 0.14 248);
+	--sl-color-white: oklch(0.2 0.02 260);
+	--sl-color-gray-1: oklch(0.27 0.02 260);
+	--sl-color-gray-2: oklch(0.38 0.018 260);
+	--sl-color-gray-3: oklch(0.52 0.015 260);
+	--sl-color-gray-4: oklch(0.7 0.01 260);
+	--sl-color-gray-5: oklch(0.91 0.006 260);
+	--sl-color-gray-6: oklch(0.96 0.004 260);
+	--sl-color-gray-7: oklch(0.975 0.003 260);
+	--sl-color-black: oklch(0.99 0.002 260);
+	--sl-color-bg-nav: oklch(0.99 0.002 260);
+	--sl-color-bg-sidebar: oklch(0.975 0.003 260);
+	--sl-color-hairline: oklch(0.91 0.006 260);
+	--sl-color-hairline-light: oklch(0.91 0.006 260);
+	--sl-color-hairline-shade: oklch(0.91 0.006 260);
+
+	--sl-color-purple-low: oklch(0.95 0.04 145);
+	--sl-color-purple: oklch(0.58 0.16 145);
+	--sl-color-purple-high: oklch(0.4 0.11 145);
+	--sl-color-orange-low: oklch(0.96 0.04 70);
+	--sl-color-orange: oklch(0.68 0.15 70);
+	--sl-color-orange-high: oklch(0.45 0.1 70);
+	--sl-color-red-low: oklch(0.95 0.03 27);
+	--sl-color-red: oklch(0.58 0.22 27);
+	--sl-color-red-high: oklch(0.45 0.17 27);
+}
+
+.starlight-aside {
+	border: 1px solid var(--sl-color-asides-border);
+	border-radius: var(--radius-lg);
+}
+
+.sl-link-button,
+.sl-markdown-content :is(pre, table, img),
+.card,
+.sl-link-card {
+	border-radius: var(--radius-lg);
+}
+
+.sl-link-card,
+.card {
+	box-shadow: none;
+}
+
+.sl-link-card:hover {
+	background: var(--sl-color-gray-6);
+}
+
+.hero img {
+	border: 1px solid var(--sl-color-hairline);
+	border-radius: var(--radius-xl);
+}
+
+/* Version badge: links a setting or heading to the release that added it. */
+.since {
+	display: inline-flex;
+	align-items: center;
+	height: 1.25rem;
+	padding: 0 0.5rem;
+	border-radius: 999px;
+	background: var(--sl-color-gray-6);
+	color: var(--sl-color-gray-2);
+	font-family: var(--sl-font-mono);
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 1;
+	white-space: nowrap;
+	vertical-align: middle;
+	text-decoration: none;
+}
+
+.sl-markdown-content a.since:hover {
+	background: var(--sl-color-gray-5);
+	color: var(--sl-color-white);
+}
+
+.badges p {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem;
+}

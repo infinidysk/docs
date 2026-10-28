@@ -1,5 +1,6 @@
-# Multi-provider
-
+---
+title: "Multi-provider"
+---
 Add multiple NNTP accounts under **Settings → Usenet**.
 
 ## Routing
@@ -13,14 +14,14 @@ Each provider has type (pool / backup-only / disabled), SSL, connection limits, 
 
 ## Circuit breakers and storage groups
 
-Failing providers are skipped temporarily, for a cooldown that doubles on each consecutive trip up to a ceiling. Both bounds default to 60s and 5 minutes and are set with the `usenet.circuit-breaker.*` config keys. See [Usenet configuration](../configuration/usenet.md). **Storage group** labels mark resellers that share the same upstream storage — after a clean article miss or an article rejected by yEnc validation on one, siblings in the group are skipped for that request (connection errors never trigger this; rejected articles are not remembered across requests).
+Failing providers are skipped temporarily, for a cooldown that doubles on each consecutive trip up to a ceiling. Both bounds default to 60s and 5 minutes and are set with the `usenet.circuit-breaker.*` config keys. See [Usenet configuration](/configuration/usenet/). **Storage group** labels mark resellers that share the same upstream storage — after a clean article miss or an article rejected by yEnc validation on one, siblings in the group are skipped for that request (connection errors never trigger this; rejected articles are not remembered across requests).
 
-After three consecutive trips [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }, the header alert explains that missing-article checks are paused and asks you to fix or disable the provider in Usenet settings.
+After three consecutive trips <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>, the header alert explains that missing-article checks are paused and asks you to fix or disable the provider in Usenet settings.
 
-Across requests, a bounded TTL **article-miss negative cache** [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since } remembers definitive misses per provider or storage group so streaming retries are not spent re-probing known-missing articles. Tune TTL and max entries under **Settings → Usenet → Global settings**.
+Across requests, a bounded TTL **article-miss negative cache** <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a> remembers definitive misses per provider or storage group so streaming retries are not spent re-probing known-missing articles. Tune TTL and max entries under **Settings → Usenet → Global settings**.
 
 Only group providers that truly share storage and retention policy.
 
 ## Related
 
-[Usenet settings](../configuration/usenet.md) · [Multi-provider use case](../use-cases/multi-provider-failover.md)
+[Usenet settings](/configuration/usenet/) · [Multi-provider use case](/use-cases/multi-provider-failover/)

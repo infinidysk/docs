@@ -1,11 +1,12 @@
-# Database corruption
-
+---
+title: "Database corruption"
+---
 SQLite reports corruption as `SQLite Error 11: 'database disk image is malformed'`. It means the database file itself (`/config/db.sqlite`) is damaged — it is **not** a bug in a specific query, and retrying never heals it.
 
 ## Symptoms
 
 - Repeating log lines such as `Error processing blob cleanup queue. Reason: Database file is corrupt ...` from background services.
-- A startup integrity check failure [since 1.1.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0){ .nzbdav-since }: after migrations, the backend runs `PRAGMA quick_check` on the main database and logs an Error with recovery guidance when the file is damaged. Startup deliberately continues so you can still reach the restore UI.
+- A startup integrity check failure <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>: after migrations, the backend runs `PRAGMA quick_check` on the main database and logs an Error with recovery guidance when the file is damaged. Startup deliberately continues so you can still reach the restore UI.
 - WebDAV listings, queue, or history views failing or returning stale data.
 
 ## Causes
@@ -22,7 +23,7 @@ InfiniDysk runs SQLite in WAL mode with `synchronous=NORMAL`, which mitigates bu
 
 ### Restore from a backup (recommended)
 
-Use the guided restore under **Settings → Backup & Restore** — see [Backup and restore](../configuration/backup.md). Restore replaces settings, queue, history, and WebDAV tree metadata, creates a pre-restore safety backup, and restarts into maintenance. Blobs under `/config/blobs/` are not part of SQL dumps; missing blobs are reported in the UI after the restore.
+Use the guided restore under **Settings → Backup & Restore** — see [Backup and restore](/configuration/backup/). Restore replaces settings, queue, history, and WebDAV tree metadata, creates a pre-restore safety backup, and restarts into maintenance. Blobs under `/config/blobs/` are not part of SQL dumps; missing blobs are reported in the UI after the restore.
 
 If you do not have a backup, enable **daily backups** after recovering so the next incident is a one-click restore.
 

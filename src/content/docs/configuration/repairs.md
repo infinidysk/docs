@@ -1,34 +1,35 @@
-# Repairs
-
+---
+title: "Repairs"
+---
 Background health monitoring, PAR2 reconstruction, and replacement of unhealthy library items.
 
-!!! tip "Headless ENV"
-
-    Map config keys below to `NZBDAV_CONFIG__...` with the
-    [naming algorithm](headless.md#naming-algorithm)
-    (`repair.enable` → `NZBDAV_CONFIG__REPAIR__ENABLE`). A Library Directory and configured
-    [*Arr instances](arrs.md) are optional; they are only needed to replace linked library items.
+:::tip[Headless ENV]
+Map config keys below to `NZBDAV_CONFIG__...` with the
+[naming algorithm](/configuration/headless/#naming-algorithm)
+(`repair.enable` → `NZBDAV_CONFIG__REPAIR__ENABLE`). A Library Directory and configured
+[*Arr instances](/configuration/arrs/) are optional; they are only needed to replace linked library items.
+:::
 
 | Control | Config key | Default | Effect |
 |---------|------------|---------|--------|
-| Enable Background Repairs [since 1.2.5](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5){ .nzbdav-since } | `repair.enable` | on [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since } | Enables health checks, PAR2, and damage tolerance; Library Directory + *Arr are only needed for linked-item replacement. An explicit `false` still disables them. Existing installs that already saved `false` stay off. |
-| Health Check Concurrency [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since } | `repair.healthcheck-concurrency` | `50` | Aggregate NNTP verification-connection limit shared by background checks and queue article validation (1–200, capped by pooled provider capacity) |
-| Health Check Workers [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since } | `repair.healthcheck-workers` | `1` | Library files checked at once (1–8). All workers share Health Check Concurrency; this setting never multiplies it |
-| Health Check Depth | `repair.healthcheck-depth` | `standard` | `quick` [since 1.4.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0){ .nzbdav-since } / standard / enhanced / deep / complete. `quick` STATs only ~two dozen head/tail/stride segments per file regardless of size (bypassing the 8000-segment floor and the size/age curve) — a fast first pass that reliably tells an intact posting from one lost to takedown or retention. Small files may be fully sampled, but `quick` checks never run damage classification; pair them with a periodic deeper pass. |
-| Check older releases less thoroughly [since 0.8.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0){ .nzbdav-since } | `repair.healthcheck-aging` | off | Aging taper |
+| Enable Background Repairs <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a> | `repair.enable` | on <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | Enables health checks, PAR2, and damage tolerance; Library Directory + *Arr are only needed for linked-item replacement. An explicit `false` still disables them. Existing installs that already saved `false` stay off. |
+| Health Check Concurrency <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a> | `repair.healthcheck-concurrency` | `50` | Aggregate NNTP verification-connection limit shared by background checks and queue article validation (1–200, capped by pooled provider capacity) |
+| Health Check Workers <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `repair.healthcheck-workers` | `1` | Library files checked at once (1–8). All workers share Health Check Concurrency; this setting never multiplies it |
+| Health Check Depth | `repair.healthcheck-depth` | `standard` | `quick` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a> / standard / enhanced / deep / complete. `quick` STATs only ~two dozen head/tail/stride segments per file regardless of size (bypassing the 8000-segment floor and the size/age curve) — a fast first pass that reliably tells an intact posting from one lost to takedown or retention. Small files may be fully sampled, but `quick` checks never run damage classification; pair them with a periodic deeper pass. |
+| Check older releases less thoroughly <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> | `repair.healthcheck-aging` | off | Aging taper |
 | Repair After Streaming Failures | `repair.auto-remove-after-failures` | `0` | Consecutive streaming failures before urgent repair; `0` = qualify for urgent repair immediately (removal and replacement still wait for the repair schedule and **Defer Removal After Reads**). Failures below the threshold are counted in memory and reset when InfiniDysk restarts. Once the threshold is reached and the urgent repair is scheduled, that qualification is stored with the file and survives restarts; raising the threshold afterwards defers the repair again until the new threshold is met. |
-| Defer Removal After Reads (minutes) [since 1.6.3](https://github.com/infinidysk/infinidysk/releases/tag/v1.6.3){ .nzbdav-since } | `repair.read-hold-minutes` | `15` | Minutes (`0`–`1440`) a file stays available after its last observed read before automatic removal or replacement. `0` turns the hold off. See [Recent-read hold](#recent-read-hold). |
+| Defer Removal After Reads (minutes) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.6.3">since 1.6.3</a> | `repair.read-hold-minutes` | `15` | Minutes (`0`–`1440`) a file stays available after its last observed read before automatic removal or replacement. `0` turns the hold off. See [Recent-read hold](#recent-read-hold). |
 | Auto-remove unlinked files only | `repair.auto-remove-unlinked-only` | on | At the threshold, linked items are removed and blocklisted through *Arr instead of force-deleted |
-| Degraded damage tolerance [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since } | `repair.degraded-tolerance-enabled` | on | Keep slightly damaged videos playable instead of replacing the release. When off, every missing or corrupt article found during playback counts toward repair |
-| Track corrupt articles during playback [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since } | `repair.corruption-tracking-enabled` | on | Record streaming-confirmed corrupt articles, include them in health classification, and skip the retry storm on later reads. Only controls persistence; corruption still counts toward repair when tolerance is off |
+| Degraded damage tolerance <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a> | `repair.degraded-tolerance-enabled` | on | Keep slightly damaged videos playable instead of replacing the release. When off, every missing or corrupt article found during playback counts toward repair |
+| Track corrupt articles during playback <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a> | `repair.corruption-tracking-enabled` | on | Record streaming-confirmed corrupt articles, include them in health classification, and skip the retry storm on later reads. Only controls persistence; corruption still counts toward repair when tolerance is off |
 | Max consecutive missing segments | `repair.degraded-max-consecutive-missing` | `2` | Longest tolerable run of adjacent holes (1–2) |
 | Max total missing segments | `repair.degraded-max-total-missing` | `5` | Total tolerable holes per file (1–1000) |
 | Max missing data (% of file) | `repair.degraded-max-missing-byte-percent` | `1.0` | Tolerable hole share of file bytes (0.01–50) |
-| Health-check schedule [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since } | `repair.healthcheck-schedule` | empty (always on) | JSON weekly windows for **new** routine health checks |
-| Repair quiet hours [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since } | `repair.action-schedule` | empty (always on) | JSON weekly windows for starting repairs |
+| Health-check schedule <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `repair.healthcheck-schedule` | empty (always on) | JSON weekly windows for **new** routine health checks |
+| Repair quiet hours <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `repair.action-schedule` | empty (always on) | JSON weekly windows for starting repairs |
 | Library Directory | `media.library-dir` | empty | Organized library root in the container — parent of your Arr root folders. Never the rclone mount or `/completed-symlinks` |
 
-## PAR2 gap repair [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
+## PAR2 gap repair <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 PAR2 can reconstruct missing or corrupt Usenet articles using parity in the retained NZB.
 It does not require a Library Directory or an *Arr instance; that prerequisite was removed
@@ -67,7 +68,7 @@ identity proofs to the first few slice positions. A recovery set must contain 1-
 slices. An unsupported layout, ambiguous identity, exhausted limit, or insufficient parity
 produces a clear infeasible reason rather than guessed bytes.
 
-## RAR and multipart repair [since 1.4.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0){ .nzbdav-since }
+## RAR and multipart repair <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a>
 
 Targeted repair supports current multipart items and legacy RAR items, including encrypted
 posted volumes and unresolved lazy parts when their article geometry can be established.
@@ -86,12 +87,12 @@ sets are not combined. Multipart repair requires specific article IDs; full-file
 and durable multipart degraded/corrupt indexes are not supported. Existing plain-NZB damage
 tracking and verify-all behavior remain available.
 
-See [PAR2 storage and diagnostics](../operations/health-repairs.md#par2-storage-and-diagnostics)
+See [PAR2 storage and diagnostics](/operations/health-repairs/#par2-storage-and-diagnostics)
 for restart persistence, storage cleanup, and progress reporting.
 
-## Health-check and repair windows [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+## Health-check and repair windows <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
-Same JSON shape as [download schedule](queue.md#download-schedule-since-130): `{ "Enabled": true, "Windows": [{ "Days": [1,2,3,4,5], "StartMinute": 0, "EndMinute": 420 }] }`. Empty or disabled is unrestricted. Times use the host local timezone (container `TZ`).
+Same JSON shape as [download schedule](/configuration/queue/#download-schedule-since-130): `{ "Enabled": true, "Windows": [{ "Days": [1,2,3,4,5], "StartMinute": 0, "EndMinute": 420 }] }`. Empty or disabled is unrestricted. Times use the host local timezone (container `TZ`).
 
 Work already in progress finishes if a window closes. Closed health-check windows still admit urgent and already-deferred repairs. Closed repair windows defer confirmed damage until the next open repair window instead of reconstructing or replacing immediately. **Run all checks now** on the Health page opens checks (not repairs) until the due queue is empty, then the schedule resumes. Playback is never gated.
 
@@ -115,18 +116,18 @@ inside each file check is otherwise unchanged.
 Provider auto-tune pauses new health checks and waits for active checks to release their verification
 connections before opening benchmark connections, so parallel workers cannot skew the measured limit.
 
-## Re-check after provider changes [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
+## Re-check after provider changes <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 Changing Usenet providers can affect which library files are available. After saving provider changes,
 InfiniDysk offers to queue your library for a health re-check. This requires Background Repairs to be
 enabled; urgent repairs already queued from streaming failures keep their priority.
 
-!!! note "Streaming failure repair requires Background Repairs"
-
-    **Repair After Streaming Failures** (`repair.auto-remove-after-failures`) only takes effect when
-    **Enable Background Repairs** (`repair.enable`) is on. A Library Directory and \*Arr are only
-    needed to replace linked library items. Without them, PAR2 can still reconstruct the file and
-    threshold-based removal can delete unlinked items.
+:::note[Streaming failure repair requires Background Repairs]
+**Repair After Streaming Failures** (`repair.auto-remove-after-failures`) only takes effect when
+**Enable Background Repairs** (`repair.enable`) is on. A Library Directory and \*Arr are only
+needed to replace linked library items. Without them, PAR2 can still reconstruct the file and
+threshold-based removal can delete unlinked items.
+:::
 
 `repair.auto-remove-after-failures` applies only to streaming-triggered failures such as missing
 articles, corrupt archives, and seeks that find missing or truncated article data. With a value
@@ -148,7 +149,7 @@ Successful full-file playback and a successful background health check reset the
 count. The count resets when InfiniDysk restarts, so it is intentionally not a durable replacement for
 health checks.
 
-### Recent-read hold [since 1.6.3](https://github.com/infinidysk/infinidysk/releases/tag/v1.6.3){ .nzbdav-since } { #recent-read-hold }
+### Recent-read hold <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.6.3">since 1.6.3</a> {#recent-read-hold}
 
 **Defer Removal After Reads** (`repair.read-hold-minutes`, default `15`, range `0`–`1440`) keeps a
 file available while it is being played. Before any automatic removal or replacement, InfiniDysk
@@ -173,15 +174,15 @@ Limits:
   current deadline; lowering or disabling the hold does not shorten it.
 - The hold cannot retract a \*Arr removal that already started before a new read arrived.
 
-## Degraded damage tolerance [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
+## Degraded damage tolerance <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 Degraded damage tolerance is on by default. With it off, playback still zero-fills short gaps
 so a stream is not cut on the first missing article, but every confirmed missing or corrupt
 article counts toward **Repair After Streaming Failures** (`repair.auto-remove-after-failures`)
-and starts an urgent repair at the threshold [since 1.6.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.6.0){ .nzbdav-since }.
+and starts an urgent repair at the threshold <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.6.0">since 1.6.0</a>.
 The same applies to files without a playback damage budget even while tolerance is on.
 
-### Zero-tolerance replacement [since 1.6.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.6.0){ .nzbdav-since }
+### Zero-tolerance replacement <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.6.0">since 1.6.0</a>
 
 To replace a release as soon as one article is confirmed missing or corrupt:
 
@@ -252,11 +253,11 @@ Degraded verdicts compose with the rest of the repair pipeline:
   reconstruction is attempted with the full hole list before any verdict; success records a
   healthy, PAR2-repaired result and clears any recorded holes.
 - **Rechecks can escalate or recover.** Degraded files stay on the normal
-  [age-doubling recheck schedule](../operations/health-repairs.md#when-files-are-rechecked).
+  [age-doubling recheck schedule](/operations/health-repairs/#when-files-are-rechecked).
   If damage grows past a cap, the next check fails the file and repair
   proceeds; if the missing articles reappear (provider-side restoration), the record clears
   itself and the file returns to healthy.
-- **Playback enforces the same caps.** [since 1.6.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.6.0){ .nzbdav-since }
+- **Playback enforces the same caps.** <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.6.0">since 1.6.0</a>
   While tolerance is on, playback of an eligible file pads over confirmed holes only while the
   recorded holes (including tracked corrupt articles) plus those found during the current
   stream stay within all three caps. A run of adjacent holes may reach the consecutive cap.
@@ -267,10 +268,10 @@ Degraded verdicts compose with the rest of the repair pipeline:
   before segment byte ranges were recorded, keep the fixed limit of two padded segments in a
   row, and each confirmed hole counts toward repair.
 
-Degraded files appear on the [Health page](../operations/health-repairs.md) with a warning
+Degraded files appear on the [Health page](/operations/health-repairs/) with a warning
 badge, a dedicated history filter, and an overview stat card.
 
-## Realtime corruption detection [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
+## Realtime corruption detection <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 A corrupt-but-present article (right size, STAT succeeds, yEnc CRC fails) used to play as
 silent garbage. InfiniDysk now detects that on the playback path:
@@ -296,9 +297,9 @@ Disable **Track corrupt articles during playback** if you need the previous retr
 behavior. Corruption still counts toward repair whenever Background Repairs is on and no
 damage budget applies.
 
-[Health and repairs](../operations/health-repairs.md)
+[Health and repairs](/operations/health-repairs/)
 
-## Replacement-loop protection [since 0.9.4](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.4){ .nzbdav-since }
+## Replacement-loop protection <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.4">since 0.9.4</a>
 
 When *Arr imports a download instantly (for example over an rclone mount), a broken release can
 import successfully before any health check runs. Marking an already-imported download failed does
@@ -308,7 +309,7 @@ break that cycle:
 - **Fail re-grabs before import.** Releases rejected by repair are remembered: when repair removes
   a broken download and marks it failed, the release's article ids are recorded (as are articles
   found definitively missing while downloading or streaming). Successful **Remove, Blocklist** and
-  **Remove, Blocklist, Search** [queue-rule actions](arrs.md) record
+  **Remove, Blocklist, Search** [queue-rule actions](/configuration/arrs/) record
   the same in-process evidence. A re-grabbed NZB containing any remembered article fails while
   still in the download queue, before import or Usenet article requests. The bounded memory resets
   on restart and entries can be evicted; a loop that survives a restart is stopped again after one
@@ -318,4 +319,4 @@ break that cycle:
   repairs for that file are deferred for a day and surfaced as **Action needed** in the health
   screen instead of triggering another replacement.
 
-[Health and repairs](../operations/health-repairs.md)
+[Health and repairs](/operations/health-repairs/)

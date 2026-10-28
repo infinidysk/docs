@@ -1,6 +1,7 @@
-# Health and repairs
-
-## Attention summary [since 1.4.3](https://github.com/infinidysk/infinidysk/releases/tag/v1.4.3){ .nzbdav-since }
+---
+title: "Health and repairs"
+---
+## Attention summary <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.3">since 1.4.3</a>
 
 **Overview → Needs attention** highlights files requiring action, open or recovering provider
 circuits, and degraded or offline Arr integrations. Expand an Arr warning to identify the
@@ -15,8 +16,8 @@ The **Health** page puts action-needed files first. Expand **Diagnostic details*
 the complete recovery message with touch, mouse, or keyboard. Small nonzero outcome
 percentages are preserved instead of rounding down to zero.
 
-For file-scoped administration, [Explorer administration](../features/webdav-filesystem.md#explorer-administration-since-150)
-adds **Recheck** and **Search in Arr** [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }.
+For file-scoped administration, [Explorer administration](/features/webdav-filesystem/#explorer-administration-since-150)
+adds **Recheck** and **Search in Arr** <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>.
 A row recheck preserves observed health and respects the existing work windows and worker
 admission rules. Search validates current library ownership and requests a non-destructive
 Arr search; it does not remove or blocklist the current file or guarantee a replacement.
@@ -26,14 +27,14 @@ Arr search; it does not remove or blocklist the current file or guarantee a repl
 **Settings → Repairs** monitors mounted media, reconstructs missing segments from PAR2 parity, and
 can trigger *Arr replacements for unhealthy linked library items.
 
-**Enable Background Repairs** is on by default [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }. Turn it off to stop
+**Enable Background Repairs** is on by default <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>. Turn it off to stop
 background health checks, PAR2 work, and limited damage-tolerance handling. To automatically
 replace linked library items, also configure:
 
 - **Library Directory** visible inside the container — the organized library root (parent of Arr root folders), never the rclone mount or `/completed-symlinks`
-- At least one configured [Radarr/Sonarr instance](../configuration/arrs.md)
+- At least one configured [Radarr/Sonarr instance](/configuration/arrs/)
 
-Tune concurrency, health-check depth, aging [since 0.8.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0){ .nzbdav-since }, and streaming-failure thresholds — [Repairs settings](../configuration/repairs.md).
+Tune concurrency, health-check depth, aging <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a>, and streaming-failure thresholds — [Repairs settings](/configuration/repairs/).
 
 For streaming-triggered failures, **Repair After Streaming Failures** can require consecutive
 failures before InfiniDysk starts a repair or asks *Arr to find a replacement. A successful full-file
@@ -43,17 +44,17 @@ when InfiniDysk restarts.
 Corrupt-but-present articles (CRC failures on otherwise complete files) now follow the same
 escalation path when playback breaks. Confirmed corrupt segments are recorded and included in
 full-coverage health classification so those files are not reported healthy — see
-[Realtime corruption detection](../configuration/repairs.md).
+[Realtime corruption detection](/configuration/repairs/).
 
 A segment counts as missing only when every eligible provider source is conclusively unavailable;
 cached negative results and storage-group sibling evidence can establish that without probing every
 provider. If a walk would otherwise conclude that the segment is missing but any provider timed out,
 failed to connect, or was skipped because its circuit breaker was open
-[since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }, the
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>, the
 file is marked *Action needed* and rechecked later instead of being repaired or blocklisted. A
 provider paused at its data cap does not count as unanswered.
 
-Playback follows the same rule [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }:
+Playback follows the same rule <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>:
 a WebDAV read that would have failed with `404 Not Found` returns `503 Service Unavailable` with
 `Retry-After` instead, and a gap in the middle of a file is filled for that read only. Neither case
 schedules a repair or records the segment as missing.
@@ -76,7 +77,7 @@ checked less frequently. Degraded files use this same age-based schedule.
 
 The minimum interval is **one hour**, with no maximum interval. Missing or future release
 dates use the one-hour minimum. Failed checks and repairs use separate retry rules, and
-[health-check windows](../configuration/repairs.md#health-check-and-repair-windows-since-130)
+[health-check windows](/configuration/repairs/#health-check-and-repair-windows-since-130)
 may delay when a due routine check actually runs.
 
 This schedule is independent of **Check older releases less thoroughly**, which changes
@@ -123,7 +124,7 @@ row merely because a playback report was queued. The support pack's `par2Repair`
 the active path/phase, consumed bytes, estimated memory, retained source window, recent jobs,
 and admission state (limit 1, active owner, waiters, cumulative/latest wait).
 
-Admission metrics [since 1.4.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0){ .nzbdav-since }:
+Admission metrics <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a>:
 
 - `nzbdav_par2_repair_active`: admitted owners, 0 or 1.
 - `nzbdav_par2_repair_admission_waiters`: owners waiting to start; callers sharing the same work do not add waiters.
@@ -138,14 +139,14 @@ Existing PAR2 metrics:
 
 Repair byte accounting measures decoded bytes consumed by repair, not all NNTP wire traffic
 or process memory. Source passes are sequential and may reread healthy data to keep memory
-bounded. See [PAR2 settings](../configuration/repairs.md#par2-gap-repair-since-120) for limits.
+bounded. See [PAR2 settings](/configuration/repairs/#par2-gap-repair-since-120) for limits.
 
 Known unavailable/corrupt parity and infeasible repairs produce single-line warnings with a
 reason. Missing or unreadable local streaming payloads instead require operator action and
 a daily, eventually weekly, health recheck. They do not trigger *Arr deletion/blocklisting
 or a provider-repair cooldown. Restore matching metadata/blobs before retrying.
 
-## Repair history [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
+## Repair history <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 The **Health** page lists items that Background Repairs automatically deleted or repaired, with the
 time and reason for the action. New rows retain the original NZB filename and release name so you
@@ -158,7 +159,7 @@ through the API does not add a repair-history row.
 History does not include **Action needed** records, including under the **Degraded** filter.
 These represent unresolved work rather than completed actions.
 
-## Needs attention [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }
+## Needs attention <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>
 
 The **Needs attention** section appears above the health schedule. It shows the latest unresolved
 check for each existing file, with its NZB identity and failure reason. Resolved failures, deleted
@@ -172,7 +173,7 @@ repair. Files leave this list while queued and return if the next check still re
 Re-checks pause while downloads are processing and follow the configured health-check and repair
 schedules. Existing check records remain stored until health-check retention removes them.
 
-### Manual resolution [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }
+### Manual resolution <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>
 
 Each attention row also offers **Search indexers** and **Delete file** to users with write access,
 even when Background Repairs is disabled:
@@ -192,9 +193,9 @@ missing link. Verify the movie/episode's current file in Arr before deleting the
 
 ## Manual checks
 
-Use the Health UI / repairs flows in the app to inspect failures. Known transport issues should appear as clear warnings in logs rather than opaque crashes — see [Logs](logs-crash-dumps.md).
+Use the Health UI / repairs flows in the app to inspect failures. Known transport issues should appear as clear warnings in logs rather than opaque crashes — see [Logs](/operations/logs-crash-dumps/).
 
-## Re-running health checks [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+## Re-running health checks <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 **Settings → Maintenance → Re-run Library Health Checks** queues a fresh background health-check
 pass over every video, audio, and archive file in the library, including files still present in

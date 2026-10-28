@@ -1,12 +1,13 @@
-# Watchtower (settings)
+---
+title: "Watchtower (settings)"
+---
+Pre-resolve list titles to healthy releases. Feature overview: [Watchtower](/features/watchtower/).
 
-Pre-resolve list titles to healthy releases. Feature overview: [Watchtower](../features/watchtower.md).
-
-!!! tip "Headless ENV"
-
-    Map config keys below to `NZBDAV_CONFIG__...` with the
-    [naming algorithm](headless.md#naming-algorithm)
-    (`watchtower.enabled` → `NZBDAV_CONFIG__WATCHTOWER__ENABLED`).
+:::tip[Headless ENV]
+Map config keys below to `NZBDAV_CONFIG__...` with the
+[naming algorithm](/configuration/headless/#naming-algorithm)
+(`watchtower.enabled` → `NZBDAV_CONFIG__WATCHTOWER__ENABLED`).
+:::
 
 | Control | Config key | Default | Effect |
 |---------|------------|---------|--------|
@@ -34,7 +35,7 @@ Pre-resolve list titles to healthy releases. Feature overview: [Watchtower](../f
 | Max re-check interval | `watchtower.keepfresh-max-seconds` | 7d | Backoff cap |
 | Dead-item retry | `watchtower.unavailable-retry-seconds` | 6h | Re-search cadence |
 | List sync interval | `watchtower.sync-interval-seconds` | 1h | Remote list refresh |
-| Max list-source response (bytes) [since 1.2.8](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.8){ .nzbdav-since } | `watchtower.list-source-max-response-bytes` | `8388608` (8 MiB) | Reject oversized Stremio/list bodies before parse; counts HTTP-client bytes (no automatic decompression). Max `16777216` (16 MiB). |
+| Max list-source response (bytes) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.8">since 1.2.8</a> | `watchtower.list-source-max-response-bytes` | `8388608` (8 MiB) | Reject oversized Stremio/list bodies before parse; counts HTTP-client bytes (no automatic decompression). Max `16777216` (16 MiB). |
 | Verbose activity logging | `watchtower.verbose-logging` | off | Chatty Logs output |
 
 `watchtower.resolve-concurrency` (default `3`) exists in the backend but is not exposed in this Settings tab.

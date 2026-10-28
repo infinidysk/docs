@@ -1,8 +1,7 @@
 ---
+title: "Architecture"
 description: "How InfiniDysk streams media from Usenet providers through a virtual WebDAV filesystem without downloading files to disk."
 ---
-
-# Architecture
 
 InfiniDysk sits between download clients / search and Usenet providers, exposing a virtual filesystem and SAB-compatible API.
 
@@ -49,7 +48,7 @@ flowchart TB
 
 There are two Stremio paths:
 
-**Direct Search Profile preset** [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+**Direct Search Profile preset** <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 1. InfiniDysk searches the profile's Newznab indexers and returns playable stream objects.
 2. AIOStreams or Stremio lists those streams. The dedicated InfiniDysk preset can report the final order back to `/failover_order`.
@@ -76,4 +75,4 @@ Persistent state lives under `/config` (DB, settings, blobs, backups).
 
 ## Related
 
-[Import strategies](import-strategies.md) · [Features overview](../features/index.md) · [Environment variables](../configuration/environment-variables.md) · [Code boundaries](https://github.com/infinidysk/infinidysk/blob/main/docs/decisions/0001-code-boundaries.md)
+[Import strategies](/guides/import-strategies/) · [Features overview](/features/) · [Environment variables](/configuration/environment-variables/) · [Code boundaries](https://github.com/infinidysk/infinidysk/blob/main/docs/decisions/0001-code-boundaries.md)

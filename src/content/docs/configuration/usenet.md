@@ -1,12 +1,13 @@
-# Usenet
-
+---
+title: "Usenet"
+---
 Configure NNTP providers, connection budgets, cascade vs pooled routing, and queue-side NNTP pipelining.
 
-!!! tip "Headless ENV"
-
-    Each config key below maps to `NZBDAV_CONFIG__...` via the
-    [naming algorithm](headless.md#naming-algorithm) (for example
-    `usenet.providers` → `NZBDAV_CONFIG__USENET__PROVIDERS`).
+:::tip[Headless ENV]
+Each config key below maps to `NZBDAV_CONFIG__...` via the
+[naming algorithm](/configuration/headless/#naming-algorithm) (for example
+`usenet.providers` → `NZBDAV_CONFIG__USENET__PROVIDERS`).
+:::
 
 ## Providers
 
@@ -31,7 +32,7 @@ Add one or more accounts. Each provider supports:
 
 Persisted as `usenet.providers` JSON.
 
-## Data-cap accounting [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }
+## Data-cap accounting <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>
 
 Data-cap usage counts the raw NNTP `BODY` payload received from the provider,
 including yEnc headers, trailers, and bodies drained after an early close or
@@ -44,11 +45,11 @@ traffic received after that uses exact accounting.
 Back up `/config` before upgrading; the metrics migration applies automatically
 at startup.
 
-!!! warning "Cleartext"
+:::caution[Cleartext]
+Disabling SSL stores/sends credentials in cleartext on the wire — only for trusted networks.
+:::
 
-    Disabling SSL stores/sends credentials in cleartext on the wire — only for trusted networks.
-
-## Connection budgets [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+## Connection budgets <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 **Provider Connection Limit** is the absolute number of connections InfiniDysk may use for the
 provider account. Set it no higher than the provider allows, or lower when the account is shared
@@ -83,12 +84,12 @@ transfers begin waiting, currently running metadata commands finish normally; th
 normally return to transfers first. Under a sustained transfer backlog, one metadata waiter is
 admitted after at most eight consecutive transfer grants so health and control work cannot starve.
 
-!!! info "Existing providers stay in legacy mode"
-
-    A blank `MaxTransferConnections` value preserves the original shared-pool admission scheduling.
-    Merely opening or saving an existing provider does not enable split budgeting. Enter **Transfer
-    Connections** or apply an Auto-tune recommendation to opt in. Auto-tune's provider ceiling and
-    the busy-pool keep-alive safeguards below apply in both scheduling modes.
+:::note[Existing providers stay in legacy mode]
+A blank `MaxTransferConnections` value preserves the original shared-pool admission scheduling.
+Merely opening or saving an existing provider does not enable split budgeting. Enter **Transfer
+Connections** or apply an Auto-tune recommendation to opt in. Auto-tune's provider ceiling and
+the busy-pool keep-alive safeguards below apply in both scheduling modes.
+:::
 
 Auto-tune finds the transfer-throughput knee and applies its recommendation only to **Transfer
 Connections**. It progressively adds connection levels, including above 50 when configured, and
@@ -104,7 +105,7 @@ holds the provider at the connections it already has open, keeps them serving, r
 after a short fixed delay, and widens the limit by one connection every 5 seconds until the
 provider refuses again or the configured limit is reached.
 
-## Invalid provider certificates [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }
+## Invalid provider certificates <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
 Leave **Skip TLS certificate verification** disabled unless a trusted provider has
 a certificate it cannot correct. It keeps the NNTP connection encrypted but
@@ -122,9 +123,9 @@ a man-in-the-middle attacker to impersonate the provider and read credentials.
 
 Legacy keys `usenet.pipelining.enabled` / `usenet.pipelining.depth` remain honored; env vars use `NZBDAV_CONFIG__USENET__QUEUE_PIPELINING__*` for the new names.
 
-Run Auto-tune before enabling queue pipelining. WebDAV streaming batching is a **separate** toggle on [Streaming](streaming.md).
+Run Auto-tune before enabling queue pipelining. WebDAV streaming batching is a **separate** toggle on [Streaming](/configuration/streaming/).
 
-## Global download cap [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+## Global download cap <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 `usenet.bandwidth-limit-mbps` (Streaming settings) caps total live Usenet payload
 ingress from every provider, in megabits per second. Queue downloads and WebDAV
@@ -133,14 +134,14 @@ benchmark are not limited. Empty or `0` means unlimited; the value reloads
 without restart. 1 MB/s = 8 Mbit/s. The cap cannot make a latency-limited
 provider faster.
 
-See [NNTP pipelining](../features/nntp-pipelining.md) and [Multi-provider](../features/multi-provider.md).
+See [NNTP pipelining](/features/nntp-pipelining/) and [Multi-provider](/features/multi-provider/).
 
-## Warm connections [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
+## Warm connections <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 Each pooled provider keeps a small floor of pre-connected, authenticated NNTP sockets
 ready so playback and queue work skip the connect/TLS/login handshake after idle
 periods. Warm sockets count against the provider's connection limit but never hold
-download permits. See [Connection warming](../features/connection-warming.md) for the
+download permits. See [Connection warming](/features/connection-warming/) for the
 mechanics and the header indicator.
 
 | Control | Config key | Default | Effect |
@@ -151,9 +152,9 @@ mechanics and the header indicator.
 Changes take effect on the next provider save or restart — connection pools are not
 rebuilt when these keys change alone.
 
-## Article-miss negative cache [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }
+## Article-miss negative cache <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
-After a provider (or [storage group](../features/multi-provider.md)) reports a definitive article miss
+After a provider (or [storage group](/features/multi-provider/)) reports a definitive article miss
 (NNTP 430 or provider 451), InfiniDysk remembers that miss so later streaming/batch reads skip
 re-probing the same provider for the same article until the TTL expires. Transient failures
 (timeouts, network, corrupt articles) are never cached.
@@ -165,7 +166,7 @@ re-probing the same provider for the same article until the TTL expires. Transie
 
 The cache clears automatically when Usenet providers are reconfigured.
 
-## Provider circuit-breaker cooldown [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+## Provider circuit-breaker cooldown <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 When a provider's circuit trips, that provider is skipped for a cooldown and traffic goes to
 the remaining providers. Each consecutive trip doubles the cooldown up to a ceiling. A

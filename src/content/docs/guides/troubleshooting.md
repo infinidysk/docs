@@ -1,5 +1,6 @@
-# Troubleshooting
-
+---
+title: "Troubleshooting"
+---
 ## Container unhealthy / won't start
 
 - Check `docker logs nzbdav` for migration or backend health failures.
@@ -24,11 +25,11 @@ with the `RESET_ADMIN_PASSWORD` environment variable:
 While `RESET_ADMIN_PASSWORD` remains set, the UI shows a persistent warning banner
 and the backend logs a matching warning on every startup.
 
-!!! danger "Security"
-
-    Anyone who can reach the UI while no admin account exists can create the new
-    administrator account. Re-register promptly after the reset and remove the
-    variable before the next restart.
+:::danger[Security]
+Anyone who can reach the UI while no admin account exists can create the new
+administrator account. Re-register promptly after the reset and remove the
+variable before the next restart.
+:::
 
 ### Manual reset (without restarting)
 
@@ -61,7 +62,7 @@ is serving, and the frontend logs a throttled
 - **Cross-site requests:** a form submitted from a different origin is rejected on purpose
   (CSRF protection).
 
-## Streaming readiness (`/ready`) [since 0.10.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0){ .nzbdav-since }
+## Streaming readiness (`/ready`) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
 The backend readiness endpoint reports whether InfiniDysk can make progress on new streams. It returns
 `503 Service Unavailable` when Article RAM remains at least 90% leased with no active reads for 30
@@ -83,7 +84,7 @@ healthcheck:
 Use `/ready` as a restart trigger only if restarting a streaming-wedged container is the intended
 policy. This check detects a stuck in-flight article budget; it does not test provider connectivity.
 
-## Queue coordinator liveness (`/health`) [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+## Queue coordinator liveness (`/health`) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 The backend `/health` endpoint reports `503 Service Unavailable` if the queue coordinator fails or
 exits unexpectedly. The backend also exits with a nonzero code, allowing the documented Compose
@@ -99,19 +100,19 @@ because the backend process exits on failure.
 - Confirm WebDAV username/password.
 - Behind a proxy: TLS, `/ws` Upgrade, `SECURE_COOKIES`, Base URL / `TRUST_PROXY`.
 - Overview **Active Reads**: unexpected traffic → rclone VFS or media-server scans.
-- Try disabling segment cache or adjusting Max Download Connections — [WebDAV](../configuration/webdav.md).
+- Try disabling segment cache or adjusting Max Download Connections — [WebDAV](/configuration/webdav/).
 - `503 Service Unavailable` with `Retry-After`, logged as `could not be confirmed missing`
-  [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }: a
+  <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>: a
   provider was skipped by its circuit breaker, or timed out or failed, while an article was looked
   up. The client retries and no repair is scheduled. If it persists, check provider connectivity —
-  [Usenet settings](../configuration/usenet.md).
+  [Usenet settings](/configuration/usenet/).
 
-## Activity totals [since 1.4.3](https://github.com/infinidysk/infinidysk/releases/tag/v1.4.3){ .nzbdav-since }
+## Activity totals <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.3">since 1.4.3</a>
 
 The Overview Activity summary uses the selected time window:
 
 - **Successful reads** counts article retrievals reported successful, including segment-cache hits. It excludes recorded misses and errors, but is not a count of unique articles, completed files, or successful playback sessions.
-- **Peak download** is the highest 1-second Usenet download rate sampled in the window [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }. The sampler runs once per second and stores only the per-minute and per-hour maximum, so the value does not shrink when you widen the time range. History recorded before the sampler existed falls back to the highest bucket average (downloaded bytes divided by bucket duration). **N/A** means no chart data. This metric works with or without segment caching, including rclone installations.
+- **Peak download** is the highest 1-second Usenet download rate sampled in the window <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>. The sampler runs once per second and stores only the per-minute and per-hour maximum, so the value does not shrink when you widen the time range. History recorded before the sampler existed falls back to the highest bucket average (downloaded bytes divided by bucket duration). **N/A** means no chart data. This metric works with or without segment caching, including rclone installations.
 - **Errors** counts attempt errors other than provider misses. A retry or fallback can still recover the request.
 - **Served** counts bytes served by client read sessions ending in the window.
 
@@ -119,9 +120,9 @@ The client/app chart lines and legend count **attempts**, including recorded mis
 
 **Provider miss attempts** remain in Error breakdown and bucket details. Retries and multiple providers can produce several misses for one article that is eventually retrieved. Negative-cache skips do not add misses. Unexpected BODY responses are recorded as protocol errors going forward; existing history is not rewritten.
 
-**Backup rescues** counts each provider once per rescued article [since 1.5.1](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.1){ .nzbdav-since }. When a provider misses, is re-probed, and misses again before a different provider delivers the article, the card total, **Needed rescuing**, and **Why they missed** record one miss for that provider, with the reason of its first failed attempt. The extra attempt still appears in the provider table's miss and retry counts and in stream traces. Rescue counts recorded before this release are not rewritten; use **Reset Overview Statistics** under Maintenance if you want a clean baseline.
+**Backup rescues** counts each provider once per rescued article <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.1">since 1.5.1</a>. When a provider misses, is re-probed, and misses again before a different provider delivers the article, the card total, **Needed rescuing**, and **Why they missed** record one miss for that provider, with the reason of its first failed attempt. The extra attempt still appears in the provider table's miss and retry counts and in stream traces. Rescue counts recorded before this release are not rewritten; use **Reset Overview Statistics** under Maintenance if you want a clean baseline.
 
-## Provider throughput [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }
+## Provider throughput <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>
 
 The Overview provider table shows **Peak** and **Active avg** in decimal MB/s, combining
 all connections for each provider. Both use raw NNTP BODY byte-counter differences and
@@ -158,7 +159,7 @@ When streams buffer without hard errors, read support-pack latency phases first
 - High stream-trace `consumerWaitMs` with low values in all three phases → prefetch
   geometry or consumer pacing — compare with `bodyDrainMs` on RangeEnd events.
 
-Generate a pack from **Settings → Support** — [Technical support pack](../configuration/support.md).
+Generate a pack from **Settings → Support** — [Technical support pack](/configuration/support/).
 
 ## *Arr won't import
 
@@ -166,8 +167,8 @@ Generate a pack from **Settings → Support** — [Technical support pack](../co
 - Symlinks: rclone mount healthy? `ls` shows `completed-symlinks` and `.ids`?
 - STRM: Base URL reachable from Emby/Jellyfin?
 - STRM items show `0m 0s` or no audio languages in Jellyfin until played once? Expected —
-  see [Media servers](media-servers.md#emby-jellyfin).
-- Check Automatic Queue Management rules — [Arrs](../configuration/arrs.md).
+  see [Media servers](/guides/media-servers/#emby-jellyfin).
+- Check Automatic Queue Management rules — [Arrs](/configuration/arrs/).
 
 ## 403 / 405 on MKCOL, PUT or DELETE
 
@@ -187,30 +188,30 @@ and User-Agent:
 - *Arr: disable metadata/extra-file writing for the affected root folder.
 - rclone: mount with `--read-only` so it stops probing for writability.
 
-## `addurl` SSRF / private indexer [since 0.8.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0){ .nzbdav-since }
+## `addurl` SSRF / private indexer <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a>
 
-Allow Docker DNS or LAN hosts under **Trusted local hosts** — [SABnzbd API](../features/sab-api.md).
+Allow Docker DNS or LAN hosts under **Trusted local hosts** — [SABnzbd API](/features/sab-api/).
 
 ## Why did files disappear?
 
-See [Deletion audit](../operations/deletion-audit.md) — history retention ≠ deleting mounts; orphan cleanup and *Arr actions can remove content. History rows disappearing after import are usually the Arr or a `/completed-symlinks` folder delete, not InfiniDysk deleting the file. If Remove Orphaned Files lists imported files, check that **Library Directory** is your organized library root, not the rclone mount.
+See [Deletion audit](/operations/deletion-audit/) — history retention ≠ deleting mounts; orphan cleanup and *Arr actions can remove content. History rows disappearing after import are usually the Arr or a `/completed-symlinks` folder delete, not InfiniDysk deleting the file. If Remove Orphaned Files lists imported files, check that **Library Directory** is your organized library root, not the rclone mount.
 
-## Plex marks old episodes as newly added [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+## Plex marks old episodes as newly added <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 InfiniDysk does not change WebDAV `Last-Modified` after import, and it does not issue ETags. Plex keys library items by **file path**, so an old episode showing up as *newly added* means Plex deleted its library row and then re-created it on a later scan.
 
 The most common cause on an rclone mount of `/content` is a transient scan-time failure (container restart, rclone re-list after `vfs/forget`, lazy RAR size correction, proxy timeout) combined with Plex's **Empty trash automatically after every scan**. The path is briefly unavailable, trash collection removes the item, and the next clean scan re-adds it — triggering intro/credits analysis again.
 
-Quick check: compare the file's mtime in the mount (`ls -l`) with Plex's *added* date. An old mtime with a new *added* date means the server never recreated the file. For the full checklist see [Plex “newly added” churn on /content mounts](../operations/plex-readd-diagnosis.md).
+Quick check: compare the file's mtime in the mount (`ls -l`) with Plex's *added* date. An old mtime with a new *added* date means the server never recreated the file. For the full checklist see [Plex “newly added” churn on /content mounts](/operations/plex-readd-diagnosis/).
 
 ## Provider / missing articles
 
 - Circuit breaker may pause a bad provider — check Usenet settings and Overview.
 - Storage groups skip sibling resellers after a miss — only group identical upstream storage.
-- Health/repairs can replace unhealthy library items — [Health and repairs](../operations/health-repairs.md).
+- Health/repairs can replace unhealthy library items — [Health and repairs](/operations/health-repairs/).
 
 ## Still stuck
 
-Generate a [technical support pack](../configuration/support.md) from **Settings → Support**,
+Generate a [technical support pack](/configuration/support/) from **Settings → Support**,
 review it for personal paths and names, then [open an issue](https://github.com/infinidysk/infinidysk/issues).
-For local stream debugging, see [Contributing](../community/contributing.md).
+For local stream debugging, see [Contributing](/community/contributing/).

@@ -1,4 +1,7 @@
-# OIDC / SSO [since 0.10.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0){ .nzbdav-since }
+---
+title: "OIDC / SSO"
+---
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
 InfiniDysk can authenticate browser sessions with any standards-compliant OpenID
 Connect (OIDC) provider, including Authentik, Authelia, and Keycloak. OIDC is
@@ -29,12 +32,12 @@ local credentials and **Sign in with SSO**.
 Missing any required value leaves OIDC disabled so local login remains
 available.
 
-!!! tip "Set the redirect URI explicitly"
-
-    `OIDC_REDIRECT_URI` falls back to the configured SABnzbd **Base URL**, then
-    to the incoming request origin. An explicit public HTTPS URL avoids
-    reverse-proxy host or scheme mismatches. Register the exact same URI in the
-    identity provider.
+:::tip[Set the redirect URI explicitly]
+`OIDC_REDIRECT_URI` falls back to the configured SABnzbd **Base URL**, then
+to the incoming request origin. An explicit public HTTPS URL avoids
+reverse-proxy host or scheme mismatches. Register the exact same URI in the
+identity provider.
+:::
 
 ## Environment variable reference
 
@@ -66,13 +69,13 @@ environment:
 InfiniDysk accepts either a string claim or an array claim. A matching value grants
 `admin`; every other authenticated OIDC user receives `readonly`.
 
-!!! warning "Read-only is a UI role"
-
-    In 0.10.0, read-only sessions can view the dashboard and settings but
-    mutation controls are disabled or hidden. This is not backend API
-    authorization: the frontend still uses its shared backend API key for
-    authenticated sessions. Restrict access at the identity provider and do
-    not treat the read-only role as a security boundary.
+:::caution[Read-only is a UI role]
+In 0.10.0, read-only sessions can view the dashboard and settings but
+mutation controls are disabled or hidden. This is not backend API
+authorization: the frontend still uses its shared backend API key for
+authenticated sessions. Restrict access at the identity provider and do
+not treat the read-only role as a security boundary.
+:::
 
 Local username/password sessions remain admins. OIDC role mapping does not
 change WebDAV credentials, SABnzbd API keys, or other machine-client access.

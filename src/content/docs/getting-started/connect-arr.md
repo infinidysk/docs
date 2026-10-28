@@ -1,8 +1,9 @@
-# Connect Radarr / Sonarr
-
+---
+title: "Connect Radarr / Sonarr"
+---
 InfiniDysk speaks the SABnzbd API surface \*Arr apps expect. Hostnames below assume a shared Docker network.
 
-The [Setup Guide](setup-guide.md) can collect and test Radarr/Sonarr connections
+The [Setup Guide](/getting-started/setup-guide/) can collect and test Radarr/Sonarr connections
 and displays the download-client values below. Use this page for the complete
 manual procedure or troubleshooting.
 
@@ -18,7 +19,7 @@ In Radarr or Sonarr → **Settings** → **Download Clients** → **Add** → **
 | API Key | InfiniDysk **Settings → SABnzbd → API Key** |
 | Category | Match categories you configured (e.g. `movies`, `tv`) |
 
-Test the connection. Prefer `addfile` when clients can upload NZB bytes; `addurl` to private indexers needs [Trusted local hosts](../configuration/sabnzbd.md) [since 0.8.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0){ .nzbdav-since }.
+Test the connection. Prefer `addfile` when clients can upload NZB bytes; `addurl` to private indexers needs [Trusted local hosts](/configuration/sabnzbd/) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a>.
 
 ### Remove Completed
 
@@ -32,11 +33,11 @@ keep working, and Health repair and PAR2 recovery still work.
 Keeping the history entry prevents **Remove Orphaned Files** from deleting a
 file, even after the \*Arr replaces it with an upgrade or re-grab. Without the
 setting, superseded grabs build up until
-[SAB history retention](../configuration/maintenance.md) prunes their history
+[SAB history retention](/configuration/maintenance/) prunes their history
 entries while keeping the mounts. Unlinked mounts may then become eligible for
 **Remove Orphaned Files**. Health can report them as **Not library linked** in the
 meantime. The \*Arr only removes downloads it grabbed, so releases grabbed by
-[Profiles](../configuration/profiles.md) are not affected.
+[Profiles](/configuration/profiles/) are not affected.
 
 ## Register \*Arr in InfiniDysk
 
@@ -46,7 +47,7 @@ meantime. The \*Arr only removes downloads it grabbed, so releases grabbed by
 2. Add Sonarr host (`http://sonarr:8989`) + API key.
 3. Configure **Automatic Queue Management** for stuck import messages (remove / blocklist / search).
 
-Registered and enabled instances light up the Overview **Arr Health** widget [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }. See [Radarr/Sonarr settings](../configuration/arrs.md).
+Registered and enabled instances light up the Overview **Arr Health** widget <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>. See [Radarr/Sonarr settings](/configuration/arrs/).
 
 ## Align import paths
 
@@ -55,7 +56,7 @@ Registered and enabled instances light up the Overview **Arr Health** widget [si
 | Symlinks | Rclone mount dir e.g. `/mnt/remote/nzbdav` | Same path must exist inside \*Arr |
 | STRM | Completed dir e.g. `/mnt/completed-downloads` + Base URL | The completed-downloads path must exist at the same absolute path inside \*Arr; the media server must reach Base URL |
 
-Enable **Repairs** with a **Library Directory** once paths and \*Arr instances exist — [Repairs](../configuration/repairs.md).
+Enable **Repairs** with a **Library Directory** once paths and \*Arr instances exist — [Repairs](/configuration/repairs/).
 
 ## Rejected compressed archives
 
@@ -78,4 +79,4 @@ workflow, and a search can only grab another release if an eligible one is avail
 
 ## Next
 
-[Infinite library use case](../use-cases/infinite-library-arr.md) · [SABnzbd API details](../features/sab-api.md)
+[Infinite library use case](/use-cases/infinite-library-arr/) · [SABnzbd API details](/features/sab-api/)

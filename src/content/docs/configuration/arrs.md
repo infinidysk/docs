@@ -1,9 +1,10 @@
-# Arr Apps
-
+---
+title: "Arr Apps"
+---
 Supported Arr app credentials and automatic stuck-queue handling. Radarr and
 Sonarr are supported today; this settings area is intended to accommodate
 additional Arr apps such as Lidarr in the future. Config key: `arr.instances`
-(`NZBDAV_CONFIG__ARR__INSTANCES` — see [headless](headless.md)).
+(`NZBDAV_CONFIG__ARR__INSTANCES` — see [headless](/configuration/headless/)).
 
 | Control | Effect |
 |---------|--------|
@@ -29,9 +30,9 @@ rules. Typical mappings:
 
 Any action other than **Do Nothing** tells the Arr to delete the queue record with `removeFromClient=true`. The Arr then removes the download from InfiniDysk History even when its own **Remove Completed** checkbox is off. That is independent of mounted files, which stay.
 
-## Docker hostnames and proxies { #docker-hostnames-and-proxies }
+## Docker hostnames and proxies {#docker-hostnames-and-proxies}
 
-Radarr, Sonarr, and [Prowlarr](indexers.md#prowlarr-pull-sync) hosts whose hostname
+Radarr, Sonarr, and [Prowlarr](/configuration/indexers/#prowlarr-pull-sync) hosts whose hostname
 has **no dot** — Docker Compose service names such as `http://sonarr:8989` — are always
 contacted **directly**, even when the container has `HTTP_PROXY` / `HTTPS_PROXY` set.
 Names like that only resolve on the local container network, so sending them through a
@@ -84,7 +85,7 @@ A numbering disagreement can affect every indexed release for the episode;
 the per-media replacement-search limit eventually withholds additional
 searches while continuing to remove and blocklist rejected releases.
 
-## Replacement-search safety limit [since 1.2.4](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.4){ .nzbdav-since }
+## Replacement-search safety limit <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.4">since 1.2.4</a>
 
 **Remove, Blocklist, and Search** is bounded to **3 automatic replacement searches in
 30 minutes per Radarr movie or Sonarr episode** by default. Once a media item reaches
@@ -100,7 +101,7 @@ path problem) that led to the action.
 
 Disabling an instance opts it out of stuck-queue actions, Arr-linked repairs, and health polling. Use **Arr Health** off when you still want queue rules without Overview polling.
 
-## Blocklisted re-grab protection [since 1.4.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0){ .nzbdav-since }
+## Blocklisted re-grab protection <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a>
 
 When a queue rule successfully applies **Remove, Blocklist** or **Remove, Blocklist, Search**,
 InfiniDysk remembers a bounded sample of article IDs from the removed download. A later NZB
@@ -116,11 +117,11 @@ local history and stored NZB to still exist. A replacement that starts importing
 delete request returns can pass the check; later re-grabs are protected after Arr confirms the
 blocklist action succeeded.
 
-## Arr Health on the Overview dashboard [since 1.2.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0){ .nzbdav-since }
+## Arr Health on the Overview dashboard <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 When at least one Radarr or Sonarr instance is configured **and enabled**, Overview shows a compact **Arr Health** section: instance reachability, imports in the selected dashboard window, median/P95 handoff latency (InfiniDysk download completed → Arr `DownloadFolderImported`), queue depth, and items waiting unusually long for import.
 
-## Awaiting detail [since 1.2.5](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5){ .nzbdav-since }
+## Awaiting detail <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a>
 
 **Queue** is every item Arr currently tracks. **Awaiting** is the completed or
 `importPending`/`importing` subset, so the two counts intentionally differ.
@@ -140,6 +141,6 @@ Handoff events are stored in the local metrics database (`metrics.sqlite`) for *
 
 Back up `/config` before upgrading: the metrics store gains an additive `ArrImportEvents` table that auto-applies on startup.
 
-Headless `NZBDAV_CONFIG__ARR__INSTANCES` JSON that includes the new `Name` / `Enabled` properties **cannot roll back** to an older image (structured ENV config is not forward compatible — see [headless](headless.md)).
+Headless `NZBDAV_CONFIG__ARR__INSTANCES` JSON that includes the new `Name` / `Enabled` properties **cannot roll back** to an older image (structured ENV config is not forward compatible — see [headless](/configuration/headless/)).
 
-[Connect *Arr](../getting-started/connect-arr.md)
+[Connect *Arr](/getting-started/connect-arr/)

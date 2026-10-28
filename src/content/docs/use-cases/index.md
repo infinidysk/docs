@@ -1,8 +1,7 @@
 ---
+title: "Use cases"
 description: "Build an infinite media library with Sonarr and Radarr, stream-only setups, or multi-provider failover using InfiniDysk."
 ---
-
-# Use cases
 
 <div class="grid cards" markdown>
 
@@ -12,7 +11,7 @@ description: "Build an infinite media library with Sonarr and Radarr, stream-onl
 
     Sonarr/Radarr + Plex/Jellyfin without storing full media on disk.
 
-    [:octicons-arrow-right-24: Guide](infinite-library-arr.md)
+    [:octicons-arrow-right-24: Guide](/use-cases/infinite-library-arr/)
 
 -   :material-play:{ .lg .middle } __Streaming only__
 
@@ -20,7 +19,7 @@ description: "Build an infinite media library with Sonarr and Radarr, stream-onl
 
     On-demand Stremio / search / Explore without *Arr libraries.
 
-    [:octicons-arrow-right-24: Guide](streaming-only.md)
+    [:octicons-arrow-right-24: Guide](/use-cases/streaming-only/)
 
 -   :material-server-network:{ .lg .middle } __Multi-provider failover__
 
@@ -28,6 +27,6 @@ description: "Build an infinite media library with Sonarr and Radarr, stream-onl
 
     Cascade, caps, and storage groups for resilient NNTP.
 
-    [:octicons-arrow-right-24: Guide](multi-provider-failover.md)
+    [:octicons-arrow-right-24: Guide](/use-cases/multi-provider-failover/)
 
 </div>

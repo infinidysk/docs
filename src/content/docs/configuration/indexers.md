@@ -1,12 +1,13 @@
-# Indexers
-
+---
+title: "Indexers"
+---
 Newznab indexers/aggregators, global request defaults, and title exclude patterns.
 
-!!! tip "Headless ENV"
-
-    Map config keys below to `NZBDAV_CONFIG__...` with the
-    [naming algorithm](headless.md#naming-algorithm)
-    (`indexers.instances` → `NZBDAV_CONFIG__INDEXERS__INSTANCES`).
+:::tip[Headless ENV]
+Map config keys below to `NZBDAV_CONFIG__...` with the
+[naming algorithm](/configuration/headless/#naming-algorithm)
+(`indexers.instances` → `NZBDAV_CONFIG__INDEXERS__INSTANCES`).
+:::
 
 ## Global defaults
 
@@ -17,14 +18,14 @@ Newznab indexers/aggregators, global request defaults, and title exclude pattern
 | Default Retrieve User-Agent | `api.user-agent` | empty → `SABnzbd/5.1.0` or `NZB_GRAB_USER_AGENT` | Fetching `.nzb` |
 | Request timeout (seconds) | in instances | `30` | Per-request timeout |
 | Search results per indexer | in instances | `100` | Page size |
-| Max indexer response (bytes) [since 1.2.8](https://github.com/infinidysk/infinidysk/releases/tag/v1.2.8){ .nzbdav-since } | in instances (`MaxResponseBytes`) | `4194304` (4 MiB) | Reject oversized Newznab caps/search XML before parse; counts HTTP-client bytes (no automatic decompression). Per-indexer override. Max `16777216` (16 MiB). |
+| Max indexer response (bytes) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.8">since 1.2.8</a> | in instances (`MaxResponseBytes`) | `4194304` (4 MiB) | Reject oversized Newznab caps/search XML before parse; counts HTTP-client bytes (no automatic decompression). Per-indexer override. Max `16777216` (16 MiB). |
 | Exclude result patterns | `search.exclude-patterns` | empty | JS regex per line (case-insensitive) |
 | Synced exclude URLs | `search.exclude-sync-urls` | empty | Auto-updating JSON lists |
 | Refresh every (minutes) | `search.exclude-sync-refresh-minutes` | `720` | Sync interval 15–10080 |
 
 Synced patterns take precedence; last-good cache survives temporary URL failures.
 
-## Prowlarr pull sync [since 1.1.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0){ #prowlarr-pull-sync .nzbdav-since }
+## Prowlarr pull sync <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a> {#prowlarr-pull-sync}
 
 InfiniDysk can pull its indexer list from one Prowlarr instance. Configure the connection in InfiniDysk under **Settings → Indexers → Prowlarr pull sync** — do **not** add InfiniDysk under Prowlarr's Apps list, and do not use InfiniDysk's SABnzbd-compatible settings for this integration.
 
@@ -41,16 +42,16 @@ A Prowlarr hostname without a dot (for example the Docker service name `prowlarr
 contacted directly, bypassing any `HTTP_PROXY` / `HTTPS_PROXY` configured for the
 container; dotted hostnames and IP addresses keep the normal proxy policy. Requests that
 exceed the 15-second budget are reported as `... timed out after 15 seconds; routing: ...`
-in Settings and logs. See [Docker hostnames and proxies](arrs.md#docker-hostnames-and-proxies)
+in Settings and logs. See [Docker hostnames and proxies](/configuration/arrs/#docker-hostnames-and-proxies)
 for details.
 
 Sync imports searchable Usenet indexers and points each one at Prowlarr's per-indexer Newznab proxy (`{prowlarrUrl}/{indexerId}/api`). Prowlarr owns each managed entry's name, proxy URL, API key, and enabled state. InfiniDysk preserves local tuning such as rate limits, filters, category overrides, proxy, TLS, timeout, max response, and user agents. Manually configured indexers are never changed or removed.
 
 Entries that disappear or become unsupported in Prowlarr are removed only when they are marked as Prowlarr-managed. Search profiles are updated in the same write for managed renames and removals. If Prowlarr is unavailable or returns an invalid response, InfiniDysk keeps the complete last-good indexer configuration and reports the failure in Settings.
 
-!!! warning "Headless ownership"
-
-    Pull sync writes imported indexers to SQLite, so `indexers.instances` must **not** be managed with `NZBDAV_CONFIG__INDEXERS__INSTANCES`. The Prowlarr connection settings themselves may be supplied by GUI or `NZBDAV_CONFIG__PROWLARR__...`. If `profiles.instances` is environment-managed, a Prowlarr rename or removal that requires profile-reference changes is rejected rather than leaving stale references.
+:::caution[Headless ownership]
+Pull sync writes imported indexers to SQLite, so `indexers.instances` must **not** be managed with `NZBDAV_CONFIG__INDEXERS__INSTANCES`. The Prowlarr connection settings themselves may be supplied by GUI or `NZBDAV_CONFIG__PROWLARR__...`. If `profiles.instances` is environment-managed, a Prowlarr rename or removal that requires profile-reference changes is rejected rather than leaving stale references.
+:::
 
 ## Per-indexer
 
@@ -69,7 +70,7 @@ Entries that disappear or become unsupported in Prowlarr are removed only when t
 | Ignore category filter | Omit `cat=` |
 | Result filtering | Skip passworded, min grabs, grace period, age/zero-download drops, rank by grabs |
 
-## Invalid indexer certificates [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }
+## Invalid indexer certificates <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
 Leave **Skip TLS certificate verification** disabled unless a trusted HTTPS
 indexer has a certificate it cannot correct. The setting keeps traffic encrypted
@@ -79,4 +80,4 @@ indexer's API and its resolved NZB download URLs. SAB `addurl` requests inherit
 the setting only when their initial URL exactly matches an enabled indexer's
 configured host.
 
-[Indexer search feature](../features/indexer-search.md)
+[Indexer search feature](/features/indexer-search/)

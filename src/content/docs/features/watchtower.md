@@ -1,5 +1,6 @@
-# Watchtower
-
+---
+title: "Watchtower"
+---
 Watchtower keeps titles on your lists **ready**: each is pre-resolved to a healthy release and re-verified over time — the same ranking and health checks as Watchdog, run ahead of demand.
 
 **Pointer-only.** It stores segment maps and shortlists (kilobytes), not video. Nothing downloads until playback is requested.
@@ -26,7 +27,7 @@ flowchart LR
 
 ## Safety
 
-Reuses indexer hit trackers and rate limiters. Off until enabled; conservative defaults. Configure under [Watchtower settings](../configuration/watchtower.md).
+Reuses indexer hit trackers and rate limiters. Off until enabled; conservative defaults. Configure under [Watchtower settings](/configuration/watchtower/).
 
 ## Status notes
 

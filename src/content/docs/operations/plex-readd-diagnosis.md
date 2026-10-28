@@ -1,4 +1,7 @@
-# Plex “newly added” churn on /content mounts [since 1.3.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0){ .nzbdav-since }
+---
+title: "Plex “newly added” churn on /content mounts"
+---
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 When Plex marks an old episode as *newly added* and re-runs intro/credits detection, InfiniDysk almost never changed the file’s metadata in place. WebDAV `getlastmodified` is the immutable `DavItem.CreatedAt`; there is no ETag. Plex tracks items by **file path**, so “newly added” means the path vanished and came back — either the server deleted and recreated it, or Plex removed its own library row after a failed scan and re-added it on the next clean scan.
 
@@ -35,7 +38,7 @@ ORDER BY CreatedAt DESC;
 grep "dav-delete" /var/log/docker.log  # or docker logs nzbdav 2>&1 | grep dav-delete
 ```
 
-Health-repair deletes are logged as `dav-delete source=health-repair ... reason="auto-removed after repeated streaming failures"` or similar. See [Deletion audit](deletion-audit.md) for all sources.
+Health-repair deletes are logged as `dav-delete source=health-repair ... reason="auto-removed after repeated streaming failures"` or similar. See [Deletion audit](/operations/deletion-audit/) for all sources.
 
 ## 4. Transient scan failure
 
@@ -59,4 +62,4 @@ Even if you do not remember a grab, check Sonarr History for the affected series
 
 ---
 
-If these checks point to a transient listing failure, collect a [technical support pack](../configuration/support.md) while the problem is fresh and open an issue with the `webdavCounters` section of `environment.json` and any `dav-delete` lines.
+If these checks point to a transient listing failure, collect a [technical support pack](/configuration/support/) while the problem is fresh and open an issue with the `webdavCounters` section of `environment.json` and any `dav-delete` lines.

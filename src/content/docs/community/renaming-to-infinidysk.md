@@ -1,5 +1,6 @@
-# NzbDAV is now InfiniDysk
-
+---
+title: "NzbDAV is now InfiniDysk"
+---
 **InfiniDysk** is the name of the project formerly known as NzbDAV. The product, maintainers, release
 history, and commitment to streaming directly from Usenet remain the same.
 

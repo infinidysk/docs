@@ -1,7 +1,9 @@
+---
+title: "NzbDAV stack release announcement (historical, 0.7.2)"
+slug: community/history/release-0.7
+---
 > **Historical document (frozen as of 0.7.2).**  
 > This announcement captures the coordinated 0.7.2 stack release. Version numbers below are **not** kept current — see [GitHub Releases](https://github.com/nzbdav/nzbdav/releases) for the latest. Do not bump the tables in this file.
-
-# NzbDAV stack release announcement (historical, 0.7.2)
 
 This document summarizes the coordinated releases across the [nzbdav](https://github.com/nzbdav) organization: a fork of [nzbdav-dev/nzbdav](https://github.com/nzbdav-dev/nzbdav) with ownership of the full Usenet streaming dependency tree.
 
@@ -137,7 +139,7 @@ Fork baseline was roughly upstream **v0.6.4**; the fork release line is now **v0
 - Configurable toggles for queue pipelining (`usenet.pipelining.*`) and WebDAV pipelined body requests
 - Close pipelined transfer **lifecycle gaps** (callbacks, permits, ordering)
 
-See [NNTP pipelining](../../features/nntp-pipelining.md) for settings and architecture.
+See [NNTP pipelining](/features/nntp-pipelining/) for settings and architecture.
 
 **WebDAV streaming**
 
@@ -149,7 +151,7 @@ See [NNTP pipelining](../../features/nntp-pipelining.md) for settings and archit
 
 **Playback resilience (0.7.0+)**
 
-- **Watchtower** — proactive Usenet discovery (see [Watchtower](../../features/watchtower.md))
+- **Watchtower** — proactive Usenet discovery (see [Watchtower](/features/watchtower/))
 - **PlaybackFastVerifier** — fast-fail segment checks with timeout budgets
 - Play/watchdog orchestration for candidate fallback
 
@@ -219,6 +221,6 @@ Each audit item documents the upstream reference, fork state, likely cause, and 
 ## Further reading
 
 - [CHANGELOG.md](https://github.com/nzbdav/nzbdav/blob/main/CHANGELOG.md) — full version history
-- [NNTP pipelining](../../features/nntp-pipelining.md) — pipelining settings and client chain
-- [Watchtower](../../features/watchtower.md) — proactive discovery (0.7.0+)
-- [Getting started](../../getting-started/index.md) — deployment and integrations
+- [NNTP pipelining](/features/nntp-pipelining/) — pipelining settings and client chain
+- [Watchtower](/features/watchtower/) — proactive discovery (0.7.0+)
+- [Getting started](/getting-started/) — deployment and integrations

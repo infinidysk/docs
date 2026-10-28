@@ -1,12 +1,13 @@
-# Warden
-
+---
+title: "Warden"
+---
 Portable dead-release fingerprint list: filter search results, sync remote sources, optional GitHub backup.
 
-!!! note "Headless ENV scope"
-
-    Scalar Settings below (`warden.hide-dead`, `warden.quorum`, `warden.backbone-scope`) can use
-    [`NZBDAV_CONFIG__...`](headless.md). Warden **sources**, GitHub backup state, and `warden.db`
-    remain a separate domain and are **not** driven by the ENV overlay.
+:::note[Headless ENV scope]
+Scalar Settings below (`warden.hide-dead`, `warden.quorum`, `warden.backbone-scope`) can use
+[`NZBDAV_CONFIG__...`](/configuration/headless/). Warden **sources**, GitHub backup state, and `warden.db`
+remain a separate domain and are **not** driven by the ENV overlay.
+:::
 
 ## Persisted settings
 
@@ -22,6 +23,6 @@ Sources (local / remote / imported): trust full/corroborate/observe, enable, ref
 
 **Backup to GitHub:** repo, fine-grained PAT, path, branch, scope, interval, auto backup, restore. Fingerprints only — keep backup repos private for personal lists. Restore replaces the **local** list only.
 
-!!! warning
-
-    Merge-into-my-list import cannot be un-merged.
+:::caution
+Merge-into-my-list import cannot be un-merged.
+:::

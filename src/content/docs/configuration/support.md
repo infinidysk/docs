@@ -1,4 +1,7 @@
-# Technical support pack [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }
+---
+title: "Technical support pack"
+---
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
 **Settings → Support** generates a ZIP you can provide to trusted InfiniDysk support
 when troubleshooting an issue. The archive is streamed to your browser and is
@@ -14,7 +17,7 @@ not retained by InfiniDysk.
 Backend logs are memory-only and are cleared when InfiniDysk restarts. Frontend and
 container logs are not included.
 
-## Latency phases [since 0.9.0](https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0){ .nzbdav-since }
+## Latency phases <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
 `latency24Hours` projects one-minute histograms into five-minute buckets for:
 
@@ -28,7 +31,7 @@ Percentiles are **bucket upper bounds**, not exact sample percentiles. Only
 successful responses are counted — misses, errors, and cancellations stay in
 existing status metrics. Body-drain time is never folded into `response`.
 
-## Health and playback diagnostics [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }
+## Health and playback diagnostics <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>
 
 `environment.json` includes `healthChecks`: active background workers and the last
 32 finished attempts, including file IDs and names, phase, elapsed time, progress,

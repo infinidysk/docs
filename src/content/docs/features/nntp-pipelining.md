@@ -1,5 +1,6 @@
-# NNTP pipelining
-
+---
+title: "NNTP pipelining"
+---
 Pipelining keeps a Usenet connection busy by asking for the next articles before the previous ones finish arriving. **Depth** is how many asks stay outstanding on that connection (default `8` for queue imports).
 
 ```mermaid
@@ -70,4 +71,4 @@ The number of interleaved batches is the stream's connection target when playbac
 - Pipelined batches use the same per-segment failover as `DecodedBodiesAsync`.
 - Per-queue-item article cache can bypass pipelined queue paths when caching is enabled.
 
-[Usenet](../configuration/usenet.md) · [Streaming](../configuration/streaming.md)
+[Usenet](/configuration/usenet/) · [Streaming](/configuration/streaming/)

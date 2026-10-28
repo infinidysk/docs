@@ -1,5 +1,6 @@
-# WebDAV filesystem
-
+---
+title: "WebDAV filesystem"
+---
 InfiniDysk exposes NZB contents as a browsable tree over WebDAV and the **Explorer** UI.
 
 Typical top-level paths:
@@ -14,11 +15,11 @@ Typical top-level paths:
 
 Content streams from Usenet on read — files are not fully downloaded to disk first. Blobs under `{CONFIG_PATH}/blobs/` store NZB metadata needed to remount.
 
-Configure credentials and filesystem behavior under [WebDAV settings](../configuration/webdav.md),
-and playback behavior under [Streaming settings](../configuration/streaming.md).
-Mount with [rclone](../guides/mounting-webdav.md) for filesystem clients.
+Configure credentials and filesystem behavior under [WebDAV settings](/configuration/webdav/),
+and playback behavior under [Streaming settings](/configuration/streaming/).
+Mount with [rclone](/guides/mounting-webdav/) for filesystem clients.
 
-## Explorer administration [since 1.5.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0){ .nzbdav-since }
+## Explorer administration <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>
 
 **Explorer** opens the canonical `/content` hierarchy. **Tree** expands folders in place;
 **List** shows matching files throughout the current scope. Expansion does not change the
@@ -42,7 +43,7 @@ state. Each branch or list page contains at most 100 rows in the UI.
 - **Next scan** distinguishes checking, disabled, repair pending, queued, due, and scheduled
 	work. Queued sentinels are never shown as dates. **No scheduled date** filters the stored
 	null date, so it can include unsupported sidecars. A due date is eligibility, not a promised
-	start time: [health windows](../configuration/repairs.md), queue pressure, and workers can
+	start time: [health windows](/configuration/repairs/), queue pressure, and workers can
 	defer execution.
 - **Added age** uses the existing server-local added timestamp, serialized with an offset.
 	**Posted age** uses the release date and remains unknown when that date is absent. They are
@@ -53,7 +54,7 @@ state. Each branch or list page contains at most 100 rows in the UI.
 	library link paths. **Last played (release)** belongs to the linked release history,
 	not an individual file. Deleting history does not hide a live file.
 - **Library** membership is a completed scan of recognized symlinks or STRM files in the
-	configured [Library Directory](../configuration/repairs.md), matched by exact file ID.
+	configured [Library Directory](/configuration/repairs/), matched by exact file ID.
 	It is refreshed periodically and is not a live Arr inventory. Pending or failed scans
 	mean **Unknown**, never **Not in library**. No configured root means **Not configured**.
 	The scan timestamp or failure is shown with the file count. Link details contain filesystem
@@ -72,7 +73,7 @@ identity and filename; an unavailable original is not reconstructed. Media inspe
 on demand in the player.
 
 **Search in Arr** is a confirmed, non-destructive request to enabled
-[Radarr/Sonarr instances](../configuration/arrs.md) that own the file. It requires a recognized
+[Radarr/Sonarr instances](/configuration/arrs/) that own the file. It requires a recognized
 link in the configured Library Directory and matching ownership paths; a download ID alone is
 not enough. Every enabled instance must be checked before any search is requested. InfiniDysk
 does not remove or blocklist the current file, alter monitoring or quality rules, or spend the
@@ -89,7 +90,7 @@ No new settings or setup-wizard steps are required. Existing Library Directory, 
 Repairs, and WebDAV settings govern these actions. This feature introduces no database
 migration, data conversion, or feature-specific backup requirement.
 
-## Deleting from Files [since 1.1.0](https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0){ .nzbdav-since }
+## Deleting from Files <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
 
 From **Explorer**, you can delete individual files or entire release folders under `/content/{category}/{release}/…`. Removal requires successful impact previews before confirmation. The dialog shows file, folder, byte, and linked-history totals.
 
