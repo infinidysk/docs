@@ -16,7 +16,7 @@
       <circle cx="64" cy="39" r="3.4"/>
     </g>
   </g>
-  <text x="96" y="380" font-family="Geist" font-weight="600" font-size="96" letter-spacing="-2" fill="#f4f5f7">infinidysk</text>
+  <text x="96" y="380" font-family="Geist" font-weight="600" font-size="96" letter-spacing="-2" fill="#f4f5f7">infini<tspan fill="#0194f7">dysk</tspan></text>
   <text font-family="Geist" font-weight="400" font-size="34" fill="#9aa1ad">
     <tspan x="96" y="446">Mount NZBs as a virtual filesystem and stream</tspan>
     <tspan x="96" y="492">directly from Usenet, without downloading first.</tspan>
