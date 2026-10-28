@@ -3,7 +3,7 @@ title: "Plex “newly added” churn on /content mounts"
 ---
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
-When Plex marks an old episode as *newly added* and re-runs intro/credits detection, infinidysk almost never changed the file’s metadata in place. WebDAV `getlastmodified` is the immutable `DavItem.CreatedAt`; there is no ETag. Plex tracks items by **file path**, so “newly added” means the path vanished and came back — either the server deleted and recreated it, or Plex removed its own library row after a failed scan and re-added it on the next clean scan.
+When Plex marks an old episode as “newly added” and re-runs intro/credits detection, infinidysk almost never changed the file’s metadata in place. WebDAV `getlastmodified` is the immutable `DavItem.CreatedAt`; there is no ETag. Plex tracks items by **file path**, so “newly added” means the path vanished and came back — either the server deleted and recreated it, or Plex removed its own library row after a failed scan and re-added it on the next clean scan.
 
 Use the checks below in order. The first one settles most cases without touching logs.
 
@@ -15,7 +15,7 @@ On the host, run:
 ls -l "/path/to/plex/library/Show Name/Season 01/episode.mkv"
 ```
 
-If the mtime is weeks or months old but Plex says *added today*, infinidysk did not recreate the file. The Plex library row was deleted and re-added because a scan saw the path as unavailable — skip to section 4 below.
+If the mtime is weeks or months old but Plex says “added today”, infinidysk did not recreate the file. The Plex library row was deleted and re-added because a scan saw the path as unavailable — skip to section 4 below.
 
 If the mtime is recent or the path changed (new release name, or a `(2)` suffix), the server really did re-import the file. Check infinidysk history, health results, and Sonarr history for that episode.
 

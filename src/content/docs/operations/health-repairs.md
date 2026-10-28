@@ -51,7 +51,7 @@ cached negative results and storage-group sibling evidence can establish that wi
 provider. If a walk would otherwise conclude that the segment is missing but any provider timed out,
 failed to connect, or was skipped because its circuit breaker was open
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>, the
-file is marked *Action needed* and rechecked later instead of being repaired or blocklisted. A
+file is marked **Action needed** and rechecked later instead of being repaired or blocklisted. A
 provider paused at its data cap does not count as unanswered.
 
 Playback follows the same rule <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>:

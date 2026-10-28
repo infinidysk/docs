@@ -6,7 +6,7 @@ title: "Headless environment configuration"
 Authoritative, opt-in configuration of every user-owned Settings (`ConfigItems`) value via `NZBDAV_CONFIG__...` environment variables. Designed for infrastructure-as-code / Docker Compose deployments where the Settings UI should not own those values.
 
 :::tip[Operational vs headless]
-Process wiring (`CONFIG_PATH`, `PORT`, `LOG_LEVEL`, cookies, …) and legacy Settings *fallbacks* (`WEBDAV_USER`, `MOUNT_DIR`, …) stay on the [Environment variables](/configuration/environment-variables/) page. This page covers only the new authoritative `ConfigItems` overlay.
+Process wiring (`CONFIG_PATH`, `PORT`, `LOG_LEVEL`, cookies, …) and legacy Settings fallbacks (`WEBDAV_USER`, `MOUNT_DIR`, …) stay on the [Environment variables](/configuration/environment-variables/) page. This page covers only the new authoritative `ConfigItems` overlay.
 :::
 
 ## What is in scope

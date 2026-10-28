@@ -17,7 +17,7 @@ settings to the throughput the host can sustain.
 
 ## Hosts with `ulimit -v` / `RLIMIT_AS` {#hosts-with-ulimit-v-rlimit_as}
 
-`ulimit -v` caps *virtual address space*, not resident memory. A process can
+`ulimit -v` caps virtual address space, not resident memory. A process can
 hit it while its RSS is comparatively small.
 
 On 64-bit Linux, the .NET regions GC reserves virtual address space up front.

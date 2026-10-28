@@ -22,5 +22,5 @@ Settings marked <a class="since" href="https://github.com/infinidysk/infinidysk/
 - **Headless / ops** — [OIDC / SSO](/configuration/oidc/) · [Headless ENV config](/configuration/headless/) · [Environment variables](/configuration/environment-variables/)
 
 :::tip[Config vs env]
-Most tunables are UI/`ConfigItems` keys. Map any documented config key to `NZBDAV_CONFIG__...` with the [naming rule](/configuration/headless/#naming-algorithm) for authoritative headless setup. Separate domains (frontend admin account, Warden `warden.db`, restore actions) are not part of that overlay — see [headless out of scope](/configuration/headless/#what-is-out-of-scope-v09). Process variables (`CONFIG_PATH`, ports, auth cookies) and legacy Settings *fallbacks* stay on [environment variables](/configuration/environment-variables/).
+Most tunables are UI/`ConfigItems` keys. Map any documented config key to `NZBDAV_CONFIG__...` with the [naming rule](/configuration/headless/#naming-algorithm) for authoritative headless setup. Separate domains (frontend admin account, Warden `warden.db`, restore actions) are not part of that overlay — see [headless out of scope](/configuration/headless/#what-is-out-of-scope-v09). Process variables (`CONFIG_PATH`, ports, auth cookies) and legacy Settings fallbacks stay on [environment variables](/configuration/environment-variables/).
 :::
