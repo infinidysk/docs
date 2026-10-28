@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
 import mermaid from 'astro-mermaid';
+import starlightImageZoom from 'starlight-image-zoom';
 import starlightLinksValidator from 'starlight-links-validator';
 import starlightSidebarTopics from 'starlight-sidebar-topics';
 
@@ -88,6 +89,7 @@ export default defineConfig({
 			},
 			plugins: [
 				starlightLinksValidator(),
+				starlightImageZoom(),
 				starlightSidebarTopics(
 					[
 						{
