@@ -1,7 +1,7 @@
 ---
 title: "Memory-constrained hosts"
 ---
-InfiniDysk has a .NET backend and a Node frontend. Size the limit for both
+infinidysk has a .NET backend and a Node frontend. Size the limit for both
 processes, plus sockets, TLS, SQLite, and native allocations—not only the
 managed .NET heap.
 
@@ -53,7 +53,7 @@ the region range, size, hard limit, committed heap, detected heap limit,
 collection identity, memory-load, and LOH-specific hard limits.
 
 `DOTNET_GCConserveMemory` is a restart-required runtime canary, not an
-InfiniDysk default. The image does not set it. A value in the 5–7 range can
+infinidysk default. The image does not set it. A value in the 5–7 range can
 reduce LOH fragmentation at the cost of more frequent collections and longer
 pauses; measure playback and import latency before keeping it.
 

@@ -45,7 +45,7 @@ credentials are untouched.
 ## Sign-in fails with "The sign-in request could not be verified"
 
 The login form posts to the same origin the page was loaded from. The request is rejected with
-this message when the browser's `Origin` header does not match the host InfiniDysk believes it
+this message when the browser's `Origin` header does not match the host infinidysk believes it
 is serving, and the frontend logs a throttled
 `Action request origin rejected. Request URL: …, Origin: …` warning.
 
@@ -64,7 +64,7 @@ is serving, and the frontend logs a throttled
 
 ## Streaming readiness (`/ready`) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
-The backend readiness endpoint reports whether InfiniDysk can make progress on new streams. It returns
+The backend readiness endpoint reports whether infinidysk can make progress on new streams. It returns
 `503 Service Unavailable` when Article RAM remains at least 90% leased with no active reads for 30
 seconds. A high Article RAM value while reads are active is normal backpressure and remains ready.
 
@@ -161,9 +161,9 @@ When streams buffer without hard errors, read support-pack latency phases first
 
 Generate a pack from **Settings → Support** — [Technical support pack](/configuration/support/).
 
-## *Arr won't import
+## Arr won't import
 
-- Paths must match exactly between InfiniDysk completed path and *Arr containers.
+- Paths must match exactly between infinidysk completed path and Arr containers.
 - Symlinks: rclone mount healthy? `ls` shows `completed-symlinks` and `.ids`?
 - STRM: Base URL reachable from Emby/Jellyfin?
 - STRM items show `0m 0s` or no audio languages in Jellyfin until played once? Expected —
@@ -179,13 +179,13 @@ serve data streamed from Usenet and accept no writes. Refused writes are expecte
 - `405 Method Not Allowed` — `MKCOL` targeted a directory that already exists.
 
 Logs show one aggregated warning per read-only path every 5 minutes (`Refused to create item under
-read-only path …`), with per-attempt detail at `LOG_LEVEL=debug`. InfiniDysk cannot stop a client from
+read-only path …`), with per-attempt detail at `LOG_LEVEL=debug`. infinidysk cannot stop a client from
 re-attempting, so fix it at the source — the warning and the access-log line both name the client IP
 and User-Agent:
 
 - Media servers (Emby/Jellyfin/Plex/Kodi): turn off saving metadata, artwork or `.nfo`/`.srt`
-  sidecars **into media folders**, or scan your library rather than the InfiniDysk mount.
-- *Arr: disable metadata/extra-file writing for the affected root folder.
+  sidecars **into media folders**, or scan your library rather than the infinidysk mount.
+- Arr: disable metadata/extra-file writing for the affected root folder.
 - rclone: mount with `--read-only` so it stops probing for writability.
 
 ## `addurl` SSRF / private indexer <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> {#addurl-ssrf-private-indexer-since-080}
@@ -194,11 +194,11 @@ Allow Docker DNS or LAN hosts under **Trusted local hosts** — [SABnzbd API](/f
 
 ## Why did files disappear?
 
-See [Deletion audit](/operations/deletion-audit/) — history retention ≠ deleting mounts; orphan cleanup and *Arr actions can remove content. History rows disappearing after import are usually the Arr or a `/completed-symlinks` folder delete, not InfiniDysk deleting the file. If Remove Orphaned Files lists imported files, check that **Library Directory** is your organized library root, not the rclone mount.
+See [Deletion audit](/operations/deletion-audit/) — history retention ≠ deleting mounts; orphan cleanup and Arr actions can remove content. History rows disappearing after import are usually the Arr or a `/completed-symlinks` folder delete, not infinidysk deleting the file. If Remove Orphaned Files lists imported files, check that **Library Directory** is your organized library root, not the rclone mount.
 
 ## Plex marks old episodes as newly added <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
-InfiniDysk does not change WebDAV `Last-Modified` after import, and it does not issue ETags. Plex keys library items by **file path**, so an old episode showing up as *newly added* means Plex deleted its library row and then re-created it on a later scan.
+infinidysk does not change WebDAV `Last-Modified` after import, and it does not issue ETags. Plex keys library items by **file path**, so an old episode showing up as *newly added* means Plex deleted its library row and then re-created it on a later scan.
 
 The most common cause on an rclone mount of `/content` is a transient scan-time failure (container restart, rclone re-list after `vfs/forget`, lazy RAR size correction, proxy timeout) combined with Plex's **Empty trash automatically after every scan**. The path is briefly unavailable, trash collection removes the item, and the next clean scan re-adds it — triggering intro/credits analysis again.
 

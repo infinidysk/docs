@@ -1,7 +1,7 @@
 ---
 title: "Indexer search"
 ---
-Configure Newznab indexers under **Settings → Indexers**, then search from the UI or expose them through **Search profiles**. InfiniDysk can also pull-sync Prowlarr-managed Usenet indexers from one Prowlarr instance <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>.
+Configure Newznab indexers under **Settings → Indexers**, then search from the UI or expose them through **Search profiles**. infinidysk can also pull-sync Prowlarr-managed Usenet indexers from one Prowlarr instance <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>.
 
 ## Profiles and adapters
 
@@ -9,7 +9,7 @@ Each profile selects indexers and optional adapters:
 
 | Adapter | Use |
 |---------|-----|
-| Newznab | `http://nzbdav:3000/adapters/newznab/{token}` for Prowlarr/*Arr |
+| Newznab | `http://nzbdav:3000/adapters/newznab/{token}` for Prowlarr/Arr |
 | Addon | Manifest at `/adapters/addon/{token}/manifest.json` |
 | JSON | `GET /api/search/{token}/lookup?...` |
 

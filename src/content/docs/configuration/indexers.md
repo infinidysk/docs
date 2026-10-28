@@ -27,7 +27,7 @@ Synced patterns take precedence; last-good cache survives temporary URL failures
 
 ## Prowlarr pull sync <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a> {#prowlarr-pull-sync}
 
-InfiniDysk can pull its indexer list from one Prowlarr instance. Configure the connection in InfiniDysk under **Settings → Indexers → Prowlarr pull sync** — do **not** add InfiniDysk under Prowlarr's Apps list, and do not use InfiniDysk's SABnzbd-compatible settings for this integration.
+infinidysk can pull its indexer list from one Prowlarr instance. Configure the connection in infinidysk under **Settings → Indexers → Prowlarr pull sync** — do **not** add infinidysk under Prowlarr's Apps list, and do not use infinidysk's SABnzbd-compatible settings for this integration.
 
 | Setting | Config key | Environment variable | Default |
 |---------|------------|----------------------|---------|
@@ -45,9 +45,9 @@ exceed the 15-second budget are reported as `... timed out after 15 seconds; rou
 in Settings and logs. See [Docker hostnames and proxies](/configuration/arrs/#docker-hostnames-and-proxies)
 for details.
 
-Sync imports searchable Usenet indexers and points each one at Prowlarr's per-indexer Newznab proxy (`{prowlarrUrl}/{indexerId}/api`). Prowlarr owns each managed entry's name, proxy URL, API key, and enabled state. InfiniDysk preserves local tuning such as rate limits, filters, category overrides, proxy, TLS, timeout, max response, and user agents. Manually configured indexers are never changed or removed.
+Sync imports searchable Usenet indexers and points each one at Prowlarr's per-indexer Newznab proxy (`{prowlarrUrl}/{indexerId}/api`). Prowlarr owns each managed entry's name, proxy URL, API key, and enabled state. infinidysk preserves local tuning such as rate limits, filters, category overrides, proxy, TLS, timeout, max response, and user agents. Manually configured indexers are never changed or removed.
 
-Entries that disappear or become unsupported in Prowlarr are removed only when they are marked as Prowlarr-managed. Search profiles are updated in the same write for managed renames and removals. If Prowlarr is unavailable or returns an invalid response, InfiniDysk keeps the complete last-good indexer configuration and reports the failure in Settings.
+Entries that disappear or become unsupported in Prowlarr are removed only when they are marked as Prowlarr-managed. Search profiles are updated in the same write for managed renames and removals. If Prowlarr is unavailable or returns an invalid response, infinidysk keeps the complete last-good indexer configuration and reports the failure in Settings.
 
 :::caution[Headless ownership]
 Pull sync writes imported indexers to SQLite, so `indexers.instances` must **not** be managed with `NZBDAV_CONFIG__INDEXERS__INSTANCES`. The Prowlarr connection settings themselves may be supplied by GUI or `NZBDAV_CONFIG__PROWLARR__...`. If `profiles.instances` is environment-managed, a Prowlarr rename or removal that requires profile-reference changes is rejected rather than leaving stale references.

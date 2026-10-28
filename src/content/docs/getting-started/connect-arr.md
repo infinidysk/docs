@@ -1,7 +1,7 @@
 ---
 title: "Connect Radarr / Sonarr"
 ---
-InfiniDysk speaks the SABnzbd API surface \*Arr apps expect. Hostnames below assume a shared Docker network.
+infinidysk speaks the SABnzbd API surface Arr apps expect. Hostnames below assume a shared Docker network.
 
 The [Setup Guide](/getting-started/setup-guide/) can collect and test Radarr/Sonarr connections
 and displays the download-client values below. Use this page for the complete
@@ -16,7 +16,7 @@ In Radarr or Sonarr → **Settings** → **Download Clients** → **Add** → **
 | Name | `InfiniDysk` |
 | Host | `nzbdav` (or reachable hostname) |
 | Port | `3000` |
-| API Key | InfiniDysk **Settings → SABnzbd → API Key** |
+| API Key | infinidysk **Settings → SABnzbd → API Key** |
 | Category | Match categories you configured (e.g. `movies`, `tv`) |
 
 Test the connection. Prefer `addfile` when clients can upload NZB bytes; `addurl` to private indexers needs [Trusted local hosts](/configuration/sabnzbd/) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a>.
@@ -25,21 +25,21 @@ Test the connection. Prefer `addfile` when clients can upload NZB bytes; `addurl
 
 Enable **Remove Completed** under **Completed Download Handling** on the
 download client's edit dialog. Enable **Show Advanced** to see it. The global
-**Completed Download Handling → Enable** must also be on. After the \*Arr imports
-a release, it removes that release's SABnzbd history entry. InfiniDysk never
+**Completed Download Handling → Enable** must also be on. After the Arr imports
+a release, it removes that release's SABnzbd history entry. infinidysk never
 deletes mounted content in response: imported library links and `.strm` files
 keep working, and Health repair and PAR2 recovery still work.
 
 Keeping the history entry prevents **Remove Orphaned Files** from deleting a
-file, even after the \*Arr replaces it with an upgrade or re-grab. Without the
+file, even after the Arr replaces it with an upgrade or re-grab. Without the
 setting, superseded grabs build up until
 [SAB history retention](/configuration/maintenance/) prunes their history
 entries while keeping the mounts. Unlinked mounts may then become eligible for
 **Remove Orphaned Files**. Health can report them as **Not library linked** in the
-meantime. The \*Arr only removes downloads it grabbed, so releases grabbed by
+meantime. The Arr only removes downloads it grabbed, so releases grabbed by
 [Profiles](/configuration/profiles/) are not affected.
 
-## Register \*Arr in InfiniDysk
+## Register Arr in infinidysk
 
 **Settings → Radarr/Sonarr**:
 
@@ -51,16 +51,16 @@ Registered and enabled instances light up the Overview **Arr Health** widget <a 
 
 ## Align import paths
 
-| Strategy | InfiniDysk setting | \*Arr / media server |
+| Strategy | infinidysk setting | Arr / media server |
 |----------|----------------|---------------------|
-| Symlinks | Rclone mount dir e.g. `/mnt/remote/nzbdav` | Same path must exist inside \*Arr |
-| STRM | Completed dir e.g. `/mnt/completed-downloads` + Base URL | The completed-downloads path must exist at the same absolute path inside \*Arr; the media server must reach Base URL |
+| Symlinks | Rclone mount dir e.g. `/mnt/remote/nzbdav` | Same path must exist inside Arr |
+| STRM | Completed dir e.g. `/mnt/completed-downloads` + Base URL | The completed-downloads path must exist at the same absolute path inside Arr; the media server must reach Base URL |
 
-Enable **Repairs** with a **Library Directory** once paths and \*Arr instances exist — [Repairs](/configuration/repairs/).
+Enable **Repairs** with a **Library Directory** once paths and Arr instances exist — [Repairs](/configuration/repairs/).
 
 ## Rejected compressed archives
 
-InfiniDysk intentionally rejects compressed RAR and 7z archive contents. Direct
+infinidysk intentionally rejects compressed RAR and 7z archive contents. Direct
 streaming and seeking require stored, uncompressed payloads: RAR `m0` or 7z
 Copy/store. This is a streaming design limitation, not an application error.
 Choose another release with stored archives or direct media files. This restriction
@@ -73,7 +73,7 @@ replacement handling. Enable automatic redownload of failed downloads in the
 Arr application's download-client settings to request a replacement search;
 interactive-search grabs have a separate automatic-redownload setting.
 
-InfiniDysk does not directly force an Arr search for this rejection. Manually
+infinidysk does not directly force an Arr search for this rejection. Manually
 uploaded NZBs without matching Arr grab history do not trigger that automatic
 workflow, and a search can only grab another release if an eligible one is available.
 

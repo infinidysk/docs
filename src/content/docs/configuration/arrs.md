@@ -28,7 +28,7 @@ rules. Typical mappings:
 - **Remove** — already imported
 - **Do Nothing** — ID mismatches and similar manual-import cases
 
-Any action other than **Do Nothing** tells the Arr to delete the queue record with `removeFromClient=true`. The Arr then removes the download from InfiniDysk History even when its own **Remove Completed** checkbox is off. That is independent of mounted files, which stay.
+Any action other than **Do Nothing** tells the Arr to delete the queue record with `removeFromClient=true`. The Arr then removes the download from infinidysk History even when its own **Remove Completed** checkbox is off. That is independent of mounted files, which stay.
 
 ## Docker hostnames and proxies {#docker-hostnames-and-proxies}
 
@@ -38,7 +38,7 @@ contacted **directly**, even when the container has `HTTP_PROXY` / `HTTPS_PROXY`
 Names like that only resolve on the local container network, so sending them through a
 proxy produced connection failures that disappeared when the host was changed to an IP
 address. Dotted hostnames and IP literals keep the normal proxy policy, including
-`NO_PROXY`. This applies only to InfiniDysk's own Arr and Prowlarr management calls;
+`NO_PROXY`. This applies only to infinidysk's own Arr and Prowlarr management calls;
 imported indexer traffic still follows the per-indexer proxy settings.
 
 Connections to Arr and Prowlarr hosts are recycled after two minutes so a stale
@@ -64,7 +64,7 @@ representative queue reason is:
 > Episode 11x01 was unexpected considering the
 > American.Dad.S10E01... folder name
 
-Sonarr determines episode identity and import eligibility. InfiniDysk cannot
+Sonarr determines episode identity and import eligibility. infinidysk cannot
 remap the episode or force Sonarr to import it, but it can automatically
 resolve the stuck queue record.
 
@@ -89,7 +89,7 @@ searches while continuing to remove and blocklist rejected releases.
 
 **Remove, Blocklist, and Search** is bounded to **3 automatic replacement searches in
 30 minutes per Radarr movie or Sonarr episode** by default. Once a media item reaches
-that limit, InfiniDysk still removes and blocklists its rejected release but does not
+that limit, infinidysk still removes and blocklists its rejected release but does not
 start another automatic search. Adjust both values in **Automatic queue management**
 when a library needs a stricter or more permissive policy. The same per-media cap also
 bounds replacement searches triggered by health-check repairs, which additionally keep
@@ -104,7 +104,7 @@ Disabling an instance opts it out of stuck-queue actions, Arr-linked repairs, an
 ## Blocklisted re-grab protection <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a>
 
 When a queue rule successfully applies **Remove, Blocklist** or **Remove, Blocklist, Search**,
-InfiniDysk remembers a bounded sample of article IDs from the removed download. A later NZB
+infinidysk remembers a bounded sample of article IDs from the removed download. A later NZB
 containing any remembered article is failed in the download queue before import or Usenet article
 requests, even when another indexer supplied it under a different release name. Plain **Remove**
 does not mark an upload as rejected.
@@ -119,7 +119,7 @@ blocklist action succeeded.
 
 ## Arr Health on the Overview dashboard <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
-When at least one Radarr or Sonarr instance is configured **and enabled**, Overview shows a compact **Arr Health** section: instance reachability, imports in the selected dashboard window, median/P95 handoff latency (InfiniDysk download completed → Arr `DownloadFolderImported`), queue depth, and items waiting unusually long for import.
+When at least one Radarr or Sonarr instance is configured **and enabled**, Overview shows a compact **Arr Health** section: instance reachability, imports in the selected dashboard window, median/P95 handoff latency (infinidysk download completed → Arr `DownloadFolderImported`), queue depth, and items waiting unusually long for import.
 
 ## Awaiting detail <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a>
 
@@ -143,4 +143,4 @@ Back up `/config` before upgrading: the metrics store gains an additive `ArrImpo
 
 Headless `NZBDAV_CONFIG__ARR__INSTANCES` JSON that includes the new `Name` / `Enabled` properties **cannot roll back** to an older image (structured ENV config is not forward compatible — see [headless](/configuration/headless/)).
 
-[Connect *Arr](/getting-started/connect-arr/)
+[Connect Arr](/getting-started/connect-arr/)

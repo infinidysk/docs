@@ -1,10 +1,10 @@
 ---
 title: "Mounting WebDAV"
 ---
-Symlink imports need the InfiniDysk WebDAV tree on the host filesystem. Use rclone (sidecar or host mount).
+Symlink imports need the infinidysk WebDAV tree on the host filesystem. Use rclone (sidecar or host mount).
 
 The guided [Setup Guide](/getting-started/setup-guide/) shows these sidecar
-flags, configures RC notifications, tests the connection, and disables InfiniDysk
+flags, configures RC notifications, tests the connection, and disables infinidysk
 Segment Cache for Symlink/Plex libraries.
 
 ## Prepare the mount point
@@ -37,7 +37,7 @@ pass = your-obscured-password
 :::
 
   The rclone sidecar is a backend service and shares the Compose network with
-  InfiniDysk. Point it directly at the backend on port `8080`. Sending WebDAV
+  infinidysk. Point it directly at the backend on port `8080`. Sending WebDAV
   traffic through the frontend on port `3000` adds proxy overhead and reduces
   streaming performance. Use the frontend URL only when an rclone client cannot
   access the backend service over the network. Do not publish backend port `8080`

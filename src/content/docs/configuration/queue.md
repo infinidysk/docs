@@ -35,7 +35,7 @@ Playback has a separate connection budget and priority policy under
 | Maximum queued jobs <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a> | `queue.max-items` | `0` (unlimited) | Reject new SAB submissions at this queue depth |
 | Resume threshold <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a> | `queue.resume-threshold` | `0` | Resume admission at or below this depth |
 
-At the maximum, InfiniDysk returns the standard SAB-compatible
+At the maximum, infinidysk returns the standard SAB-compatible
 `{"status": false, "error": "..."}` response without storing the NZB. Sonarr
 and Radarr treat this as a temporarily unavailable download client and keep
 automatic-search releases pending for a later retry.
@@ -72,7 +72,7 @@ only when it makes no visible progress **and** fetches no segments for
 `QUEUE_ITEM_STUCK_MINUTES` (default **5**) — long silent phases that keep
 fetching (large PAR2 walks, archive header scans) are not penalized.
 
-When an item stalls, InfiniDysk pauses it (`PauseUntil` ≈ 15–20 minutes with
+When an item stalls, infinidysk pauses it (`PauseUntil` ≈ 15–20 minutes with
 jitter) and cancels the worker so the queue can move on; the item retries after
 the pause expires. After a download stalls **3** times in total the item is
 failed into history with a clear error, so Sonarr/Radarr can blocklist the

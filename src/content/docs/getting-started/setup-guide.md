@@ -1,11 +1,11 @@
 ---
 title: "Setup Guide"
-description: "Use InfiniDysk's guided setup for Plex symlinks or Emby/Jellyfin STRM playback, Arr ingestion, backups, and library health."
+description: "Use infinidysk's guided setup for Plex symlinks or Emby/Jellyfin STRM playback, Arr ingestion, backups, and library health."
 ---
 
 <span class="since">since 1.3.0</span>
 
-InfiniDysk opens **Setup Guide** after the first administrator signs in on a new
+infinidysk opens **Setup Guide** after the first administrator signs in on a new
 installation. Existing installations continue to open on **Overview** after an
 upgrade. You can run the guide at any time from the main navigation.
 
@@ -23,8 +23,8 @@ Choose the playback shape used for future imports:
 
 | Choice | Recommended cache | Required values |
 |--------|-------------------|-----------------|
-| **Symlinks · Plex** | Bounded rclone VFS cache; InfiniDysk Segment Cache is disabled | Rclone mount directory; optional RC connection |
-| **STRM · Emby/Jellyfin** | InfiniDysk Segment Cache is enabled | Completed Downloads Dir and media-server-reachable Base URL |
+| **Symlinks · Plex** | Bounded rclone VFS cache; infinidysk Segment Cache is disabled | Rclone mount directory; optional RC connection |
+| **STRM · Emby/Jellyfin** | infinidysk Segment Cache is enabled | Completed Downloads Dir and media-server-reachable Base URL |
 
 Changing strategy does not convert existing imports. Review the warning before
 applying, then use the appropriate [Maintenance](/configuration/maintenance/)
@@ -32,7 +32,7 @@ tool or a deliberate migration plan for existing files.
 
 Segment Cache is analogous in purpose to rclone VFS caching for direct WebDAV
 playback, but it is not the same read-ahead mechanism. Enabling or disabling it
-requires an InfiniDysk restart.
+requires an infinidysk restart.
 
 ## Symlink playback and rclone
 
@@ -50,12 +50,12 @@ by `NZBDAV_CONFIG__RCLONE__RC_ENABLED` is left unchanged.
 --rc-no-auth           # trusted isolated network only
 ```
 
-Enter the matching RC host and credentials in InfiniDysk, then use **Test**. If
+Enter the matching RC host and credentials in infinidysk, then use **Test**. If
 rclone exposes VFS statistics, the result includes its cache mode and read-ahead.
 A failed or unavailable connection warns but does not block setup; manually
 confirm the sidecar flags before continuing.
 
-For a separate rclone sidecar, bind `:5572` so the InfiniDysk container can
+For a separate rclone sidecar, bind `:5572` so the infinidysk container can
 reach it. `127.0.0.1:5572` is valid only when both processes share a network
 namespace. On a network that is not isolated and trusted, replace `--rc-no-auth`
 with `--rc-user` and `--rc-pass` and enter those credentials in the guide.
@@ -66,7 +66,7 @@ See [Mounting WebDAV](/guides/mounting-webdav/) for the complete Compose example
 
 Select one or more methods:
 
-- **Arr apps** — register Radarr or Sonarr with InfiniDysk, test each connection,
+- **Arr apps** — register Radarr or Sonarr with infinidysk, test each connection,
   and follow the displayed SABnzbd download-client values inside each Arr app.
 - **Built-in Search** — finish configuring [Indexers](/configuration/indexers/)
   and [Search Profiles](/configuration/profiles/) afterward.
@@ -81,7 +81,7 @@ The backup step can enable a daily schedule and set its run time and retention.
 With a PostgreSQL main database, this schedule protects only the local auxiliary
 SQLite stores; use PostgreSQL-native tooling for the main database.
 
-**Library Directory** is the organized media root visible inside the InfiniDysk
+**Library Directory** is the organized media root visible inside the infinidysk
 container, usually the parent of Radarr and Sonarr root folders. It must not be
 the rclone mount or `completed-symlinks`. You may defer it: health checks and
 PAR2 repair still run, while linked-library replacement remains limited.

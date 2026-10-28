@@ -3,7 +3,7 @@ title: "First run"
 ---
 Open `http://your-server:3000` after the container is healthy.
 
-After the first administrator login on a new installation, InfiniDysk opens the
+After the first administrator login on a new installation, infinidysk opens the
 guided **[Setup Guide](/getting-started/setup-guide/)**
 <span class="since">since 1.3.0</span>.
 It configures import strategy, the recommended cache layer, rclone or STRM paths,
@@ -13,7 +13,7 @@ main navigation. Existing installations open on **Overview** after upgrading and
 can launch the guide there when wanted.
 
 :::tip[Headless ConfigItems vs first-run account]
-You can pre-seed Usenet, WebDAV, *Arr, and other **Settings** values with
+You can pre-seed Usenet, WebDAV, Arr, and other **Settings** values with
 [`NZBDAV_CONFIG__...`](/configuration/headless/) before the first UI visit.
 The **admin username/password** for the web UI is still created here (or via your
 existing account) — that bootstrap is **not** part of the ENV overlay. If you lose
@@ -63,7 +63,7 @@ connection allocation, timeouts, buffering, and the segment cache here. See
 | **Symlinks — Plex** | Plex / real filesystem entries | **Rclone Mount Directory** (e.g. `/mnt/remote/nzbdav`) + [rclone sidecar](/guides/mounting-webdav/) |
 | **STRM Files — Emby/Jellyfin** | Emby/Jellyfin `.strm` playback | **Completed Downloads Dir** + **Base URL** reachable by the media server |
 
-Copy the **API Key** from this page — *Arr download clients need it.
+Copy the **API Key** from this page — Arr download clients need it.
 
 Queue concurrency and admission limits are under
 [Settings → Queue](/configuration/queue/).

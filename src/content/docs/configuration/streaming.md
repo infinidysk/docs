@@ -109,13 +109,13 @@ Installs upgraded from an earlier release that never changed the setting keep th
 silently. Review it under **Settings → Streaming** and turn it off if you do not need it.
 
 When enabled, the cache can improve repeated reads and seeks, but it also writes decoded
-segments to the cache path. InfiniDysk does not automatically
+segments to the cache path. infinidysk does not automatically
 classify that storage, so verify that `/config/segment-cache` (or your configured
 path) is local SSD/NVMe or other storage that can safely absorb the extra writes.
 Disable the cache for slow disks, network mounts, or flash storage with limited
 write endurance; alternatively, point **Cache path** at suitable local storage.
 
-When Segment Cache is **disabled** at startup, InfiniDysk purges any leftover cache
+When Segment Cache is **disabled** at startup, infinidysk purges any leftover cache
 files from the cache path in the background so a previously enabled cache does not
 keep occupying disk. Only files matching the cache layout are removed; unrelated
 files placed in that directory are left alone.
@@ -152,7 +152,7 @@ adds disk writes without improving seeks. Keep one or the other: the
 [Setup Guide](/getting-started/setup-guide/) disables Segment Cache for Symlinks
 and recommends the bounded rclone VFS cache instead.
 
-InfiniDysk cannot always inspect the mount, so the Streaming tab shows a dismissable
+infinidysk cannot always inspect the mount, so the Streaming tab shows a dismissable
 warning whenever Segment Cache is on for a Symlinks library. Dismissal is remembered
 per browser. When the [rclone RC connection test](/configuration/rclone/) can read VFS statistics
 and confirms read-ahead is enabled, the Rclone tab shows a definitive warning instead.
@@ -168,7 +168,7 @@ bytes across all concurrent streams.
 When **Batched article downloads** is on, WebDAV BODY requests start in
 batches of up to the configured streaming batch width (default four articles
 on one connection). If playback starves waiting for the next segment,
-InfiniDysk narrows that batch width (`4 → 2 → 1`) so more connections can
+infinidysk narrows that batch width (`4 → 2 → 1`) so more connections can
 work in parallel. The width recovers gradually when the consumer remains
 ahead, but never above the configured maximum.
 
@@ -181,7 +181,7 @@ starve other concurrent streams via the shared in-flight article budget.
 ## Container-aware gap fill
 
 After every provider and fallback Message-ID confirms an article is missing or
-corrupt, InfiniDysk normally emits the same number of zero bytes to preserve
+corrupt, infinidysk normally emits the same number of zero bytes to preserve
 later file offsets. For direct MPEG-TS files (`.ts`, `.m2ts`, `.mts`),
 container-aware gap fill emits packet-aligned null packets instead when exact
 segment offsets are available.

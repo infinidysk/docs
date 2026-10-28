@@ -39,7 +39,7 @@ including yEnc headers, trailers, and bodies drained after an early close or
 cancellation. NNTP command/status traffic and the terminating dot line are
 excluded. The counter is independent of Overview statistics and analytics
 retention, and a reset takes effect at the configured instant. On the first
-startup after upgrading, InfiniDysk preserves the legacy displayed value; all
+startup after upgrading, infinidysk preserves the legacy displayed value; all
 traffic received after that uses exact accounting.
 
 Back up `/config` before upgrading; the metrics migration applies automatically
@@ -51,11 +51,11 @@ Disabling SSL stores/sends credentials in cleartext on the wire — only for tru
 
 ## Connection budgets <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
-**Provider Connection Limit** is the absolute number of connections InfiniDysk may use for the
+**Provider Connection Limit** is the absolute number of connections infinidysk may use for the
 provider account. Set it no higher than the provider allows, or lower when the account is shared
 with another client.
 
-**Transfer Connections** limits article-body traffic independently. Once it is set, InfiniDysk
+**Transfer Connections** limits article-body traffic independently. Once it is set, infinidysk
 uses the rest of the provider budget for lightweight metadata commands such as `STAT`, `HEAD`,
 and `DATE`. The editor previews **Metadata Capacity** from the configured values; after saving,
 provider cards use the current effective provider limit when live runtime data is available. The
@@ -98,9 +98,9 @@ budget is exhausted. It never rewrites or probes above **Provider Connection Lim
 1.3.0 could sweep above the saved connection count; raise Provider Connection Limit first if you
 want Auto-tune to test a higher count. When the result says speed was still climbing at the ceiling,
 the provider may benefit from a higher limit if the account permits it. If the provider later
-refuses its configured ceiling, InfiniDysk lowers the effective runtime limit without changing
+refuses its configured ceiling, infinidysk lowers the effective runtime limit without changing
 either saved value; provider cards and metrics then show capacities based on that learned limit.
-When the refusal does not state a number (for example `502 Too many connections`), InfiniDysk
+When the refusal does not state a number (for example `502 Too many connections`), infinidysk
 holds the provider at the connections it already has open, keeps them serving, retries new opens
 after a short fixed delay, and widens the limit by one connection every 5 seconds until the
 provider refuses again or the configured limit is reached.
@@ -155,7 +155,7 @@ rebuilt when these keys change alone.
 ## Article-miss negative cache <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
 After a provider (or [storage group](/features/multi-provider/)) reports a definitive article miss
-(NNTP 430 or provider 451), InfiniDysk remembers that miss so later streaming/batch reads skip
+(NNTP 430 or provider 451), infinidysk remembers that miss so later streaming/batch reads skip
 re-probing the same provider for the same article until the TTL expires. Transient failures
 (timeouts, network, corrupt articles) are never cached.
 

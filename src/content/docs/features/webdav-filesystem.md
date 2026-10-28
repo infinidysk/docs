@@ -1,7 +1,7 @@
 ---
 title: "WebDAV filesystem"
 ---
-InfiniDysk exposes NZB contents as a browsable tree over WebDAV and the **Explorer** UI.
+infinidysk exposes NZB contents as a browsable tree over WebDAV and the **Explorer** UI.
 
 Typical top-level paths:
 
@@ -75,7 +75,7 @@ on demand in the player.
 **Search in Arr** is a confirmed, non-destructive request to enabled
 [Radarr/Sonarr instances](/configuration/arrs/) that own the file. It requires a recognized
 link in the configured Library Directory and matching ownership paths; a download ID alone is
-not enough. Every enabled instance must be checked before any search is requested. InfiniDysk
+not enough. Every enabled instance must be checked before any search is requested. infinidysk
 does not remove or blocklist the current file, alter monitoring or quality rules, or spend the
 automatic replacement-search budget. Arr's quality, cutoff, and monitoring decisions still
 apply, so a search receipt does not guarantee a replacement download. Multiple owners can

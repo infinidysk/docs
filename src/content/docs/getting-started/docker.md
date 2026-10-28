@@ -1,14 +1,14 @@
 ---
 title: "Docker"
-description: "Run InfiniDysk in Docker with Docker Compose or docker run. Includes volume mounts, environment variables, and reverse proxy setup."
+description: "Run infinidysk in Docker with Docker Compose or docker run. Includes volume mounts, environment variables, and reverse proxy setup."
 ---
 
-InfiniDysk ships as a single multi-arch image: `ghcr.io/infinidysk/infinidysk`. The container runs the frontend (public port `3000`) and backend (internal `8080`).
+infinidysk ships as a single multi-arch image: `ghcr.io/infinidysk/infinidysk`. The container runs the frontend (public port `3000`) and backend (internal `8080`).
 
 The examples use `:latest` (current stable). See [Release channels and tags](/getting-started/#release-channels-and-tags) for the `lts`, `rc`, and `dev` channels — and pin an exact version tag (`v1.2.3`) when you want reproducible deploys.
 
 :::tip[Hosted with DUMB]
-Prefer a batteries-included Arr stack? InfiniDysk is a **fully supported core module** in [Debrid Unlimited Media Bridge (DUMB)](https://dumbarr.com/) — see the [InfiniDysk service guide](https://dumbarr.com/services/core/nzbdav/) and [setup options](/getting-started/#setup-and-hosting-options).
+Prefer a batteries-included Arr stack? infinidysk is a **fully supported core module** in [Debrid Unlimited Media Bridge (DUMB)](https://dumbarr.com/) — see the [infinidysk service guide](https://dumbarr.com/services/core/nzbdav/) and [setup options](/getting-started/#setup-and-hosting-options).
 :::
 
 :::tip[IPv6-only hosts]
@@ -44,14 +44,14 @@ services:
 docker compose up -d
 ```
 
-Set `PUID`/`PGID` from `id` on the host. Map `/mnt` (or your media paths) so completed downloads and library folders share paths with *Arr and media servers.
+Set `PUID`/`PGID` from `id` on the host. Map `/mnt` (or your media paths) so completed downloads and library folders share paths with Arr and media servers.
 
 The container fails startup before migrations if `/config` is missing, is a file, or is not writable by `PUID`/`PGID`. Ownership repair is best-effort; ACLs and group-writable mounts are accepted when the runtime user can create and delete a probe file. The image already contains an empty `/config` directory, so a path existing inside the container is not proof a host volume is mounted. The frontend session key at `/config/session.key` is mode `0600`; if your supervisor repairs ownership using an allowlist, include that file without recursively chowning `blobs/`.
 
 :::tip[Headless Settings]
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
-Prefer infrastructure-as-code for Usenet, WebDAV, *Arr, and other Settings? Use authoritative
+Prefer infrastructure-as-code for Usenet, WebDAV, Arr, and other Settings? Use authoritative
 [`NZBDAV_CONFIG__...`](/configuration/headless/) variables — see the
 [fully hydrated Compose example](/configuration/headless/#fully-hydrated-compose-example).
 Process variables on this page (`PUID`, `TZ`, …) stay separate.
@@ -59,7 +59,7 @@ Process variables on this page (`PUID`, `TZ`, …) stay separate.
 
 ## Change the published port
 
-Compose port mappings use `HOST_PORT:CONTAINER_PORT`. To open InfiniDysk on port
+Compose port mappings use `HOST_PORT:CONTAINER_PORT`. To open infinidysk on port
 `3001` without changing the ports inside the container:
 
 ```yaml
@@ -105,11 +105,11 @@ Update the Compose healthcheck to use the effective frontend port
 when generated links should use the new public port.
 
 :::note[DUMB deployments]
-DUMB builds and launches InfiniDysk directly rather than using this image's
+DUMB builds and launches infinidysk directly rather than using this image's
 entrypoint. Change DUMB's `nzbdav.frontend_port` and
 `nzbdav.backend_port` settings instead; DUMB supplies the corresponding
 process environment automatically. See the
-[DUMB InfiniDysk service guide](https://dumbarr.com/services/core/nzbdav/#configuration-in-dumb_configjson).
+[DUMB infinidysk service guide](https://dumbarr.com/services/core/nzbdav/#configuration-in-dumb_configjson).
 :::
 
 ## What the image does

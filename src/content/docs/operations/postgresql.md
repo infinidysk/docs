@@ -3,7 +3,7 @@ title: "PostgreSQL"
 ---
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
-InfiniDysk defaults to SQLite. For deployments where concurrent metadata writers
+infinidysk defaults to SQLite. For deployments where concurrent metadata writers
 need a server database, the main operational database can use an externally
 managed PostgreSQL instance.
 
@@ -62,7 +62,7 @@ a different user can always overwrite it.
 | Field | Meaning |
 |-------|---------|
 | `contract` | Stable contract identifier (`infinidysk-db-v1`); bumped only when the contract shape or semantics change. Pin against this. |
-| `appVersion` | Running InfiniDysk version. Informational only — the binary and the database can be on different schemas, so do not use it as a schema proxy. |
+| `appVersion` | Running infinidysk version. Informational only — the binary and the database can be on different schemas, so do not use it as a schema proxy. |
 | `generatedAtUtc` | When the contract was written. |
 | `provider` | Main database provider: `sqlite` or `postgres`. |
 | `terminalMigration` | Newest applied EF migration id on the main database. |
@@ -103,4 +103,4 @@ postgres:
 ```
 
 The application runs its normal `--db-migration` startup flow against this
-database. PostgreSQL itself is not bundled in the InfiniDysk image.
+database. PostgreSQL itself is not bundled in the infinidysk image.

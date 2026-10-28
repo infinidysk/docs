@@ -88,9 +88,9 @@ When a key is ENV-managed:
 Even when Compose uses `${WEBDAV_PASS:?missing}` placeholders, resolved secrets are visible to the container runtime and inspection tools (`docker inspect`, orchestrator secret mounts that materialize as env, etc.). Prefer an uncommitted `.env` file or orchestrator secret injection. **Never** commit real credentials or paste resolved values into docs, issues, or logs.
 :::
 
-Headless stacks must still set **`FRONTEND_BACKEND_API_KEY`** for frontend↔backend proxy authentication. Mirror the same value into **`NZBDAV_CONFIG__API__KEY`** so *Arr/SAB and the Settings UI agree on the download-client API key.
+Headless stacks must still set **`FRONTEND_BACKEND_API_KEY`** for frontend↔backend proxy authentication. Mirror the same value into **`NZBDAV_CONFIG__API__KEY`** so Arr/SAB and the Settings UI agree on the download-client API key.
 
-`NZBDAV_CONFIG__WEBDAV__PASS` accepts plaintext; InfiniDysk hashes it at overlay load (same as the Settings UI). The example uses a Compose-only placeholder name `WEBDAV_PASS` — the legacy fallback variable remains **`WEBDAV_PASSWORD`** ([environment variables](/configuration/environment-variables/)). Other secrets in JSON (Usenet `Pass`, indexer / *Arr API keys, profile tokens) remain in the ENV JSON as supplied.
+`NZBDAV_CONFIG__WEBDAV__PASS` accepts plaintext; infinidysk hashes it at overlay load (same as the Settings UI). The example uses a Compose-only placeholder name `WEBDAV_PASS` — the legacy fallback variable remains **`WEBDAV_PASSWORD`** ([environment variables](/configuration/environment-variables/)). Other secrets in JSON (Usenet `Pass`, indexer / Arr API keys, profile tokens) remain in the ENV JSON as supplied.
 
 ## Fully hydrated Compose example
 
@@ -187,7 +187,7 @@ Multi-line `>-` YAML folds to a single line. Nested `${...}` inside JSON strings
 
 Use **PascalCase** property names exactly as the Settings UI persists them (`Providers`, `Type`, `Host`, `RadarrInstances`, `Indexers`, `Profiles`, …). camelCase or misspelled keys abort startup with an error naming the JSON path of the offending property, so a typo cannot leave you with empty or partial configuration.
 
-Provider `Type` for **Pool Connections** is `1` (`0` = Disabled, `2` = BackupAndStats, `3` = BackupOnly — see [Usenet](/configuration/usenet/)). Omit `ProviderId` in ENV JSON — InfiniDysk preserves matching SQLite ids by host/port/user, and otherwise derives one from host, port and user, so a pure ENV-only install keeps the same ids across restarts.
+Provider `Type` for **Pool Connections** is `1` (`0` = Disabled, `2` = BackupAndStats, `3` = BackupOnly — see [Usenet](/configuration/usenet/)). Omit `ProviderId` in ENV JSON — infinidysk preserves matching SQLite ids by host/port/user, and otherwise derives one from host, port and user, so a pure ENV-only install keeps the same ids across restarts.
 
 Provider `MaxConnections` is the provider-wide connection ceiling. Optional
 `MaxTransferConnections` enables operation-aware budgeting and must be between `1` and

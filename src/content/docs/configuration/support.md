@@ -3,9 +3,9 @@ title: "Technical support pack"
 ---
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
-**Settings → Support** generates a ZIP you can provide to trusted InfiniDysk support
+**Settings → Support** generates a ZIP you can provide to trusted infinidysk support
 when troubleshooting an issue. The archive is streamed to your browser and is
-not retained by InfiniDysk.
+not retained by infinidysk.
 
 ## Included
 
@@ -14,7 +14,7 @@ not retained by InfiniDysk.
 - Aggregate provider throughput, outage, failover, and consumption metrics
 - Historical latency phase histograms (`metrics/recent.json` → `latency24Hours`)
 
-Backend logs are memory-only and are cleared when InfiniDysk restarts. Frontend and
+Backend logs are memory-only and are cleared when infinidysk restarts. Frontend and
 container logs are not included.
 
 ## Latency phases <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>

@@ -3,19 +3,19 @@ title: "OIDC / SSO"
 ---
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
-InfiniDysk can authenticate browser sessions with any standards-compliant OpenID
+infinidysk can authenticate browser sessions with any standards-compliant OpenID
 Connect (OIDC) provider, including Authentik, Authelia, and Keycloak. OIDC is
 disabled by default and does not change WebDAV Basic authentication or API-key
 authentication.
 
-OIDC users are not written to the InfiniDysk database. A successful identity
+OIDC users are not written to the infinidysk database. A successful identity
 provider login creates the same signed frontend session used by local login,
 using a configured ID-token claim as the displayed username.
 
 ## Enable OIDC
 
-Register InfiniDysk as a confidential OIDC client in your identity provider, then
-set these variables on the InfiniDysk container:
+Register infinidysk as a confidential OIDC client in your identity provider, then
+set these variables on the infinidysk container:
 
 ```yaml
 environment:
@@ -25,7 +25,7 @@ environment:
   OIDC_REDIRECT_URI: https://nzbdav.example.com/auth/oidc/callback
 ```
 
-Restart InfiniDysk after changing OIDC variables. The login page will show both
+Restart infinidysk after changing OIDC variables. The login page will show both
 local credentials and **Sign in with SSO**.
 
 `OIDC_ISSUER`, `OIDC_CLIENT_ID`, and `OIDC_CLIENT_SECRET` must all be set.
@@ -43,12 +43,12 @@ identity provider.
 
 | Variable | Required | Default | Purpose |
 | --- | --- | --- | --- |
-| `OIDC_ISSUER` | Yes | — | OIDC issuer identifier. InfiniDysk discovers provider metadata from this issuer. |
+| `OIDC_ISSUER` | Yes | — | OIDC issuer identifier. infinidysk discovers provider metadata from this issuer. |
 | `OIDC_CLIENT_ID` | Yes | — | Confidential client identifier registered with the provider. |
 | `OIDC_CLIENT_SECRET` | Yes | — | Confidential client secret. Keep it out of logs and source control. |
 | `OIDC_REDIRECT_URI` | Recommended | `general.base-url`, then incoming request origin, plus `/auth/oidc/callback` | Public callback URI registered with the provider. |
 | `OIDC_SCOPES` | No | `openid profile email` | Space-separated scopes requested during login. Must include `openid`. |
-| `OIDC_USERNAME_CLAIM` | No | `preferred_username` | ID-token claim used as the displayed username. InfiniDysk falls back to `preferred_username`, `email`, then `sub`. |
+| `OIDC_USERNAME_CLAIM` | No | `preferred_username` | ID-token claim used as the displayed username. infinidysk falls back to `preferred_username`, `email`, then `sub`. |
 | `OIDC_ADMIN_CLAIM` | No | — | Claim inspected to decide whether the session is admin or read-only. If omitted, all OIDC users are admins. |
 | `OIDC_ADMIN_CLAIM_VALUE` | With `OIDC_ADMIN_CLAIM` | — | Exact string or array member that grants the admin role. If the claim is configured without a value, all OIDC users are read-only. |
 
@@ -66,7 +66,7 @@ environment:
   OIDC_ADMIN_CLAIM_VALUE: nzbdav-admins
 ```
 
-InfiniDysk accepts either a string claim or an array claim. A matching value grants
+infinidysk accepts either a string claim or an array claim. A matching value grants
 `admin`; every other authenticated OIDC user receives `readonly`.
 
 :::caution[Read-only is a UI role]
@@ -86,7 +86,7 @@ change WebDAV credentials, SABnzbd API keys, or other machine-client access.
 
 1. Create an OAuth2/OpenID Provider and a linked application.
 2. Use a confidential client and the Authorization Code flow.
-3. Add the exact InfiniDysk callback URI as a strict redirect URI.
+3. Add the exact infinidysk callback URI as a strict redirect URI.
 4. Include `openid`, `profile`, and `email` scopes.
 5. To map roles, expose group membership in the ID token and configure
    `OIDC_ADMIN_CLAIM=groups`.
@@ -95,7 +95,7 @@ change WebDAV credentials, SABnzbd API keys, or other machine-client access.
 
 ### Authelia
 
-1. Add InfiniDysk under `identity_providers.oidc.clients` as a confidential client.
+1. Add infinidysk under `identity_providers.oidc.clients` as a confidential client.
 2. Register the exact callback URI and enable the Authorization Code flow.
 3. Allow the `openid`, `profile`, and `email` scopes.
 4. Configure the groups claim when using group-based role mapping.
@@ -115,12 +115,12 @@ change WebDAV credentials, SABnzbd API keys, or other machine-client access.
 
 ## First run and local login
 
-When OIDC is enabled, InfiniDysk skips local-account onboarding. The first
+When OIDC is enabled, infinidysk skips local-account onboarding. The first
 successful OIDC login creates a session directly without creating an
 `Accounts` row. Local login remains visible and works if a local admin account
 already exists.
 
-Application logout clears the InfiniDysk session only. It does not currently end
+Application logout clears the infinidysk session only. It does not currently end
 the identity-provider session, so selecting SSO again may sign in immediately.
 
 ## Troubleshooting
@@ -132,9 +132,9 @@ The logs identify missing variable names without printing their values.
 
 ### Redirect URI mismatch
 
-The callback URI is case-sensitive and must match exactly in InfiniDysk and the
+The callback URI is case-sensitive and must match exactly in infinidysk and the
 identity provider, including scheme, host, port, path, and any trailing slash.
-Prefer setting `OIDC_REDIRECT_URI` explicitly when InfiniDysk is behind a reverse
+Prefer setting `OIDC_REDIRECT_URI` explicitly when infinidysk is behind a reverse
 proxy.
 
 ### SSO returns to the login page
@@ -146,7 +146,7 @@ or an identity provider that did not return ID-token claims.
 ### The wrong username is displayed
 
 Set `OIDC_USERNAME_CLAIM` to a string-valued ID-token claim exposed by the
-provider. If that claim is absent or empty, InfiniDysk tries
+provider. If that claim is absent or empty, infinidysk tries
 `preferred_username`, `email`, and `sub` in that order.
 
 ### Every user is read-only

@@ -3,7 +3,7 @@ title: "Prebuilt Linux archives"
 ---
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
-Prebuilt release archives run InfiniDysk directly on Linux without Docker or a
+Prebuilt release archives run infinidysk directly on Linux without Docker or a
 source build. They include the compiled backend, frontend, production Node.js
 dependencies, and rapidyenc native library.
 

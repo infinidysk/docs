@@ -7,19 +7,19 @@ Background health monitoring, PAR2 reconstruction, and replacement of unhealthy 
 Map config keys below to `NZBDAV_CONFIG__...` with the
 [naming algorithm](/configuration/headless/#naming-algorithm)
 (`repair.enable` → `NZBDAV_CONFIG__REPAIR__ENABLE`). A Library Directory and configured
-[*Arr instances](/configuration/arrs/) are optional; they are only needed to replace linked library items.
+[Arr instances](/configuration/arrs/) are optional; they are only needed to replace linked library items.
 :::
 
 | Control | Config key | Default | Effect |
 |---------|------------|---------|--------|
-| Enable Background Repairs <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a> | `repair.enable` | on <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | Enables health checks, PAR2, and damage tolerance; Library Directory + *Arr are only needed for linked-item replacement. An explicit `false` still disables them. Existing installs that already saved `false` stay off. |
+| Enable Background Repairs <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a> | `repair.enable` | on <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | Enables health checks, PAR2, and damage tolerance; Library Directory + Arr are only needed for linked-item replacement. An explicit `false` still disables them. Existing installs that already saved `false` stay off. |
 | Health Check Concurrency <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a> | `repair.healthcheck-concurrency` | `50` | Aggregate NNTP verification-connection limit shared by background checks and queue article validation (1–200, capped by pooled provider capacity) |
 | Health Check Workers <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `repair.healthcheck-workers` | `1` | Library files checked at once (1–8). All workers share Health Check Concurrency; this setting never multiplies it |
 | Health Check Depth | `repair.healthcheck-depth` | `standard` | `quick` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a> / standard / enhanced / deep / complete. `quick` STATs only ~two dozen head/tail/stride segments per file regardless of size (bypassing the 8000-segment floor and the size/age curve) — a fast first pass that reliably tells an intact posting from one lost to takedown or retention. Small files may be fully sampled, but `quick` checks never run damage classification; pair them with a periodic deeper pass. |
 | Check older releases less thoroughly <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> | `repair.healthcheck-aging` | off | Aging taper |
-| Repair After Streaming Failures | `repair.auto-remove-after-failures` | `0` | Consecutive streaming failures before urgent repair; `0` = qualify for urgent repair immediately (removal and replacement still wait for the repair schedule and **Defer Removal After Reads**). Failures below the threshold are counted in memory and reset when InfiniDysk restarts. Once the threshold is reached and the urgent repair is scheduled, that qualification is stored with the file and survives restarts; raising the threshold afterwards defers the repair again until the new threshold is met. |
+| Repair After Streaming Failures | `repair.auto-remove-after-failures` | `0` | Consecutive streaming failures before urgent repair; `0` = qualify for urgent repair immediately (removal and replacement still wait for the repair schedule and **Defer Removal After Reads**). Failures below the threshold are counted in memory and reset when infinidysk restarts. Once the threshold is reached and the urgent repair is scheduled, that qualification is stored with the file and survives restarts; raising the threshold afterwards defers the repair again until the new threshold is met. |
 | Defer Removal After Reads (minutes) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.6.3">since 1.6.3</a> | `repair.read-hold-minutes` | `15` | Minutes (`0`–`1440`) a file stays available after its last observed read before automatic removal or replacement. `0` turns the hold off. See [Recent-read hold](#recent-read-hold). |
-| Auto-remove unlinked files only | `repair.auto-remove-unlinked-only` | on | At the threshold, linked items are removed and blocklisted through *Arr instead of force-deleted |
+| Auto-remove unlinked files only | `repair.auto-remove-unlinked-only` | on | At the threshold, linked items are removed and blocklisted through Arr instead of force-deleted |
 | Degraded damage tolerance <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a> | `repair.degraded-tolerance-enabled` | on | Keep slightly damaged videos playable instead of replacing the release. When off, every missing or corrupt article found during playback counts toward repair |
 | Track corrupt articles during playback <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a> | `repair.corruption-tracking-enabled` | on | Record streaming-confirmed corrupt articles, include them in health classification, and skip the retry storm on later reads. Only controls persistence; corruption still counts toward repair when tolerance is off |
 | Max consecutive missing segments | `repair.degraded-max-consecutive-missing` | `2` | Longest tolerable run of adjacent holes (1–2) |
@@ -32,13 +32,13 @@ Map config keys below to `NZBDAV_CONFIG__...` with the
 ## PAR2 gap repair <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 PAR2 can reconstruct missing or corrupt Usenet articles using parity in the retained NZB.
-It does not require a Library Directory or an *Arr instance; that prerequisite was removed
+It does not require a Library Directory or an Arr instance; that prerequisite was removed
 in 1.2.5. Both Background Repairs and PAR2 gap repair must be enabled.
 
 | Control | Config key | Default | Effective range or behavior |
 |---------|------------|---------|-----------------------------|
 | PAR2 gap repair | `repair.par2-enabled` | on | Background Repairs is the master switch |
-| Prefer PAR2 over *Arr replacement | `repair.par2-preferred-over-arr` | on | Try parity first; without an *Arr replacement path, PAR2 is still attempted |
+| Prefer PAR2 over Arr replacement | `repair.par2-preferred-over-arr` | on | Try parity first; without an Arr replacement path, PAR2 is still attempted |
 | Maximum missing slices | `repair.par2-max-missing-slices` | `8` | 1-64; applies to the combined unavailable slices in the recovery set, including damage found during source checks |
 | Maximum release size (GiB) | `repair.par2-max-release-gb` | `16` | 1-200; total recoverable source-volume bytes, checked before content reads |
 | Maximum repair memory (MiB) | `repair.par2-max-memory-mb` | `256` | 64-2048; conservative repair-owned working-memory budget, not total process RSS |
@@ -104,7 +104,7 @@ every background worker and queue article-existence validation. For example, fou
 50-connection limit share those 50 admissions rather than receiving 50 each.
 
 Existing numeric `repair.healthcheck-concurrency` values remain valid during upgrades, including
-headless values outside the current effective range. InfiniDysk safely limits them at runtime to at
+headless values outside the current effective range. infinidysk safely limits them at runtime to at
 least one, at most 200, and no more than the total pooled provider capacity. Existing Compose files
 therefore do not need to be changed before starting the new version.
 
@@ -119,40 +119,40 @@ connections before opening benchmark connections, so parallel workers cannot ske
 ## Re-check after provider changes <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 Changing Usenet providers can affect which library files are available. After saving provider changes,
-InfiniDysk offers to queue your library for a health re-check. This requires Background Repairs to be
+infinidysk offers to queue your library for a health re-check. This requires Background Repairs to be
 enabled; urgent repairs already queued from streaming failures keep their priority.
 
 :::note[Streaming failure repair requires Background Repairs]
 **Repair After Streaming Failures** (`repair.auto-remove-after-failures`) only takes effect when
-**Enable Background Repairs** (`repair.enable`) is on. A Library Directory and \*Arr are only
+**Enable Background Repairs** (`repair.enable`) is on. A Library Directory and Arr are only
 needed to replace linked library items. Without them, PAR2 can still reconstruct the file and
 threshold-based removal can delete unlinked items.
 :::
 
 `repair.auto-remove-after-failures` applies only to streaming-triggered failures such as missing
 articles, corrupt archives, and seeks that find missing or truncated article data. With a value
-greater than `0`, InfiniDysk waits for that many consecutive failures before it starts an urgent
+greater than `0`, infinidysk waits for that many consecutive failures before it starts an urgent
 repair. At the threshold, linked library items are removed and their original downloads are marked
-failed in \*Arr when **Auto-remove unlinked files only** is enabled. \*Arr blocklists those releases
+failed in Arr when **Auto-remove unlinked files only** is enabled. Arr blocklists those releases
 and applies its configured failed-download redownload policy. Unlinked files are removed. Disable
 that option to force-delete linked items at the threshold. With the default value `0`, failed
 unlinked files are kept and surfaced as **Action needed**; set a value greater than `0` to
 auto-remove them after repeated failures.
 
-For linked files downloaded before Arr provenance tracking was available, InfiniDysk first tries
+For linked files downloaded before Arr provenance tracking was available, infinidysk first tries
 to recover the original download from exact Arr import history, then falls back to the retained SAB
-`nzo_id`. Arr must still confirm grabbed history for that ID before InfiniDysk removes the media,
+`nzo_id`. Arr must still confirm grabbed history for that ID before infinidysk removes the media,
 marks the download failed, or requests a replacement. If that history has expired, the file remains
 untouched and is surfaced as **Action needed** instead of risking the wrong release.
 
 Successful full-file playback and a successful background health check reset the in-memory failure
-count. The count resets when InfiniDysk restarts, so it is intentionally not a durable replacement for
+count. The count resets when infinidysk restarts, so it is intentionally not a durable replacement for
 health checks.
 
 ### Recent-read hold <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.6.3">since 1.6.3</a> {#recent-read-hold}
 
 **Defer Removal After Reads** (`repair.read-hold-minutes`, default `15`, range `0`–`1440`) keeps a
-file available while it is being played. Before any automatic removal or replacement, InfiniDysk
+file available while it is being played. Before any automatic removal or replacement, infinidysk
 checks when the file was last read through WebDAV or the in-app player. If that read is more recent
 than the hold, the removal waits and the file is shown as **Action needed** until the hold expires.
 Each new read renews the deadline. Every path that points at the same library file (for example
@@ -166,13 +166,13 @@ Each new read renews the deadline. Every path that points at the same library fi
 
 Limits:
 
-- The hold is based on the last read InfiniDysk saw, not on the player's state. A pause, or
+- The hold is based on the last read infinidysk saw, not on the player's state. A pause, or
   playback served entirely from a player or rclone cache, longer than the hold is not protected.
 - Read history and pending hold deadlines are kept in memory, so a backend restart clears them.
   Urgent repair qualification is stored with the file and survives the restart.
 - Changes apply on the next repair attempt without a restart. A repair already waiting keeps its
   current deadline; lowering or disabling the hold does not shorten it.
-- The hold cannot retract a \*Arr removal that already started before a new read arrived.
+- The hold cannot retract a Arr removal that already started before a new read arrived.
 
 ## Degraded damage tolerance <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
@@ -189,10 +189,10 @@ To replace a release as soon as one article is confirmed missing or corrupt:
 1. Turn on **Enable Background Repairs**.
 2. Turn off **Degraded damage tolerance**.
 3. Leave **Repair After Streaming Failures** at `0`.
-4. Configure a Library Directory and an enabled \*Arr instance for linked replacement.
+4. Configure a Library Directory and an enabled Arr instance for linked replacement.
 
 PAR2 reconstruction runs first when **PAR2 gap repair** is enabled and preferred; disable the
-preference to go straight to \*Arr. A background PAR2 repair that cannot rebuild the damage also
+preference to go straight to Arr. A background PAR2 repair that cannot rebuild the damage also
 queues an urgent replacement. "Immediately" means the file qualifies for urgent repair at once;
 removal and replacement still wait for the next urgent health-queue slot, the repair schedule, and
 the [recent-read hold](#recent-read-hold) (15 minutes after the last read by default). Set
@@ -204,7 +204,7 @@ Limits:
   health check re-reading articles already recorded as corrupt. Routine STAT health checks do
   not download bodies, so a corrupt file that is never read is not detected.
 - Damage with a valid yEnc CRC (a bad encode posted intact) cannot be detected.
-- \*Arr replacement still requires a library link, the original download in \*Arr history,
+- Arr replacement still requires a library link, the original download in Arr history,
   an allowed repair window, and room under replacement-loop protection and search budgets.
   Otherwise the file is surfaced as **Action needed**.
 
@@ -221,7 +221,7 @@ corrected layout; they are not rewritten during upgrade.
 Health checks of plain video files no longer treat every missing Usenet segment as fatal.
 When a Standard, Enhanced, or Deep check covers **every** segment of an eligible file (files up
 to 8000 segments before aging, or any larger file whose sample still covers everything),
-InfiniDysk sweeps up all confirmed misses and classifies the damage instead of aborting on the
+infinidysk sweeps up all confirmed misses and classifies the damage instead of aborting on the
 first one. **Complete** checks always qualify. **Quick** checks never classify damage, even when
 their small file sample covers every segment. With `repair.healthcheck-aging` enabled, releases
 old enough to be sampled are not classified.
@@ -274,7 +274,7 @@ badge, a dedicated history filter, and an overview stat card.
 ## Realtime corruption detection <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 A corrupt-but-present article (right size, STAT succeeds, yEnc CRC fails) used to play as
-silent garbage. InfiniDysk now detects that on the playback path:
+silent garbage. infinidysk now detects that on the playback path:
 
 1. **Detect** — yEnc CRC failures surface as corrupt articles, including trailer-CRC
    corruption on exact-size segments in the unbuffered first-segment reader.
@@ -290,7 +290,7 @@ silent garbage. InfiniDysk now detects that on the playback path:
    fail the file and clean ones clear the record.
 5. **Escalate** — when playback actually breaks, or when tolerance is off and corruption is
    padded over, the same streaming-failure path used for missing articles runs: PAR2-first
-   when enabled, then *Arr remove-and-blocklist for linked library items with an enabled Arr
+   when enabled, then Arr remove-and-blocklist for linked library items with an enabled Arr
    instance.
 
 Disable **Track corrupt articles during playback** if you need the previous retry-only
@@ -301,9 +301,9 @@ damage budget applies.
 
 ## Replacement-loop protection <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.4">since 0.9.4</a>
 
-When *Arr imports a download instantly (for example over an rclone mount), a broken release can
+When Arr imports a download instantly (for example over an rclone mount), a broken release can
 import successfully before any health check runs. Marking an already-imported download failed does
-not reliably blocklist it, so *Arr could re-grab the identical release and loop. Two safeguards
+not reliably blocklist it, so Arr could re-grab the identical release and loop. Two safeguards
 break that cycle:
 
 - **Fail re-grabs before import.** Releases rejected by repair are remembered: when repair removes

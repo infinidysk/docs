@@ -1,7 +1,7 @@
 ---
 title: "About"
 ---
-InfiniDysk is a single product: a WebDAV + SABnzbd-compatible Usenet streaming server.
+infinidysk is a single product: a WebDAV + SABnzbd-compatible Usenet streaming server.
 
 ## Ecosystem
 
@@ -17,4 +17,4 @@ Historical stack announcement notes: [0.7.x coordinated release](/community/hist
 
 [MIT](https://github.com/infinidysk/infinidysk/blob/main/LICENSE).
 
-InfiniDysk is intended for legally obtained or public domain content only.
+infinidysk is intended for legally obtained or public domain content only.

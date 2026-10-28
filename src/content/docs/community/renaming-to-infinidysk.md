@@ -1,7 +1,7 @@
 ---
-title: "NzbDAV is now InfiniDysk"
+title: "NzbDAV is now infinidysk"
 ---
-**InfiniDysk** is the name of the project formerly known as NzbDAV. The product, maintainers, release
+**infinidysk** is the name of the project formerly known as NzbDAV. The product, maintainers, release
 history, and commitment to streaming directly from Usenet remain the same.
 
 The tagline **"The NzbDAV SuperFork"** keeps that lineage visible while giving
@@ -14,7 +14,7 @@ The old name described two implementation details — NZB documents and
 WebDAV — but it did not capture the result: an effectively infinite media
 library with almost none of the media stored locally.
 
-**InfiniDysk** combines that idea with an intentionally distinctive spelling:
+**infinidysk** combines that idea with an intentionally distinctive spelling:
 an infinite virtual disk, streamed on demand.
 
 ## The move is complete
@@ -58,6 +58,6 @@ migration instructions still visible in the app.
 
 ## Is this still the same fork?
 
-Yes. InfiniDysk remains the maintained successor and drop-in upgrade from
+Yes. infinidysk remains the maintained successor and drop-in upgrade from
 `nzbdav-dev/nzbdav v0.6.4`, with the same source history and MIT license. The
 project will keep crediting its upstream and community-fork heritage.

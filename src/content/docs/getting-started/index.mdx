@@ -1,12 +1,12 @@
 ---
 title: "Getting started"
-description: "Get started with InfiniDysk, the NzbDAV SuperFork. Install with Docker, complete first-run setup, and connect Sonarr or Radarr in minutes."
+description: "Get started with infinidysk, the NzbDAV SuperFork. Install with Docker, complete first-run setup, and connect Sonarr or Radarr in minutes."
 ---
 
 import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 :::note[Docs track latest]
-These pages describe the **latest** InfiniDysk release. Features and settings marked with a <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> pill (or similar) need at least that version — check your image tag or **Settings → About** before following a new workflow.
+These pages describe the **latest** infinidysk release. Features and settings marked with a <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> pill (or similar) need at least that version — check your image tag or **Settings → About** before following a new workflow.
 :::
 
 Choose a path based on where you are:
@@ -15,24 +15,24 @@ Choose a path based on where you are:
 	<LinkCard title="Install with Docker" description="Persistent Compose deploy, health checks, reverse-proxy notes." href="/getting-started/docker/" />
 	<LinkCard title="Migrate from another build" description="Official path from nzbdav-dev v0.6.4, plus community forks (Pukabyte, NzbDavEx)." href="/getting-started/migration/" />
 	<LinkCard title="First run" description="New installs continue from account creation; existing installs open the guide after the first administrator login following upgrade." href="/getting-started/first-run/" />
-	<LinkCard title="Connect *Arr" description="Add InfiniDysk as a SABnzbd download client in Sonarr and Radarr." href="/getting-started/connect-arr/" />
+	<LinkCard title="Connect Arr" description="Add infinidysk as a SABnzbd download client in Sonarr and Radarr." href="/getting-started/connect-arr/" />
 	<LinkCard title="Understand the flow" description="How queue → mount → stream works with media servers." href="/guides/architecture/" />
 </CardGrid>
 
 ## Prerequisites
 
 1. **Usenet provider** — NNTP host, credentials, and connection allowance.
-2. **Indexers** (optional for first play) — Newznab-compatible sources for search and *Arr.
+2. **Indexers** (optional for first play) — Newznab-compatible sources for search and Arr.
 3. **Docker** — Engine + Compose v2. Symlink imports also need Linux FUSE (`/dev/fuse`).
 
 ## Setup and hosting options
 
 | Option | Who it’s for | Start here |
 |--------|----------------|------------|
-| **Self-hosted Docker** | You run Compose (or Unraid/etc.) and wire *Arr / rclone yourself | [Docker](/getting-started/docker/) |
-| **[DUMB](https://dumbarr.com/)** (Debrid Unlimited Media Bridge) | You want InfiniDysk as a **fully supported core module** with guided onboarding and Arr wiring | [InfiniDysk on dumbarr.com](https://dumbarr.com/services/core/nzbdav/) |
+| **Self-hosted Docker** | You run Compose (or Unraid/etc.) and wire Arr / rclone yourself | [Docker](/getting-started/docker/) |
+| **[DUMB](https://dumbarr.com/)** (Debrid Unlimited Media Bridge) | You want infinidysk as a **fully supported core module** with guided onboarding and Arr wiring | [infinidysk on dumbarr.com](https://dumbarr.com/services/core/nzbdav/) |
 
-DUMB treats InfiniDysk as a first-class Usenet WebDAV / SABnzbd-compatible workflow service (`core_service: nzbdav`), including automatic Arr download-client and symlink-path integration when you select it during onboarding. Prefer DUMB’s own docs for stack-specific paths and ports; use this site for InfiniDysk Settings, features, and troubleshooting.
+DUMB treats infinidysk as a first-class Usenet WebDAV / SABnzbd-compatible workflow service (`core_service: nzbdav`), including automatic Arr download-client and symlink-path integration when you select it during onboarding. Prefer DUMB’s own docs for stack-specific paths and ports; use this site for infinidysk Settings, features, and troubleshooting.
 
 ## Release channels and tags
 

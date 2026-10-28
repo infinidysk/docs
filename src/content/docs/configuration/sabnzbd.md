@@ -11,7 +11,7 @@ Map any config key in the table to `NZBDAV_CONFIG__...` with the
 
 | Control | Config key | Default | Effect |
 |---------|------------|---------|--------|
-| API Key | `api.key` | from `FRONTEND_BACKEND_API_KEY` if unset | *Arr download client auth |
+| API Key | `api.key` | from `FRONTEND_BACKEND_API_KEY` if unset | Arr download client auth |
 | Categories | `api.categories` | env/`audio,software,tv,movies` | Letters/numbers/dashes |
 | Manual Upload Category (upload-time picker <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>) | `api.manual-category` | `uncategorized` | Queue page uploads; default for the category picker beside the Upload NZB button |
 | Import Strategy | `api.import-strategy` | `symlinks` | Symlinks (Plex) / STRM (Emby/Jellyfin) |
@@ -57,7 +57,7 @@ The sampled mode uses the same standard-depth selection as background health
 checks. It is a screen rather than a guarantee: urgent repair remains the
 backstop if an article disappears later or STAT succeeds while BODY fails.
 
-For selected categories, InfiniDysk also reads the head and tail of direct media
+For selected categories, infinidysk also reads the head and tail of direct media
 outputs before reporting a successful SAB completion <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a>. This rejects unreadable
 container headers and short reads before Sonarr or Radarr begin import. It does
 not replace streaming corruption detection or PAR2 repair: damage limited to

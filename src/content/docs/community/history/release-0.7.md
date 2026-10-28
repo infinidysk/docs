@@ -157,7 +157,7 @@ See [NNTP pipelining](/features/nntp-pipelining/) for settings and architecture.
 
 **Stability fixes reported upstream**
 
-- Idempotent **history delete** (fixes *Arr infinite retry loops on HTTP 500)
+- Idempotent **history delete** (fixes Arr infinite retry loops on HTTP 500)
 - Queue processing **starts at startup** (addresses “downloads stop until restart”)
 - Fail queue items with **missing NZB blobs** instead of blocking the entire queue
 - Provider-tagged logging for connection errors
@@ -179,7 +179,7 @@ See [NNTP pipelining](/features/nntp-pipelining/) for settings and architecture.
 | “Not connected” / `ConnectAsync` errors | UsenetSharp connection health; nzbdav pool lifecycle |
 | Downloads stop until container restart | nzbdav queue startup; NNTP pool recovery |
 | High CPU during yEnc on large segments | rapidyenc + RapidYencSharp + UsenetSharp zero-copy paths |
-| *Arr hammers history delete | nzbdav idempotent SAB history delete |
+| Arr hammers history delete | nzbdav idempotent SAB history delete |
 
 ---
 

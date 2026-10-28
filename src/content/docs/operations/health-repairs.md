@@ -25,7 +25,7 @@ Arr search; it does not remove or blocklist the current file or guarantee a repl
 ## Background repairs
 
 **Settings → Repairs** monitors mounted media, reconstructs missing segments from PAR2 parity, and
-can trigger *Arr replacements for unhealthy linked library items.
+can trigger Arr replacements for unhealthy linked library items.
 
 **Enable Background Repairs** is on by default <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>. Turn it off to stop
 background health checks, PAR2 work, and limited damage-tolerance handling. To automatically
@@ -37,9 +37,9 @@ replace linked library items, also configure:
 Tune concurrency, health-check depth, aging <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a>, and streaming-failure thresholds — [Repairs settings](/configuration/repairs/).
 
 For streaming-triggered failures, **Repair After Streaming Failures** can require consecutive
-failures before InfiniDysk starts a repair or asks *Arr to find a replacement. A successful full-file
+failures before infinidysk starts a repair or asks Arr to find a replacement. A successful full-file
 playback or background health check resets that count. The counter is in memory, so it also resets
-when InfiniDysk restarts.
+when infinidysk restarts.
 
 Corrupt-but-present articles (CRC failures on otherwise complete files) now follow the same
 escalation path when playback breaks. Confirmed corrupt segments are recorded and included in
@@ -61,9 +61,9 @@ schedules a repair or records the segment as missing.
 
 ### When files are rechecked
 
-After a successful health check, InfiniDysk schedules the next routine check after an
+After a successful health check, infinidysk schedules the next routine check after an
 interval equal to the release's current age, measured from its release date rather than
-when it was imported into InfiniDysk.
+when it was imported into infinidysk.
 
 | Release age when checked | Next routine check due |
 |--------------------------|------------------------|
@@ -109,7 +109,7 @@ only available copy of an article when its provider copy is gone. For deliberate
 1. Stop the container so neither playback nor repair is using the store.
 2. Back up `/config`; move or remove only the `repair-segments` directory if discarding all
 	patches is intended. Do not remove `blobs` or the database.
-3. Restart InfiniDysk. The catalog is rebuilt; missing articles must be fetched or repaired
+3. Restart infinidysk. The catalog is rebuilt; missing articles must be fetched or repaired
 	again, and may no longer be recoverable.
 
 Do not edit individual body/header files while the server runs. Lookup validates that both
@@ -143,7 +143,7 @@ bounded. See [PAR2 settings](/configuration/repairs/#par2-gap-repair-since-120) 
 
 Known unavailable/corrupt parity and infeasible repairs produce single-line warnings with a
 reason. Missing or unreadable local streaming payloads instead require operator action and
-a daily, eventually weekly, health recheck. They do not trigger *Arr deletion/blocklisting
+a daily, eventually weekly, health recheck. They do not trigger Arr deletion/blocklisting
 or a provider-repair cooldown. Restore matching metadata/blobs before retrying.
 
 ## Repair history <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>

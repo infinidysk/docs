@@ -1,7 +1,7 @@
 ---
 title: "SABnzbd API compatibility"
 ---
-InfiniDysk implements the SABnzbd-compatible operations used by Sonarr, Radarr, and similar download clients. It is not a complete replacement for SABnzbd's administrative API.
+infinidysk implements the SABnzbd-compatible operations used by Sonarr, Radarr, and similar download clients. It is not a complete replacement for SABnzbd's administrative API.
 
 ## Supported operations
 
@@ -26,7 +26,7 @@ lists are not supported. Queue statuses are `Downloading`, `Queued`, and
 `Paused`; history statuses are `Completed` and `Failed`. History additionally
 accepts `failed_only=1` as shorthand for `status=Failed`.
 
-The admin UI uses InfiniDysk-specific `sort` and `dir=asc|desc` parameters for
+The admin UI uses infinidysk-specific `sort` and `dir=asc|desc` parameters for
 display-only ordering. Queue supports `name`, `category`, `status`, and `size`;
 history also supports `completed`. Text sorting is case-insensitive. Unknown
 sort values retain the endpoint's normal order. Queue display sorting never
@@ -45,7 +45,7 @@ Per-job pause and resume accept UUID(s) via `value` (comma-separated or repeated
 target's original position and returns `{"result":{"position":N,"priority":P}}`.
 Moving across priority bands adopts the target priority. Moving a paused job into
 a non-paused band resumes it by clearing its scheduled retry delay. The
-InfiniDysk-specific `queue&name=move&value2=0|top` bulk action remains the
+infinidysk-specific `queue&name=move&value2=0|top` bulk action remains the
 shortcut for move-to-top.
 
 `mode=change_cat` sets category for queued jobs (not actively downloading). Pass `cat` / `category` plus job id(s) in `value` or `nzo_ids`. Categories must match configured API categories.
@@ -62,7 +62,7 @@ Queue JSON reports live throughput for in-progress jobs <a class="since" href="h
 - Responses are JSON. The `output=xml` option is not implemented.
 - Queue and history roots contain the fields needed by supported download clients rather than every SABnzbd UI field.
 - History has no separate archive tier. `history&name=delete` permanently removes matching history rows.
-- **Ignore SAB history limit** can ignore a client's `limit`; InfiniDysk still enforces a server-side maximum page size.
+- **Ignore SAB history limit** can ignore a client's `limit`; infinidysk still enforces a server-side maximum page size.
 - Authentication failures use HTTP error status codes instead of always returning HTTP 200 with an error body.
 - Active queue workers stay pinned at the front and are never preempted. A switch
   targeting that pinned prefix lands at the first waiting job; active sources
@@ -72,7 +72,7 @@ Queue JSON reports live throughput for in-progress jobs <a class="since" href="h
 
 ## `addurl` and private / LAN hosts <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> {#addurl-and-private-lan-hosts-since-080}
 
-`mode=addurl` fetches the NZB from the URL the download client supplies. Before each hop (including redirects), InfiniDysk rejects destinations that resolve to a non-public IP — an SSRF guard that also blocks Docker DNS / RFC1918 indexers unless allowlisted.
+`mode=addurl` fetches the NZB from the URL the download client supplies. Before each hop (including redirects), infinidysk rejects destinations that resolve to a non-public IP — an SSRF guard that also blocks Docker DNS / RFC1918 indexers unless allowlisted.
 
 Allow destinations under **Settings → SABnzbd → Trusted local hosts** (`api.addurl-trusted-hosts`):
 
@@ -91,8 +91,8 @@ The same allowlist can be set with `TRUSTED_INTERNAL_HOSTS` when the UI setting 
 
 Queue delete accepts UUID(s), repeated `value` parameters, `value=all`, or `value=all` with `cat` / `category` to clear only that category. SAB `del_files=1` has no extra effect (no incomplete-download directory).
 
-History delete accepts UUIDs, `value=all`, or `value=failed`. The admin UI can delete mounted content for completed jobs with InfiniDysk-specific `del_completed_files=1` — download clients should **not** send this after importing a symlink/STRM, or playback sources disappear. The history UI also offers **Clear failed** and **Clear all** actions that call `history&name=delete` with `value=failed` or `value=all`.
+History delete accepts UUIDs, `value=all`, or `value=failed`. The admin UI can delete mounted content for completed jobs with infinidysk-specific `del_completed_files=1` — download clients should **not** send this after importing a symlink/STRM, or playback sources disappear. The history UI also offers **Clear failed** and **Clear all** actions that call `history&name=delete` with `value=failed` or `value=all`.
 
-A History row vanishing after a successful Arr import is expected SAB-client cleanup, not a missing mount. Typical triggers: the Arr's **Remove Completed** download-client option, InfiniDysk **Automatic Queue Management** rules (those send `removeFromClient=true`, independent of Remove Completed), or a WebDAV DELETE of a `/completed-symlinks/<category>/<release>` folder. Those paths remove the history row and clear `HistoryItemId`; the WebDAV files stay.
+A History row vanishing after a successful Arr import is expected SAB-client cleanup, not a missing mount. Typical triggers: the Arr's **Remove Completed** download-client option, infinidysk **Automatic Queue Management** rules (those send `removeFromClient=true`, independent of Remove Completed), or a WebDAV DELETE of a `/completed-symlinks/<category>/<release>` folder. Those paths remove the history row and clear `HistoryItemId`; the WebDAV files stay.
 
 [SABnzbd settings](/configuration/sabnzbd/)

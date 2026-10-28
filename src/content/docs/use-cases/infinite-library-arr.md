@@ -1,5 +1,5 @@
 ---
-title: "Infinite library with *Arr"
+title: "Infinite library with Arr"
 ---
 Opinionated production path for maximum “always available” library feel with minimal local storage.
 
@@ -10,14 +10,14 @@ Opinionated production path for maximum “always available” library feel with
 3. Pick [import strategy](/guides/import-strategies/):
    - Plex → symlinks + [rclone mount](/guides/mounting-webdav/)
    - Emby/Jellyfin → STRM + Base URL
-4. [Connect Radarr/Sonarr](/getting-started/connect-arr/) as SAB client + register instances in InfiniDysk.
+4. [Connect Radarr/Sonarr](/getting-started/connect-arr/) as SAB client + register instances in infinidysk.
 5. Enable [Repairs](/configuration/repairs/) with **Library Directory**.
 6. Optional: [Watchtower](/features/watchtower/), indexer [profiles](/configuration/profiles/), [backups](/guides/backups-upgrades/).
 
 ```mermaid
 sequenceDiagram
   participant Arr as Sonarr_Radarr
-  participant NZB as InfiniDysk
+  participant NZB as infinidysk
   participant Mount as WebDAV_rclone
   participant Plex as Media_server
   Arr->>NZB: addfile NZB

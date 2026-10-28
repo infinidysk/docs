@@ -43,7 +43,7 @@ Precedence when both are present: **`NZBDAV_CONFIG__...` > SQLite/UI > legacy fa
 
 ## `SERVICE_PROVIDER` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
-Hosted InfiniDysk services can identify the service provider and mark selected
+Hosted infinidysk services can identify the service provider and mark selected
 navigation destinations as unavailable. Disabled destinations remain visible in
 the sidebar; selecting one explains that the feature is disabled by the provider
 and links to the provider's support page (or website). The provider attribution
@@ -118,7 +118,7 @@ internal ports unchanged and use a `HOST_PORT:CONTAINER_PORT` mapping. See
 [Change the published port](/getting-started/docker/#change-the-published-port)
 for bridge networking, host networking, healthcheck, and DUMB examples.
 
-`DOTNET_*` variables are .NET runtime settings rather than InfiniDysk
+`DOTNET_*` variables are .NET runtime settings rather than infinidysk
 configuration. Environment-variable numeric values are hexadecimal where the
 .NET runtime requires it. See [Memory-constrained hosts](/operations/memory-constrained-hosts/)
 before setting heap or region limits, especially on a host that enforces

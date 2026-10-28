@@ -3,7 +3,7 @@ title: "Prometheus metrics"
 ---
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
-InfiniDysk exposes Prometheus metrics at `/metrics`. The endpoint includes standard
+infinidysk exposes Prometheus metrics at `/metrics`. The endpoint includes standard
 .NET process/runtime metrics plus `nzbdav_` metrics for active streaming, seek
 latency, NNTP provider pools, circuit breakers, article outcomes, PAR2 repair,
 streaming-confirmed corrupt articles, and internal metrics-pipeline health.
@@ -18,7 +18,7 @@ never exported as labels.
 By default, direct backend scrapes are anonymous. Set
 `METRICS_REQUIRE_API_KEY=true` to require the normal `x-api-key` header for direct
 scrapes. Requests through the frontend `/metrics` proxy always require an
-authenticated InfiniDysk UI session and automatically receive the internal key.
+authenticated infinidysk UI session and automatically receive the internal key.
 
 Do not publish the backend port to untrusted networks when direct scraping is
 anonymous.

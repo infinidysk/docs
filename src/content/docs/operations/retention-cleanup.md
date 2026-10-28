@@ -13,7 +13,7 @@ Configure in **Settings → Maintenance**.
 
 ## Metrics database <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
 
-InfiniDysk stores streaming and provider metrics in a separate SQLite file (`metrics.sqlite` under `CONFIG_PATH`). Size grows with throughput because each article fetch writes a raw row to `SegmentFetches`.
+infinidysk stores streaming and provider metrics in a separate SQLite file (`metrics.sqlite` under `CONFIG_PATH`). Size grows with throughput because each article fetch writes a raw row to `SegmentFetches`.
 
 | Tier | Tables | Default retention |
 |------|--------|-------------------|
@@ -44,13 +44,13 @@ Back up `/config` and pause Arr imports before running cleanup. Restore the miss
 
 ## Orphaned files
 
-**Remove Orphaned Files** (Maintenance) deletes WebDAV files that are not linked from the library directory and are no longer tied to a SAB history row. Generated STRM sidecars owned by an orphaned item are deleted with it <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>. Supports dry run. Schedule optional daily cleanup — set container `TZ`. Direct WebDAV or rclone playback is not a library link, and neither are sidecars under the configured completed-downloads directory <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> — those are InfiniDysk's own outputs, not library links, even when the completed-downloads directory sits inside the Library Directory.
+**Remove Orphaned Files** (Maintenance) deletes WebDAV files that are not linked from the library directory and are no longer tied to a SAB history row. Generated STRM sidecars owned by an orphaned item are deleted with it <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>. Supports dry run. Schedule optional daily cleanup — set container `TZ`. Direct WebDAV or rclone playback is not a library link, and neither are sidecars under the configured completed-downloads directory <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> — those are infinidysk's own outputs, not library links, even when the completed-downloads directory sits inside the Library Directory.
 
-**Library Directory** must be the organized library root that contains your Arr-imported symlinks or STRMs (the parent of your Radarr/Sonarr root folders). It must be visible inside the InfiniDysk container. Do not point it at the rclone mount (`rclone.mount-dir`) or at `/completed-symlinks` — that folder is InfiniDysk's virtual view of current History rows, so scanning it cannot protect files after history is cleared. Remove Orphaned Files aborts (dry run included) when Library Directory is the mount or a path inside it.
+**Library Directory** must be the organized library root that contains your Arr-imported symlinks or STRMs (the parent of your Radarr/Sonarr root folders). It must be visible inside the infinidysk container. Do not point it at the rclone mount (`rclone.mount-dir`) or at `/completed-symlinks` — that folder is infinidysk's virtual view of current History rows, so scanning it cannot protect files after history is cleared. Remove Orphaned Files aborts (dry run included) when Library Directory is the mount or a path inside it.
 
 If more than 90% of eligible WebDAV files appear unlinked, a normal run is blocked until you run and review a fresh dry run. That approval lasts 15 minutes, is bound to the orphan candidates, library links, configured paths, and recorded generated-sidecar state, and is consumed after one cleanup attempt.
 
-History entries disappearing after an Arr import are client-initiated cleanup, not InfiniDysk deleting the mount: the Arr's **Remove Completed** setting, InfiniDysk **Automatic Queue Management** rules that call the Arr with `removeFromClient=true`, or a WebDAV DELETE of a release folder under `/completed-symlinks`. Mounted files stay streamable; only the History row is removed.
+History entries disappearing after an Arr import are client-initiated cleanup, not infinidysk deleting the mount: the Arr's **Remove Completed** setting, infinidysk **Automatic Queue Management** rules that call the Arr with `removeFromClient=true`, or a WebDAV DELETE of a release folder under `/completed-symlinks`. Mounted files stay streamable; only the History row is removed.
 
 ## NZB file backups
 

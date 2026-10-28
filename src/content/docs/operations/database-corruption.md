@@ -17,7 +17,7 @@ Corruption is almost always environmental:
 - **Unclean shutdowns**: container killed mid-write (`docker kill`, OOM killer, power loss).
 - **Failing or full storage** underneath `/config`.
 
-InfiniDysk runs SQLite in WAL mode with `synchronous=NORMAL`, which mitigates but cannot prevent corruption on filesystems that lie about durability.
+infinidysk runs SQLite in WAL mode with `synchronous=NORMAL`, which mitigates but cannot prevent corruption on filesystems that lie about durability.
 
 ## Recovery
 
