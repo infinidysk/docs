@@ -15,7 +15,7 @@ Set an explicit **In-flight article budget** in Settings → Streaming on small
 hosts. Also cap provider connections and the streaming/queue connection
 settings to the throughput the host can sustain.
 
-## Hosts with `ulimit -v` / `RLIMIT_AS`
+## Hosts with `ulimit -v` / `RLIMIT_AS` {#hosts-with-ulimit-v-rlimit_as}
 
 `ulimit -v` caps *virtual address space*, not resident memory. A process can
 hit it while its RSS is comparatively small.

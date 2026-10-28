@@ -38,7 +38,7 @@ Operators have also **successfully migrated** to InfiniDysk from these forks by 
 | [Pukabyte/nzbdav](https://github.com/Pukabyte/nzbdav) | Fork of nzbdav-dev; same WebDAV + SAB shape. Back up `/config`, switch image to `ghcr.io/infinidysk/infinidysk`, verify settings after migrate. |
 | [qooode/nzbdavex](https://github.com/qooode/nzbdavex) (NzbDavEx) | Extended fork (Watchdog, multi-provider, indexers, search profiles, etc.). Many features overlap with InfiniDysk; after migrate, re-check Settings for providers, indexers, profiles, and Watchdog/Watchtower equivalents rather than assuming every UI field maps 1:1. |
 
-### Suggested steps (fork → InfiniDysk)
+### Suggested steps (fork → InfiniDysk) {#suggested-steps-fork-infinidysk}
 
 1. Export or copy a cold backup of `/config` from the old stack.
 2. Note WebDAV credentials, SAB API key, Base URL, rclone mount paths, and *Arr client settings.

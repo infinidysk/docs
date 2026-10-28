@@ -5,7 +5,7 @@ Stream Usenet on demand in Stremio using [AIOStreams](https://github.com/Viren07
 
 There are two supported setups. Choose one. Do not combine them for the same indexers.
 
-## Path A — InfiniDysk owns search (recommended)
+## Path A — InfiniDysk owns search (recommended) {#path-a-infinidysk-owns-search-recommended}
 
 Use this when InfiniDysk should search your Newznab indexers and return playable streams. AIOStreams only filters, sorts, and formats those streams.
 
@@ -25,7 +25,7 @@ Give AIOStreams enough timeout for indexer search. Play links expire; search aga
 
 AIOStreams proxying is optional on this path. Direct play URLs work when the player can reach InfiniDysk.
 
-## Path B — AIOStreams owns search
+## Path B — AIOStreams owns search {#path-b-aiostreams-owns-search}
 
 Use this when AIOStreams should search Newznab addons itself and hand NZBs to InfiniDysk only for playback.
 

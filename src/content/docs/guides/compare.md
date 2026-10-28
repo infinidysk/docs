@@ -46,17 +46,17 @@ Capabilities below reflect publicly documented intent. “Partial” means avail
 
 ## Who should pick what?
 
-### *Arr + Plex “infinite library”
+### *Arr + Plex “infinite library” {#arr-plex-infinite-library}
 
 **InfiniDysk or AltMount** both fit. Prefer **InfiniDysk** if you want STRM for Emby/Jellyfin without FUSE, richer queue automation (stuck-item rules, Watchtower/Warden), or the admin Overview/queue tooling in this project. Prefer **AltMount** if you want fewer moving parts around mounting (built-in rclone/FUSE) and a Go single-service feel.
 
 Classic **SABnzbd** still wins if you need bulletproof offline PAR2 repair and are fine storing full media.
 
-### Emby / Jellyfin
+### Emby / Jellyfin {#emby-jellyfin}
 
 **InfiniDysk**’s STRM import strategy is aimed at this audience. AltMount and rclone mounts also work if you prefer a filesystem-shaped library. Classic SAB is fine if you keep completed files locally.
 
-### Stremio / on-demand play
+### Stremio / on-demand play {#stremio-on-demand-play}
 
 **AltMount** documents a built-in Stremio addon with Prowlarr search. **InfiniDysk** pairs with [AIOStreams](/guides/stremio/) and optional Newznab/Addon/JSON [search profiles](/configuration/profiles/). Classic SAB is a poor fit for pure on-demand streaming.
 
@@ -64,7 +64,7 @@ Classic **SABnzbd** still wins if you need bulletproof offline PAR2 repair and a
 
 Stay on **SABnzbd/NZBGet** until you outgrow disk or want instant play. Migrating to InfiniDysk or AltMount means accepting a streaming reliability model (providers, retention, health checks) instead of “file is complete on disk.”
 
-### Contributors / stack ownership
+### Contributors / stack ownership {#contributors-stack-ownership}
 
 **InfiniDysk** maintains the .NET Usenet streaming libraries used at runtime. That matters if you care about upstream decode/connection fixes landing with the app. AltMount’s Go stack is independently maintained — a healthy alternative ecosystem, not a drop-in of the same code.
 

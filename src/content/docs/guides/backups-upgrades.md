@@ -1,7 +1,7 @@
 ---
 title: "Backups and upgrades"
 ---
-## In-app Backup & Restore
+## In-app Backup & Restore {#in-app-backup-restore}
 
 **Settings → Backup & Restore** dumps SQLite databases (`db.sqlite`, `warden.db`) as `.sql` under `{CONFIG_PATH}/backups/`. Metrics history (`metrics.sqlite`) is not included and is left unchanged by a restore.
 
@@ -42,6 +42,6 @@ Coming from nzbdav-dev `v0.6.4` or a community fork? See [Migration paths](/gett
 
 Tags: `latest` (current stable), `lts` (trails `latest` by a few releases), `rc` (release candidate), and `dev` (unversioned tip snapshot), plus pinned version tags — see [Release channels and tags](/getting-started/#release-channels-and-tags), [GitHub Releases](https://github.com/infinidysk/infinidysk/releases), and [Changelog](/community/changelog/).
 
-## Watchtower / Arr updates
+## Watchtower / Arr updates {#watchtower-arr-updates}
 
 If you auto-update containers, pin a known-good tag or use the in-app backup schedule before unsupervised upgrades.

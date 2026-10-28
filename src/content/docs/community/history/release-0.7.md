@@ -90,7 +90,7 @@ Every article body passes through yEnc decode. Throughput and correctness here d
 
 ---
 
-## Layer 3: UsenetSharp (NNTP + streaming)
+## Layer 3: UsenetSharp (NNTP + streaming) {#layer-3-usenetsharp-nntp-streaming}
 
 `NzbDav.UsenetSharp` on NuGet is where most wire-level performance work landed.
 
@@ -117,11 +117,11 @@ nzbdav **0.6.8 → 0.7.2** tracks UsenetSharp **1.2.2 → 2.0.2** as these impro
 
 ---
 
-## Layer 4: nzbdav (application + WebDAV)
+## Layer 4: nzbdav (application + WebDAV) {#layer-4-nzbdav-application-webdav}
 
 Fork baseline was roughly upstream **v0.6.4**; the fork release line is now **v0.7.2**.
 
-### Network and NNTP performance (0.6.5 → 0.7.2)
+### Network and NNTP performance (0.6.5 → 0.7.2) {#network-and-nntp-performance-065-072}
 
 **Connection management**
 

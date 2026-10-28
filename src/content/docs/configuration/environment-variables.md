@@ -11,7 +11,7 @@ To drive every Settings (`ConfigItems`) value from the environment — with read
 Precedence when both are present: **`NZBDAV_CONFIG__...` > SQLite/UI > legacy fallbacks on this page > defaults**.
 :::
 
-## Container / entrypoint
+## Container / entrypoint {#container-entrypoint}
 
 | Variable | Default | Effect |
 |----------|---------|--------|

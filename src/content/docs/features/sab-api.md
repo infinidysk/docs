@@ -70,7 +70,7 @@ Queue JSON reports live throughput for in-progress jobs <a class="since" href="h
 - `server_stats` aggregates provider bandwidth from retained `ProviderHourly` rollups (plus folded lifetime totals for all-time bytes). The per-server `daily` map and article counters are bounded by the hourly retention window — pruned buckets are not reconstructed.
 - `warnings` returns recent Warning-and-above log entries from the in-memory buffer. `name=clear` is accepted for SAB client compatibility but does not clear the buffer (support packs rely on it). Use Settings → Support to collect the full warning log.
 
-## `addurl` and private / LAN hosts <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a>
+## `addurl` and private / LAN hosts <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> {#addurl-and-private-lan-hosts-since-080}
 
 `mode=addurl` fetches the NZB from the URL the download client supplies. Before each hop (including redirects), InfiniDysk rejects destinations that resolve to a non-public IP — an SSRF guard that also blocks Docker DNS / RFC1918 indexers unless allowlisted.
 

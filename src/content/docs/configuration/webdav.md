@@ -21,7 +21,7 @@ Map config keys below to `NZBDAV_CONFIG__...` with the
 Use these credentials in rclone, Plex integrations, direct WebDAV clients, and
 other applications that mount or read InfiniDysk.
 
-## Filesystem & Explorer
+## Filesystem & Explorer {#filesystem-explorer}
 
 | Control | Config key | Default | Effect |
 |---------|------------|---------|--------|

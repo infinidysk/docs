@@ -26,7 +26,7 @@ Warden sources and database restore actions are also separate domains.
 
 Set username and password for the web UI. Session cookies can be hardened later with `SECURE_COOKIES=true` behind HTTPS.
 
-## 2. Usenet (`Settings` → `Usenet`)
+## 2. Usenet (`Settings` → `Usenet`) {#2-usenet-settings-usenet}
 
 | Setting | Guidance |
 |---------|----------|
@@ -40,7 +40,7 @@ Set username and password for the web UI. Session cookies can be hardened later 
 
 Click **Test** / **Auto-tune** when available. See [Usenet settings](/configuration/usenet/). Skip this step when providers are already supplied via [headless ENV](/configuration/headless/).
 
-## 3. WebDAV (`Settings` → `WebDAV`)
+## 3. WebDAV (`Settings` → `WebDAV`) {#3-webdav-settings-webdav}
 
 | Setting | Guidance |
 |---------|----------|
@@ -50,13 +50,13 @@ Click **Test** / **Auto-tune** when available. See [Usenet settings](/configurat
 
 See [WebDAV settings](/configuration/webdav/).
 
-## 4. Streaming (`Settings` → `Streaming`)
+## 4. Streaming (`Settings` → `Streaming`) {#4-streaming-settings-streaming}
 
 The defaults are a safe starting point. If playback is slow or stalls, tune
 connection allocation, timeouts, buffering, and the segment cache here. See
 [Streaming settings](/configuration/streaming/).
 
-## 5. Import strategy (`Settings` → `SABnzbd`)
+## 5. Import strategy (`Settings` → `SABnzbd`) {#5-import-strategy-settings-sabnzbd}
 
 | Strategy | Best for | What to set |
 |----------|----------|-------------|

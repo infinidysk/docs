@@ -35,7 +35,7 @@ flowchart TB
 
 ## Two common flows
 
-### Automation (*Arr + media server)
+### Automation (*Arr + media server) {#automation-arr-media-server}
 
 1. Radarr/Sonarr sends an NZB to InfiniDysk as a SABnzbd download client.
 2. InfiniDysk mounts the release on WebDAV without downloading the full file.

@@ -1,7 +1,7 @@
 ---
 title: "Troubleshooting"
 ---
-## Container unhealthy / won't start
+## Container unhealthy / won't start {#container-unhealthy-wont-start}
 
 - Check `docker logs nzbdav` for migration or backend health failures.
 - Ensure `CONFIG_PATH` (`/config`) exists as a directory and is writable by `PUID`/`PGID`. Startup now fails before migrations with a message that names the path and expected `PUID`/`PGID` instead of a later SQLite/EF error.
@@ -170,7 +170,7 @@ Generate a pack from **Settings → Support** — [Technical support pack](/conf
   see [Media servers](/guides/media-servers/#emby-jellyfin).
 - Check Automatic Queue Management rules — [Arrs](/configuration/arrs/).
 
-## 403 / 405 on MKCOL, PUT or DELETE
+## 403 / 405 on MKCOL, PUT or DELETE {#403-405-on-mkcol-put-or-delete}
 
 The mount is a **read-only** virtual filesystem — `/content`, `/completed-symlinks` and `/.ids`
 serve data streamed from Usenet and accept no writes. Refused writes are expected, not a fault:
@@ -188,7 +188,7 @@ and User-Agent:
 - *Arr: disable metadata/extra-file writing for the affected root folder.
 - rclone: mount with `--read-only` so it stops probing for writability.
 
-## `addurl` SSRF / private indexer <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a>
+## `addurl` SSRF / private indexer <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> {#addurl-ssrf-private-indexer-since-080}
 
 Allow Docker DNS or LAN hosts under **Trusted local hosts** — [SABnzbd API](/features/sab-api/).
 
@@ -204,7 +204,7 @@ The most common cause on an rclone mount of `/content` is a transient scan-time 
 
 Quick check: compare the file's mtime in the mount (`ls -l`) with Plex's *added* date. An old mtime with a new *added* date means the server never recreated the file. For the full checklist see [Plex “newly added” churn on /content mounts](/operations/plex-readd-diagnosis/).
 
-## Provider / missing articles
+## Provider / missing articles {#provider-missing-articles}
 
 - Circuit breaker may pause a bad provider — check Usenet settings and Overview.
 - Storage groups skip sibling resellers after a miss — only group identical upstream storage.
