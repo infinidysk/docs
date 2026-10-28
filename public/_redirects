@@ -25,3 +25,5 @@
 /operations/* /v1/operations/:splat 301
 /community /v1/community/ 301
 /community/* /v1/community/:splat 301
+/v1/community/changelog/ /v1/changelog/ 301
+/v1/community/changelog /v1/changelog/ 301

@@ -40,7 +40,7 @@ Database migrations apply automatically on startup. **Back up `/config` before u
 
 Coming from nzbdav-dev `v0.6.4` or a community fork? See [Migration paths](/v1/getting-started/migration/).
 
-Tags: `latest` (current stable), `lts` (trails `latest` by a few releases), `rc` (release candidate), and `dev` (unversioned tip snapshot), plus pinned version tags — see [Release channels and tags](/v1/getting-started/#release-channels-and-tags), [GitHub Releases](https://github.com/infinidysk/infinidysk/releases), and [Changelog](/v1/community/changelog/).
+Tags: `latest` (current stable), `lts` (trails `latest` by a few releases), `rc` (release candidate), and `dev` (unversioned tip snapshot), plus pinned version tags — see [Release channels and tags](/v1/getting-started/#release-channels-and-tags), [GitHub Releases](https://github.com/infinidysk/infinidysk/releases), and [Changelog](/v1/changelog/).
 
 ## Watchtower / Arr updates {#watchtower-arr-updates}
 
