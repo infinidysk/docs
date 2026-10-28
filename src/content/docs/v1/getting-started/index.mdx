@@ -1,0 +1,61 @@
+---
+title: "Getting started"
+description: "Get started with infinidysk, the NzbDAV SuperFork. Install with Docker, complete first-run setup, and connect Sonarr or Radarr in minutes."
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+:::note[Docs track latest]
+These pages describe the **latest** infinidysk release. Features and settings marked with a <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> pill (or similar) need at least that version — check your image tag or **Settings → About** before following a new workflow.
+:::
+
+Choose a path based on where you are:
+
+<CardGrid>
+	<LinkCard title="Install with Docker" description="Persistent Compose deploy, health checks, reverse-proxy notes." href="/v1/getting-started/docker/" />
+	<LinkCard title="Migrate from another build" description="Official path from nzbdav-dev v0.6.4, plus community forks (Pukabyte, NzbDavEx)." href="/v1/getting-started/migration/" />
+	<LinkCard title="First run" description="New installs continue from account creation; existing installs open the guide after the first administrator login following upgrade." href="/v1/getting-started/first-run/" />
+	<LinkCard title="Connect Arr" description="Add infinidysk as a SABnzbd download client in Sonarr and Radarr." href="/v1/getting-started/connect-arr/" />
+	<LinkCard title="Understand the flow" description="How queue → mount → stream works with media servers." href="/v1/guides/architecture/" />
+</CardGrid>
+
+## Prerequisites
+
+1. **Usenet provider** — NNTP host, credentials, and connection allowance.
+2. **Indexers** (optional for first play) — Newznab-compatible sources for search and Arr.
+3. **Docker** — Engine + Compose v2. Symlink imports also need Linux FUSE (`/dev/fuse`).
+
+## Setup and hosting options
+
+| Option | Who it’s for | Start here |
+|--------|----------------|------------|
+| **Self-hosted Docker** | You run Compose (or Unraid/etc.) and wire Arr / rclone yourself | [Docker](/v1/getting-started/docker/) |
+| **[DUMB](https://dumbarr.com/)** (Debrid Unlimited Media Bridge) | You want infinidysk as a **fully supported core module** with guided onboarding and Arr wiring | [infinidysk on dumbarr.com](https://dumbarr.com/services/core/nzbdav/) |
+
+DUMB treats infinidysk as a first-class Usenet WebDAV / SABnzbd-compatible workflow service (`core_service: nzbdav`), including automatic Arr download-client and symlink-path integration when you select it during onboarding. Prefer DUMB’s own docs for stack-specific paths and ports; use this site for infinidysk Settings, features, and troubleshooting.
+
+## Release channels and tags
+
+Docker images and [prebuilt Linux archives](/v1/getting-started/prebuilt-archives/) follow the same release train. Choose a tag based on how much change you want to absorb:
+
+| Tag | Definition |
+|-----|------------|
+| `latest` | The current stable release — the same definition as any project. Recommended for most deployments. |
+| `lts` | A curated stable pointer that generally trails `latest` by a few minor/patch releases, for operators who prefer the front lines to do the testing. Docker image tag only; promoted manually, not on every release. |
+| `rc` | Release candidate for the upcoming version, promoted from `dev` builds after basic regression testing. Preferred for all but the most daring testers. Published to `ghcr.io/infinidysk/infinidysk` only, not Docker Hub or the legacy path. |
+| `dev` | Work-in-progress snapshots deployed to the maintainer’s non-production instance to validate basic functionality. Expect a noisy tag: frequent, sometimes non-functional builds, with no per-build version numbers. Testing only. Published to `ghcr.io/infinidysk/infinidysk` and Docker Hub, but not the legacy path. |
+
+For reproducible deployments, pin an exact version tag (`v1.2.3`) or a rolling minor/major alias (`v1.2`, `v1`). Versioned `v*-rc.*` pre-releases and image tags are removed when the stable release ships; the rolling `rc` and `dev` tags persist.
+
+:::note[Building from source]
+Cloning the repository and running from source remains possible — see [Contributing](/v1/community/contributing/) — but it is a development workflow, not a supported deployment method. Releases are tested as the published Docker image and prebuilt Linux archives; source builds are not part of release testing.
+:::
+
+## After install
+
+| Goal | Next |
+|------|------|
+| Plex + symlinks | [Import strategies](/v1/guides/import-strategies/) → [Mounting WebDAV](/v1/guides/mounting-webdav/) |
+| Emby/Jellyfin + STRM | [Import strategies](/v1/guides/import-strategies/) → [Media servers](/v1/guides/media-servers/) |
+| Stremio on demand | [Stremio](/v1/guides/stremio/) |
+| Tune Settings | [Configuration](/v1/configuration/) |

@@ -1,0 +1,31 @@
+---
+import { logos } from 'virtual:starlight/user-images';
+import config from 'virtual:starlight/user-config';
+const { siteTitleHref } = Astro.locals.starlightRoute;
+---
+
+<a href={siteTitleHref} class="site-title sl-flex">
+	{
+		config.logo && logos.dark && (
+			<img alt="" src={logos.dark.src} width={logos.dark.width} height={logos.dark.height} />
+		)
+	}
+	<span translate="no">infini<span class="wordmark-accent">dysk</span></span>
+</a>
+
+<style>
+	.site-title {
+		align-items: center;
+		gap: var(--sl-nav-gap);
+		font-size: var(--sl-text-h4);
+		font-weight: 600;
+		color: var(--sl-color-white);
+		text-decoration: none;
+		white-space: nowrap;
+		min-width: 0;
+	}
+	img {
+		height: calc(var(--sl-nav-height) - 2 * var(--sl-nav-pad-y));
+		width: auto;
+	}
+</style>

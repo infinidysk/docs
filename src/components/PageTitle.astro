@@ -1,0 +1,25 @@
+---
+import { Badge } from '@astrojs/starlight/components';
+
+const { id, entry } = Astro.locals.starlightRoute;
+const version = { v1: '1.x', v2: '2.x' }[id.split('/')[0]];
+---
+
+<h1 id="_top">
+	{entry.data.title}
+	{version && <Badge text={version} variant={version === '2.x' ? 'caution' : 'note'} class="version-badge" />}
+</h1>
+
+<style>
+	h1 {
+		margin-top: 1rem;
+		font-size: var(--sl-text-h1);
+		line-height: var(--sl-line-height-headings);
+		font-weight: 600;
+		color: var(--sl-color-white);
+	}
+	h1 :global(.version-badge) {
+		vertical-align: middle;
+		margin-inline-start: 0.5rem;
+	}
+</style>

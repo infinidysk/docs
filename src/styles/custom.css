@@ -81,6 +81,10 @@
 	color: var(--sl-color-white);
 }
 
+.wordmark-accent {
+	color: var(--sl-color-accent);
+}
+
 .sidebar-content a[aria-current='page'],
 .sidebar-content a[aria-current='page']:hover,
 .sidebar-content a[aria-current='page']:focus {

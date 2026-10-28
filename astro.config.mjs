@@ -4,9 +4,47 @@ import { satteri } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
 import mermaid from 'astro-mermaid';
 import starlightLinksValidator from 'starlight-links-validator';
+import starlightSidebarTopics from 'starlight-sidebar-topics';
 
 const site = 'https://www.infinidysk.com';
 const socialCard = `${site}/assets/social/social-card.png`;
+const discord = 'https://discord.gg/DAya7W6QMa';
+
+const v2Sidebar = [
+	{
+		label: 'Getting started',
+		items: [
+			{ label: 'Overview', slug: 'v2' },
+			{ label: 'Docker', slug: 'v2/getting-started/docker' },
+			{ label: 'Upgrade from 1.x', slug: 'v2/getting-started/upgrade' },
+			{ label: 'Move off rclone', slug: 'v2/getting-started/rclone' },
+			{ label: 'Connect Radarr/Sonarr', slug: 'v2/getting-started/connect-arr' },
+		],
+	},
+	{
+		label: 'Guides',
+		items: [
+			{ label: 'Import strategies', slug: 'v2/guides/import-strategies' },
+			{ label: 'Health and repair', slug: 'v2/guides/health' },
+			{ label: 'Maintenance', slug: 'v2/guides/maintenance' },
+			{ label: 'Restarts and crashes', slug: 'v2/guides/restarts' },
+		],
+	},
+	{
+		label: 'Configuration',
+		items: [
+			{ label: 'Settings and environment', slug: 'v2/configuration' },
+			{ label: 'Providers', slug: 'v2/configuration/providers' },
+		],
+	},
+	{
+		label: 'Help',
+		items: [
+			{ label: 'Troubleshooting', slug: 'v2/help/troubleshooting' },
+			{ label: 'Discord', link: discord },
+		],
+	},
+];
 
 export default defineConfig({
 	site,
@@ -30,7 +68,7 @@ export default defineConfig({
 			],
 			social: [
 				{ icon: 'github', label: 'GitHub', href: 'https://github.com/infinidysk/infinidysk' },
-				{ icon: 'discord', label: 'Discord', href: 'https://discord.gg/DAya7W6QMa' },
+				{ icon: 'discord', label: 'Discord', href: discord },
 			],
 			editLink: { baseUrl: 'https://github.com/infinidysk/docs/edit/main/' },
 			head: [
@@ -42,120 +80,148 @@ export default defineConfig({
 				{ tag: 'meta', attrs: { property: 'og:image:height', content: '630' } },
 				{ tag: 'meta', attrs: { name: 'twitter:image', content: socialCard } },
 			],
-			plugins: [starlightLinksValidator()],
-			sidebar: [
-				{
-					label: 'Getting started',
-					items: [
-						{ label: 'Overview', slug: 'getting-started' },
-						{ label: 'Docker', slug: 'getting-started/docker' },
-						{ label: 'Prebuilt Linux archives', slug: 'getting-started/prebuilt-archives' },
-						{ label: 'Migration', slug: 'getting-started/migration' },
-						{ label: 'First run', slug: 'getting-started/first-run' },
-						{ label: 'Setup guide', slug: 'getting-started/setup-guide' },
-						{ label: 'Connect Radarr/Sonarr', slug: 'getting-started/connect-arr' },
-					],
-				},
-				{
-					label: 'Guides',
-					items: [
-						{ label: 'Architecture', slug: 'guides/architecture' },
-						{ label: 'Compare alternatives', slug: 'guides/compare' },
-						{ label: 'Migrate from Altmount', slug: 'guides/altmount-migration' },
-						{ label: 'Import strategies', slug: 'guides/import-strategies' },
-						{ label: 'Mounting WebDAV', slug: 'guides/mounting-webdav' },
-						{ label: 'Media servers', slug: 'guides/media-servers' },
-						{ label: 'Stremio', slug: 'guides/stremio' },
-						{ label: 'Backups and upgrades', slug: 'guides/backups-upgrades' },
-						{ label: 'Troubleshooting', slug: 'guides/troubleshooting' },
-					],
-				},
-				{
-					label: 'Features',
-					items: [
-						{ label: 'Overview', slug: 'features' },
-						{ label: 'WebDAV filesystem', slug: 'features/webdav-filesystem' },
-						{ label: 'Streaming and seeking', slug: 'features/streaming-seeking' },
-						{ label: 'Archives', slug: 'features/archives' },
-						{ label: 'Multi-provider', slug: 'features/multi-provider' },
-						{ label: 'Indexer search', slug: 'features/indexer-search' },
-						{ label: 'Watchtower', slug: 'features/watchtower' },
-						{ label: 'Warden, Watchdog, Preflight', slug: 'features/warden-watchdog-preflight' },
-						{ label: 'NNTP pipelining', slug: 'features/nntp-pipelining' },
-						{ label: 'Connection warming', slug: 'features/connection-warming' },
-						{ label: 'SABnzbd API', slug: 'features/sab-api' },
-					],
-				},
-				{
-					label: 'Configuration',
-					items: [
-						{ label: 'Overview', slug: 'configuration' },
-						{ label: 'Headless environment config', slug: 'configuration/headless' },
-						{ label: 'Usenet', slug: 'configuration/usenet' },
-						{ label: 'Indexers', slug: 'configuration/indexers' },
-						{ label: 'Search profiles', slug: 'configuration/profiles' },
-						{ label: 'Queue', slug: 'configuration/queue' },
-						{ label: 'SABnzbd', slug: 'configuration/sabnzbd' },
-						{ label: 'Streaming', slug: 'configuration/streaming' },
-						{ label: 'WebDAV', slug: 'configuration/webdav' },
-						{ label: 'URL base (sub-path hosting)', slug: 'configuration/url-base' },
-						{ label: 'Watchdog', slug: 'configuration/watchdog' },
-						{ label: 'Preflight', slug: 'configuration/preflight' },
-						{ label: 'Watchtower', slug: 'configuration/watchtower' },
-						{ label: 'Warden', slug: 'configuration/warden' },
-						{ label: 'Arr instances', slug: 'configuration/arrs' },
-						{ label: 'Rclone', slug: 'configuration/rclone' },
-						{ label: 'Health and repairs', slug: 'configuration/repairs' },
-						{ label: 'Maintenance', slug: 'configuration/maintenance' },
-						{ label: 'Backup and restore', slug: 'configuration/backup' },
-						{ label: 'Support', slug: 'configuration/support' },
-						{ label: 'OIDC / SSO', slug: 'configuration/oidc' },
-						{ label: 'Environment variables', slug: 'configuration/environment-variables' },
-					],
-				},
-				{
-					label: 'Use cases',
-					items: [
-						{ label: 'Overview', slug: 'use-cases' },
-						{ label: 'Infinite library with Arrs', slug: 'use-cases/infinite-library-arr' },
-						{ label: 'Streaming only', slug: 'use-cases/streaming-only' },
-						{ label: 'Multi-provider failover', slug: 'use-cases/multi-provider-failover' },
-					],
-				},
-				{
-					label: 'Operations',
-					items: [
-						{ label: 'Health and repairs', slug: 'operations/health-repairs' },
-						{ label: 'Prometheus metrics', slug: 'operations/prometheus' },
-						{ label: 'Memory-constrained hosts', slug: 'operations/memory-constrained-hosts' },
-						{ label: 'Retention and cleanup', slug: 'operations/retention-cleanup' },
-						{ label: 'Logs and crash dumps', slug: 'operations/logs-crash-dumps' },
-						{ label: 'Deletion audit', slug: 'operations/deletion-audit' },
-						{ label: 'Plex re-added episodes', slug: 'operations/plex-readd-diagnosis' },
-						{ label: 'Database corruption', slug: 'operations/database-corruption' },
-						{ label: 'PostgreSQL', slug: 'operations/postgresql' },
-					],
-				},
-				{
-					label: 'Community',
-					items: [
-						{ label: 'Rename FAQ', slug: 'community/renaming-to-infinidysk' },
-						{ label: 'Connect', slug: 'community/github' },
-						{ label: 'Contributing', slug: 'community/contributing' },
+			components: {
+				SiteTitle: './src/components/SiteTitle.astro',
+				PageTitle: './src/components/PageTitle.astro',
+			},
+			plugins: [
+				starlightLinksValidator(),
+				starlightSidebarTopics(
+					[
 						{
-							label: 'Code boundaries',
-							link: 'https://github.com/infinidysk/infinidysk/blob/main/docs/decisions/0001-code-boundaries.md',
+							id: 'v1',
+							label: 'Version 1.x',
+							link: '/v1/',
+							badge: { text: 'Stable', variant: 'success' },
+							items: v1Sidebar(),
 						},
 						{
-							label: 'DI topology',
-							link: 'https://github.com/infinidysk/infinidysk/blob/main/docs/decisions/0002-di-topology.md',
+							id: 'v2',
+							label: 'Version 2.x',
+							link: '/v2/',
+							badge: { text: 'Alpha', variant: 'caution' },
+							items: v2Sidebar,
 						},
-						{ label: 'Changelog', slug: 'community/changelog' },
-						{ label: 'About', slug: 'community/about' },
-						{ label: '0.7 stack announcement', slug: 'community/history/release-0.7' },
 					],
-				},
+					{ exclude: ['/'] },
+				),
 			],
 		}),
 	],
 });
+
+function v1Sidebar() {
+	return [
+		{
+			label: 'Getting started',
+			items: [
+				{ label: 'Overview', slug: 'v1/getting-started' },
+				{ label: 'Docker', slug: 'v1/getting-started/docker' },
+				{ label: 'Prebuilt Linux archives', slug: 'v1/getting-started/prebuilt-archives' },
+				{ label: 'Migration', slug: 'v1/getting-started/migration' },
+				{ label: 'First run', slug: 'v1/getting-started/first-run' },
+				{ label: 'Setup guide', slug: 'v1/getting-started/setup-guide' },
+				{ label: 'Connect Radarr/Sonarr', slug: 'v1/getting-started/connect-arr' },
+			],
+		},
+		{
+			label: 'Guides',
+			items: [
+				{ label: 'Architecture', slug: 'v1/guides/architecture' },
+				{ label: 'Compare alternatives', slug: 'v1/guides/compare' },
+				{ label: 'Migrate from Altmount', slug: 'v1/guides/altmount-migration' },
+				{ label: 'Import strategies', slug: 'v1/guides/import-strategies' },
+				{ label: 'Mounting WebDAV', slug: 'v1/guides/mounting-webdav' },
+				{ label: 'Media servers', slug: 'v1/guides/media-servers' },
+				{ label: 'Stremio', slug: 'v1/guides/stremio' },
+				{ label: 'Backups and upgrades', slug: 'v1/guides/backups-upgrades' },
+				{ label: 'Troubleshooting', slug: 'v1/guides/troubleshooting' },
+			],
+		},
+		{
+			label: 'Features',
+			items: [
+				{ label: 'Overview', slug: 'v1/features' },
+				{ label: 'WebDAV filesystem', slug: 'v1/features/webdav-filesystem' },
+				{ label: 'Streaming and seeking', slug: 'v1/features/streaming-seeking' },
+				{ label: 'Archives', slug: 'v1/features/archives' },
+				{ label: 'Multi-provider', slug: 'v1/features/multi-provider' },
+				{ label: 'Indexer search', slug: 'v1/features/indexer-search' },
+				{ label: 'Watchtower', slug: 'v1/features/watchtower' },
+				{ label: 'Warden, Watchdog, Preflight', slug: 'v1/features/warden-watchdog-preflight' },
+				{ label: 'NNTP pipelining', slug: 'v1/features/nntp-pipelining' },
+				{ label: 'Connection warming', slug: 'v1/features/connection-warming' },
+				{ label: 'SABnzbd API', slug: 'v1/features/sab-api' },
+			],
+		},
+		{
+			label: 'Configuration',
+			items: [
+				{ label: 'Overview', slug: 'v1/configuration' },
+				{ label: 'Headless environment config', slug: 'v1/configuration/headless' },
+				{ label: 'Usenet', slug: 'v1/configuration/usenet' },
+				{ label: 'Indexers', slug: 'v1/configuration/indexers' },
+				{ label: 'Search profiles', slug: 'v1/configuration/profiles' },
+				{ label: 'Queue', slug: 'v1/configuration/queue' },
+				{ label: 'SABnzbd', slug: 'v1/configuration/sabnzbd' },
+				{ label: 'Streaming', slug: 'v1/configuration/streaming' },
+				{ label: 'WebDAV', slug: 'v1/configuration/webdav' },
+				{ label: 'URL base (sub-path hosting)', slug: 'v1/configuration/url-base' },
+				{ label: 'Watchdog', slug: 'v1/configuration/watchdog' },
+				{ label: 'Preflight', slug: 'v1/configuration/preflight' },
+				{ label: 'Watchtower', slug: 'v1/configuration/watchtower' },
+				{ label: 'Warden', slug: 'v1/configuration/warden' },
+				{ label: 'Arr instances', slug: 'v1/configuration/arrs' },
+				{ label: 'Rclone', slug: 'v1/configuration/rclone' },
+				{ label: 'Health and repairs', slug: 'v1/configuration/repairs' },
+				{ label: 'Maintenance', slug: 'v1/configuration/maintenance' },
+				{ label: 'Backup and restore', slug: 'v1/configuration/backup' },
+				{ label: 'Support', slug: 'v1/configuration/support' },
+				{ label: 'OIDC / SSO', slug: 'v1/configuration/oidc' },
+				{ label: 'Environment variables', slug: 'v1/configuration/environment-variables' },
+			],
+		},
+		{
+			label: 'Use cases',
+			items: [
+				{ label: 'Overview', slug: 'v1/use-cases' },
+				{ label: 'Infinite library with Arrs', slug: 'v1/use-cases/infinite-library-arr' },
+				{ label: 'Streaming only', slug: 'v1/use-cases/streaming-only' },
+				{ label: 'Multi-provider failover', slug: 'v1/use-cases/multi-provider-failover' },
+			],
+		},
+		{
+			label: 'Operations',
+			items: [
+				{ label: 'Health and repairs', slug: 'v1/operations/health-repairs' },
+				{ label: 'Prometheus metrics', slug: 'v1/operations/prometheus' },
+				{ label: 'Memory-constrained hosts', slug: 'v1/operations/memory-constrained-hosts' },
+				{ label: 'Retention and cleanup', slug: 'v1/operations/retention-cleanup' },
+				{ label: 'Logs and crash dumps', slug: 'v1/operations/logs-crash-dumps' },
+				{ label: 'Deletion audit', slug: 'v1/operations/deletion-audit' },
+				{ label: 'Plex re-added episodes', slug: 'v1/operations/plex-readd-diagnosis' },
+				{ label: 'Database corruption', slug: 'v1/operations/database-corruption' },
+				{ label: 'PostgreSQL', slug: 'v1/operations/postgresql' },
+			],
+		},
+		{
+			label: 'Community',
+			items: [
+				{ label: 'Rename FAQ', slug: 'v1/community/renaming-to-infinidysk' },
+				{ label: 'Connect', slug: 'v1/community/github' },
+				{ label: 'Contributing', slug: 'v1/community/contributing' },
+				{
+					label: 'Code boundaries',
+					link: 'https://github.com/infinidysk/infinidysk/blob/main/docs/decisions/0001-code-boundaries.md',
+				},
+				{
+					label: 'DI topology',
+					link: 'https://github.com/infinidysk/infinidysk/blob/main/docs/decisions/0002-di-topology.md',
+				},
+				{ label: 'Changelog', slug: 'v1/community/changelog' },
+				{ label: 'About', slug: 'v1/community/about' },
+				{ label: '0.7 stack announcement', slug: 'v1/community/history/release-0.7' },
+			],
+		},
+	];
+}

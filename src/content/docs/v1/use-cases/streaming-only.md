@@ -1,0 +1,28 @@
+---
+title: "Streaming only"
+---
+Use infinidysk without building a traditional Arr library.
+
+## Patterns
+
+- **Explore / Queue** — manual NZB upload, play from Explore or copy `/view` links.
+- **Stremio + AIOStreams** — [Stremio guide](/v1/guides/stremio/).
+- **Search profiles** — Addon or JSON adapters for on-demand clients — [Indexer search](/v1/features/indexer-search/).
+- **Watchtower** — keep a list warm without importing to Plex — [Watchtower](/v1/features/watchtower/).
+
+## Minimal settings
+
+1. Usenet providers + WebDAV password.
+2. Indexers (if searching).
+3. Watchdog on for playback failover.
+4. Skip rclone unless you want a local FUSE mount for VLC/etc.
+
+## Repairs without Arr <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a>
+
+**Background Repairs** is on by default <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>: health checks, PAR2 reconstruction of recoverable gaps,
+and limited damage tolerance run without a Library Directory or Arr. Those are only needed to
+replace linked library items. To automatically remove broken unlinked items after playback failures,
+set **Repair After Streaming Failures** above `0`; its default (`0`) keeps the item and marks it
+**Action needed**. Turn the toggle off if you do not want background health checks, PAR2 work, or limited damage-tolerance handling.
+
+Secure the UI and WebDAV the same way as any other deploy — TLS, strong passwords, no open port `3000` on the internet.
