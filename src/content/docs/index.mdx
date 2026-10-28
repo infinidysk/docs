@@ -2,113 +2,129 @@
 title: infinidysk — stream Usenet media over WebDAV and FUSE
 description: infinidysk mounts NZB files as a virtual filesystem and streams media directly from Usenet, with a SABnzbd-compatible API for Sonarr and Radarr. Docs for 1.x (stable) and 2.x (alpha).
 template: splash
+editUrl: false
 hero:
   title: infini<span class="wordmark-accent">dysk</span>
   tagline: Mount NZBs as a virtual filesystem and stream directly from Usenet, without downloading full media files first.
-  image:
-    file: ../../assets/overview.png
-    alt: infinidysk overview dashboard
-  actions:
-    - text: 1.x docs
-      link: /v1/
-      variant: primary
-    - text: 2.x docs (alpha)
-      link: /v2/
-      variant: secondary
-    - text: Discord
-      link: https://discord.gg/DAya7W6QMa
-      variant: minimal
-      icon: discord
 ---
 
-import { Aside, Badge, Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
+import { Badge, Icon, LinkButton } from '@astrojs/starlight/components';
 
-infinidysk is a Usenet-backed virtual filesystem. A **SABnzbd-compatible API** lets Sonarr, Radarr and other Arr instances use it as a download client, and your media server plays files straight from your Usenet providers, without storing them on disk.
+<div class="home">
 
-```mermaid
-flowchart LR
-  Arr["Sonarr / Radarr"] -->|SABnzbd API| Queue[infinidysk queue]
-  Queue --> Mount[WebDAV or FUSE mount]
-  Mount --> Stream[Usenet stream]
-  Player["Plex / Jellyfin"] --> Mount
-```
+<nav class="not-content version-picker" aria-label="Documentation versions">
+	<a class="version" href="/v1/">
+		<span class="version-head">
+			<span class="version-number">1.x</span>
+			<Badge text="Stable" variant="success" />
+		</span>
+		<span class="version-body">The current release, written in C#. Mounts through an rclone sidecar over WebDAV, with the full feature set, including Stremio, search and backups.</span>
+		<code class="version-image">ghcr.io/infinidysk/infinidysk</code>
+		<span class="version-cta">Read the 1.x docs <Icon name="right-arrow" /></span>
+	</a>
+	<a class="version" href="/v2/">
+		<span class="version-head">
+			<span class="version-number">2.x</span>
+			<Badge text="Alpha" variant="caution" />
+		</span>
+		<span class="version-body">The Rust rewrite, for early testers. Built-in FUSE mount, lower CPU and memory use, and a one-step upgrade from a 1.x config.</span>
+		<code class="version-image">ghcr.io/infinidysk/infinidysk-next</code>
+		<span class="version-cta">Read the 2.x docs <Icon name="right-arrow" /></span>
+	</a>
+</nav>
 
-## Pick your version
+<p class="version-hint">Not sure which one you run? Match the image name in your compose file.</p>
 
-Two versions are supported side by side for now. Use the docs for the version you run.
+## How it works
 
-<CardGrid>
-	<Card title="1.x" icon="approve-check">
-		<Badge text="Stable" variant="success" /> The current release, written in C#. Mounts through an rclone sidecar over WebDAV. Has the full feature set, including Stremio, search and backups.
+Sonarr, Radarr and other Arr instances add infinidysk as a SABnzbd download client. Instead of downloading a release, infinidysk reads the NZB and shows its files on a mount. When your media server plays a file, infinidysk fetches only the articles it needs from your Usenet providers.
 
-		Image: `ghcr.io/infinidysk/infinidysk`
+<figure class="not-content flow" aria-label="How infinidysk connects Arrs, media servers and Usenet providers">
+	<div class="flow-node flow-arr"><strong>Sonarr, Radarr</strong><span>Arr instances</span></div>
+	<div class="flow-edge flow-e1"><span>SABnzbd API</span></div>
+	<div class="flow-node flow-core"><strong>infini<span class="wordmark-accent">dysk</span></strong><span>Queue and virtual filesystem</span></div>
+	<div class="flow-edge flow-e2"><span>WebDAV or FUSE</span></div>
+	<div class="flow-node flow-player"><strong>Plex, Jellyfin</strong><span>Play from the mount</span></div>
+	<div class="flow-edge flow-e3"><span>NNTP</span></div>
+	<div class="flow-node flow-usenet"><strong>Usenet providers</strong><span>Articles fetched on read</span></div>
+</figure>
 
-		<LinkButton href="/v1/">1.x docs</LinkButton>
-	</Card>
-	<Card title="2.x" icon="rocket">
-		<Badge text="Alpha" variant="caution" /> The Rust rewrite, for early testers. Built-in FUSE mount, lower CPU and memory use, and a one-step upgrade from a 1.x config.
+## What changes in 2.x
 
-		Image: `ghcr.io/infinidysk/infinidysk-next`
+Both versions speak the same SABnzbd API and serve the same WebDAV paths, so Arrs and media servers see no difference. Both have:
 
-		<LinkButton href="/v2/">2.x docs</LinkButton>
-	</Card>
-</CardGrid>
+<ul class="shared">
+	<li>SABnzbd API for Arrs</li>
+	<li>WebDAV</li>
+	<li>Symlink and STRM imports</li>
+	<li>Health checks and Arr replacement</li>
+	<li>Multiple providers with priority levels</li>
+	<li>Download speed limit</li>
+	<li>Disk segment cache</li>
+	<li>SQLite and PostgreSQL</li>
+	<li>Prometheus metrics</li>
+</ul>
 
-<Aside title="Which version am I running?">
-Check the image in your compose file. `ghcr.io/infinidysk/infinidysk` is 1.x. `ghcr.io/infinidysk/infinidysk-next` is 2.x.
-</Aside>
+What differs:
 
-## How the versions compare
-
-Both versions speak the same SABnzbd API and serve the same WebDAV paths, so Arrs and media servers see no difference. What sits behind them differs.
-
-| | 1.x | 2.x |
+| Feature | 1.x | 2.x |
 |---|---|---|
-| SABnzbd API for Arrs | Yes | Yes |
-| WebDAV | Yes | Yes |
 | Mount | rclone sidecar | Built-in FUSE |
-| Symlink and STRM imports | Yes | Yes |
-| Health checks and Arr replacement | Yes | Yes |
-| PAR2 repair | Yes | Not yet |
-| Multiple providers with priority levels | Yes | Yes |
-| Provider catalog with backbones | No | Yes |
-| Download speed limit | Yes | Yes |
-| Global connection cap | Yes | Not yet |
-| Disk segment cache | Yes | Yes |
-| SQLite and PostgreSQL | Yes | Yes |
-| Prometheus metrics | Yes | Yes |
-| Stremio and addon routes | Yes | Not yet |
-| Search, indexers and Prowlarr | Yes | Not yet |
-| Backup and restore | Yes | Not yet |
-| Watchtower, Preflight and Warden | Yes | No |
-| Imports a 1.x config | — | Yes |
+| Provider catalog with backbones | <span class="no">No</span> | Yes |
+| Imports a 1.x config | <span class="no">—</span> | Yes |
+| PAR2 repair | Yes | <span class="no">Not yet</span> |
+| Global connection cap | Yes | <span class="no">Not yet</span> |
+| Stremio and addon routes | Yes | <span class="no">Not yet</span> |
+| Search, indexers and Prowlarr | Yes | <span class="no">Not yet</span> |
+| Backup and restore | Yes | <span class="no">Not yet</span> |
+| Watchtower, Preflight and Warden | Yes | <span class="no">No</span> |
 
 ### Performance
 
-| Measure | 1.x | 2.x |
-|---|---|---|
-| Startup | 6.2 s | 0.4–0.5 s |
-| CPU time per GB streamed | 13.2–13.3 s | 3.7–4.1 s |
-| Memory at idle | 165–302 MB | 68–70 MB |
-| Memory per stream | 1.28–1.53 GB | 1.14–1.26 GB |
-| Sequential throughput | 103–111 MB/s | 92–103 MB/s, on par within run-to-run variance |
-| Rebuffers at a 3.1 MB/s playback rate | 0 of 5 | 0 of 5 |
+Lower is better. Bars show the range across three passes.
 
-<small>
-Measured on 27 October 2026 with 1.6.3 and 2.0.0-alpha.8 in Docker on one Apple M4 Pro host, one commercial provider with 20 connections, five posts with a median size of 10.7 GB, three passes. Ranges span the three passes.
-</small>
+<div class="not-content perf">
+	<div class="perf-metric">
+		<p class="perf-label">Startup</p>
+		<div class="perf-row"><span class="perf-version">1.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '100%', '--max': '100%' }}></span></span><span class="perf-value">6.2 s</span></div>
+		<div class="perf-row is-next"><span class="perf-version">2.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '6.5%', '--max': '8.1%' }}></span></span><span class="perf-value">0.4–0.5 s</span></div>
+	</div>
+	<div class="perf-metric">
+		<p class="perf-label">CPU time per GB streamed</p>
+		<div class="perf-row"><span class="perf-version">1.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '99.2%', '--max': '100%' }}></span></span><span class="perf-value">13.2–13.3 s</span></div>
+		<div class="perf-row is-next"><span class="perf-version">2.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '27.8%', '--max': '30.8%' }}></span></span><span class="perf-value">3.7–4.1 s</span></div>
+	</div>
+	<div class="perf-metric">
+		<p class="perf-label">Memory at idle</p>
+		<div class="perf-row"><span class="perf-version">1.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '54.6%', '--max': '100%' }}></span></span><span class="perf-value">165–302 MB</span></div>
+		<div class="perf-row is-next"><span class="perf-version">2.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '22.5%', '--max': '23.2%' }}></span></span><span class="perf-value">68–70 MB</span></div>
+	</div>
+	<div class="perf-metric">
+		<p class="perf-label">Memory per stream</p>
+		<div class="perf-row"><span class="perf-version">1.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '83.7%', '--max': '100%' }}></span></span><span class="perf-value">1.28–1.53 GB</span></div>
+		<div class="perf-row is-next"><span class="perf-version">2.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '74.5%', '--max': '82.4%' }}></span></span><span class="perf-value">1.14–1.26 GB</span></div>
+	</div>
+</div>
 
-## Community
+Sequential throughput is on par within run-to-run variance: 103–111 MB/s on 1.x, 92–103 MB/s on 2.x. Neither version rebuffered in five plays at a 3.1 MB/s playback rate.
+
+<p class="perf-method">Measured on 27 October 2026 with 1.6.3 and 2.0.0-alpha.8 in Docker on one Apple M4 Pro host, one commercial provider with 20 connections, five posts with a median size of 10.7 GB, three passes.</p>
+
+## Community and support
 
 Chat on Discord and follow releases. After joining, use the channel and role selector to enable release notifications.
 
-<LinkButton href="https://discord.gg/DAya7W6QMa" icon="discord" iconPlacement="start">Join Discord</LinkButton>
-<LinkButton href="https://github.com/infinidysk/infinidysk/releases" variant="secondary">1.x releases</LinkButton>
-
-## Support infinidysk
+<div class="not-content button-row">
+	<LinkButton href="https://discord.gg/DAya7W6QMa" icon="discord" iconPlacement="start">Join Discord</LinkButton>
+	<LinkButton href="https://github.com/infinidysk/infinidysk/releases" icon="github" iconPlacement="start" variant="secondary">1.x releases</LinkButton>
+</div>
 
 infinidysk is free and open source. If it is useful to you, you can support its development.
 
-<LinkButton href="https://github.com/sponsors/hoivikaj" icon="heart" iconPlacement="start">GitHub Sponsors</LinkButton>
-<LinkButton href="https://www.patreon.com/hoivikaj" icon="patreon" iconPlacement="start" variant="secondary">Patreon</LinkButton>
-<LinkButton href="https://buymeacoffee.com/hoivikaj" variant="secondary">Buy Me a Coffee</LinkButton>
+<div class="not-content button-row">
+	<LinkButton href="https://github.com/sponsors/hoivikaj" icon="heart" iconPlacement="start" variant="secondary">GitHub Sponsors</LinkButton>
+	<LinkButton href="https://www.patreon.com/hoivikaj" icon="patreon" iconPlacement="start" variant="secondary">Patreon</LinkButton>
+	<LinkButton href="https://buymeacoffee.com/hoivikaj" icon="external" iconPlacement="start" variant="secondary">Buy Me a Coffee</LinkButton>
+</div>
+
+</div>

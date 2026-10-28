@@ -96,15 +96,17 @@
 	border-radius: var(--radius-md);
 }
 
+/* L 0.52 keeps white text above 4.5:1. */
 .sl-link-button.primary,
 .sl-link-button.primary:hover {
-	background: oklch(0.6 0.19 248);
-	border-color: oklch(0.6 0.19 248);
+	background: oklch(0.52 0.19 248);
+	border-color: oklch(0.52 0.19 248);
 	color: oklch(0.99 0 0);
 }
 
 .sl-link-button.primary:hover {
-	background: oklch(0.55 0.19 248);
+	background: oklch(0.47 0.18 248);
+	border-color: oklch(0.47 0.18 248);
 }
 
 .sl-link-button.secondary {
@@ -162,4 +164,322 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: 0.5rem;
+}
+
+/* Homepage */
+
+.hero {
+	padding-block: clamp(2rem, calc(1rem + 6vmin), 4.5rem) 0.5rem;
+}
+
+@media (min-width: 50rem) {
+	.hero {
+		grid-template-columns: 100%;
+	}
+}
+
+.hero h1 {
+	letter-spacing: -0.03em;
+}
+
+.home > :is(p, ul) {
+	max-width: 68ch;
+}
+
+.home h2 {
+	margin-top: 3.5rem;
+}
+
+.version-picker {
+	display: grid;
+	gap: 1rem;
+}
+
+@media (min-width: 50rem) {
+	.version-picker {
+		grid-template-columns: 1fr 1fr;
+		gap: 1.5rem;
+	}
+}
+
+.version {
+	display: flex;
+	flex-direction: column;
+	gap: 0.875rem;
+	padding: 1.5rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: var(--radius-xl);
+	background: var(--sl-color-gray-6);
+	color: var(--sl-color-gray-2);
+	text-decoration: none;
+	transition: border-color 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.version:hover {
+	border-color: var(--sl-color-accent);
+}
+
+.version:focus-visible {
+	outline: 2px solid var(--sl-color-accent);
+	outline-offset: 3px;
+}
+
+.version-head {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+}
+
+.version-number {
+	color: var(--sl-color-white);
+	font-size: var(--sl-text-4xl);
+	font-weight: 600;
+	letter-spacing: -0.03em;
+	line-height: 1;
+}
+
+.version-image {
+	color: var(--sl-color-gray-3);
+	font-family: var(--sl-font-mono);
+	font-size: var(--sl-text-sm);
+	overflow-wrap: anywhere;
+	margin-top: auto;
+}
+
+.version-cta {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	padding-top: 0.25rem;
+	color: var(--sl-color-text-accent);
+	font-weight: 600;
+}
+
+.version-cta svg {
+	transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.version:hover .version-cta svg {
+	transform: translateX(3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.version-cta svg {
+		transition: none;
+	}
+}
+
+.home .version-hint {
+	margin-top: 1rem;
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
+}
+
+/* How it works: a tree from the Arr through infinidysk to the player and Usenet. */
+.flow {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-areas:
+		'arr arr'
+		'e1 e1'
+		'core core'
+		'e2 e3'
+		'player usenet';
+	column-gap: 0.75rem;
+	margin-block: 1.5rem 0;
+}
+
+@media (min-width: 50rem) {
+	.flow {
+		grid-template-columns: minmax(0, 1fr) 8.5rem minmax(0, 1.1fr) 8.5rem minmax(0, 1fr);
+		grid-template-areas:
+			'arr e1 core e2 player'
+			'arr e1 core e3 usenet';
+		row-gap: 0.75rem;
+		align-items: center;
+	}
+}
+
+.flow-arr { grid-area: arr; }
+.flow-e1 { grid-area: e1; }
+.flow-core { grid-area: core; }
+.flow-e2 { grid-area: e2; }
+.flow-player { grid-area: player; }
+.flow-e3 { grid-area: e3; }
+.flow-usenet { grid-area: usenet; }
+
+.flow-node {
+	display: flex;
+	flex-direction: column;
+	gap: 0.125rem;
+	padding: 0.75rem 1rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: var(--radius-lg);
+	background: var(--sl-color-gray-6);
+	text-align: center;
+}
+
+.flow-node strong {
+	color: var(--sl-color-white);
+	font-weight: 600;
+}
+
+.flow-node > span {
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
+}
+
+.flow-core {
+	border-color: var(--sl-color-accent);
+	background: var(--sl-color-accent-low);
+}
+
+.flow-core strong {
+	font-size: var(--sl-text-lg);
+}
+
+.flow-edge {
+	position: relative;
+	display: grid;
+	place-items: center;
+	min-height: 3.25rem;
+}
+
+.flow-edge::before {
+	content: '';
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 50%;
+	border-inline-start: 1px solid var(--sl-color-gray-4);
+}
+
+@media (min-width: 50rem) {
+	.flow-edge {
+		min-height: 0;
+		align-self: stretch;
+	}
+
+	.flow-edge::before {
+		inset-block: 50% auto;
+		inset-inline: 0;
+		border-inline-start: 0;
+		border-top: 1px solid var(--sl-color-gray-4);
+	}
+}
+
+.flow-edge span {
+	position: relative;
+	padding: 0.125rem 0.5rem;
+	border-radius: var(--radius-sm);
+	background: var(--sl-color-bg);
+	color: var(--sl-color-gray-2);
+	font-size: var(--sl-text-xs);
+	white-space: nowrap;
+}
+
+.shared {
+	columns: 15rem 3;
+	column-gap: 2rem;
+}
+
+.home .shared li {
+	margin-top: 0;
+	break-inside: avoid;
+}
+
+.home table {
+	display: table;
+	width: 100%;
+}
+
+.home table :is(th, td):first-child {
+	width: 50%;
+}
+
+.home .no {
+	color: var(--sl-color-gray-3);
+}
+
+.perf {
+	display: grid;
+	gap: 1.5rem;
+	margin-top: 1.25rem;
+}
+
+@media (min-width: 50rem) {
+	.perf {
+		grid-template-columns: 1fr 1fr;
+		gap: 1.75rem 3rem;
+	}
+}
+
+.perf-label {
+	margin-bottom: 0.5rem;
+	color: var(--sl-color-white);
+	font-weight: 600;
+}
+
+.perf-row {
+	display: grid;
+	grid-template-columns: 2rem minmax(0, 1fr) 6.75rem;
+	align-items: center;
+	gap: 0.75rem;
+	min-height: 1.75rem;
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
+	font-variant-numeric: tabular-nums;
+}
+
+.perf-row.is-next {
+	color: var(--sl-color-white);
+}
+
+.perf-track {
+	height: 0.625rem;
+	border-radius: 999px;
+	background: var(--sl-color-gray-6);
+	overflow: hidden;
+}
+
+.perf-bar {
+	--bar: var(--sl-color-gray-4);
+	display: block;
+	height: 100%;
+	/* Solid up to the best pass, faded across the range to the worst pass. */
+	background: linear-gradient(
+		to right,
+		var(--bar) var(--min),
+		color-mix(in oklch, var(--bar) 40%, transparent) var(--min) var(--max),
+		transparent var(--max)
+	);
+}
+
+.is-next .perf-bar {
+	--bar: var(--sl-color-accent);
+}
+
+.perf-value {
+	text-align: end;
+}
+
+.home .perf-method {
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
+}
+
+.button-row {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.75rem;
+	margin-top: 1rem;
+}
+
+.button-row .sl-link-button {
+	margin: 0;
+	min-height: 2.75rem;
+	padding-block: 0;
+}
+
+.home .button-row + p {
+	margin-top: 2rem;
 }
