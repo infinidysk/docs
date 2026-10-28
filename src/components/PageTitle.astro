@@ -1,14 +1,19 @@
 ---
 import { Badge } from '@astrojs/starlight/components';
+// Not in the package exports; starlight-page-actions is pinned in package.json so this path stays valid.
+import PageActions from '../../node_modules/starlight-page-actions/components/PageActions.astro';
 
 const { id, entry } = Astro.locals.starlightRoute;
 const version = { v1: '1.x', v2: '2.x' }[id.split('/')[0]];
+// Changelog pages are generated from a remote file, so they have no Markdown copy.
+const showActions = !id.startsWith('v1/changelog');
 ---
 
 <h1 id="_top">
 	{entry.data.title}
 	{version && <Badge text={version} variant={version === '2.x' ? 'caution' : 'note'} class="version-badge" />}
 </h1>
+{showActions && <PageActions />}
 
 <style>
 	h1 {

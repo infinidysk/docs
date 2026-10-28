@@ -6,6 +6,7 @@ import mermaid from 'astro-mermaid';
 import starlightChangelogs, { makeChangelogsSidebarLinks } from 'starlight-changelogs';
 import starlightImageZoom from 'starlight-image-zoom';
 import starlightLinksValidator from 'starlight-links-validator';
+import starlightPageActions from 'starlight-page-actions';
 import starlightSidebarTopics from 'starlight-sidebar-topics';
 
 const site = 'https://www.infinidysk.com';
@@ -93,6 +94,11 @@ export default defineConfig({
 				starlightLinksValidator({ exclude: ['/v1/changelog/', '/v1/changelog/**/*'] }),
 				starlightImageZoom(),
 				starlightChangelogs(),
+				starlightPageActions({
+					baseUrl: site,
+					actions: { chatgpt: true, claude: true, githubCopilot: true, markdown: true },
+					share: false,
+				}),
 				starlightSidebarTopics(
 					[
 						{
