@@ -7,6 +7,15 @@
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
   },
-  "routes": [{ "pattern": "www.infinidysk.com", "custom_domain": true }],
-  "workers_dev": false
+  "routes": [
+    { "pattern": "www.infinidysk.com", "custom_domain": true },
+    {
+      "pattern": "preview.infinidysk.com",
+      "custom_domain": true,
+      "previews_enabled": true,
+      "enabled": false
+    }
+  ],
+  "workers_dev": false,
+  "previews": {}
 }
