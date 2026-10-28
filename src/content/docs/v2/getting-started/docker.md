@@ -33,7 +33,7 @@ services:
       - apparmor:unconfined
 ```
 
-`edge` follows the latest 2.x build. There is no `latest` tag while 2.x is in alpha.
+`edge` follows the latest 2.x build. There is no `latest` tag while 2.x is in beta.
 
 ## First start
 

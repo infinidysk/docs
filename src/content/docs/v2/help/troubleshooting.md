@@ -5,7 +5,7 @@ description: Report problems with infinidysk 2.x and fix common mount and upgrad
 
 ## Reporting problems
 
-Report alpha problems on [Discord](https://discord.gg/DAya7W6QMa). Include:
+Report beta problems on [Discord](https://discord.gg/DAya7W6QMa). Include:
 
 - the image tag (or `sha-` tag) you run;
 - the log, from `/config/logs/infinidysk.log` or the Logs page;

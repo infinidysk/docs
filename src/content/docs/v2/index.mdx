@@ -1,14 +1,14 @@
 ---
 title: infinidysk 2.x
-description: The Rust rewrite of infinidysk. Alpha for early testers, with a built-in FUSE mount, lower CPU and memory use, and a one-step upgrade from 1.x.
+description: The Rust rewrite of infinidysk. In beta, with a built-in FUSE mount, lower CPU and memory use, and a one-step upgrade from 1.x.
 ---
 
 import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 infinidysk 2.x is a from-scratch rewrite of infinidysk in Rust. It keeps what Sonarr, Radarr and your media server talk to (the SABnzbd API and the WebDAV paths) and replaces everything behind it.
 
-<Aside type="caution" title="Alpha">
-2.x is for early testers. Expect bugs, and keep your 1.x install and its config until you are happy. 1.x stays supported with bug fixes while 2.x matures.
+<Aside type="caution" title="Beta">
+2.x is in beta. Expect some bugs, and keep your 1.x install and its config until you are happy. 1.x stays supported with bug fixes while 2.x matures.
 </Aside>
 
 ## What changes from 1.x
@@ -34,11 +34,11 @@ infinidysk 2.x is a from-scratch rewrite of infinidysk in Rust. It keeps what So
 
 | Tag | What it is |
 |-----|------------|
-| `v2.0.0-alpha.N` | An alpha release. Pin one of these to stay put. |
+| `v2.0.0-beta.N` | A beta release. Pin one of these to stay put. |
 | `edge` | Every change on `main`, untested. May be broken. |
 | `sha-<commit>` | One exact build, for reproducing a bug. |
 
-There is no `latest` tag on purpose, so nothing upgrades onto the alpha by accident. When 2.0 ships it moves to the main `infinidysk` image and this one stops updating.
+There is no `latest` tag on purpose, so nothing upgrades onto the beta by accident. When 2.0 ships it moves to the main `infinidysk` image and this one stops updating.
 
 ## Start here
 
@@ -51,7 +51,7 @@ There is no `latest` tag on purpose, so nothing upgrades onto the alpha by accid
 
 ## Not in 2.x yet
 
-These 1.x features are missing in the alpha. The upgrade report lists every setting it could not carry over.
+These 1.x features are missing in the beta. The upgrade report lists every setting it could not carry over.
 
 - PAR2 reconstruction during repair
 - Stremio and addon routes, search, indexers and Prowlarr
