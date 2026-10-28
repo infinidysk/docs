@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="g" x1="22" y1="0" x2="106" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0194f7"/>
+      <stop offset="1" stop-color="#23a336"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#0e1117"/>
+  <rect x="0.5" y="0.5" width="1199" height="629" fill="none" stroke="#ffffff" stroke-opacity="0.09"/>
+  <g transform="translate(96 120) scale(1.25)">
+    <rect width="128" height="128" rx="28" fill="#070e1c" stroke="#ffffff" stroke-opacity="0.09"/>
+    <path d="M64 64C71 53 78 46 88 46C98 46 106 54 106 64C106 74 98 82 88 82C78 82 71 75 64 64C57 53 50 46 40 46C30 46 22 54 22 64C22 74 30 82 40 82C50 82 57 75 64 64Z" fill="none" stroke="url(#g)" stroke-width="11" stroke-linejoin="round"/>
+    <g fill="#139c8f">
+      <circle cx="64" cy="20" r="2" opacity=".4"/>
+      <circle cx="64" cy="29" r="2.7" opacity=".7"/>
+      <circle cx="64" cy="39" r="3.4"/>
+    </g>
+  </g>
+  <text x="96" y="380" font-family="Geist" font-weight="600" font-size="96" letter-spacing="-2" fill="#f4f5f7">infinidysk</text>
+  <text font-family="Geist" font-weight="400" font-size="34" fill="#9aa1ad">
+    <tspan x="96" y="446">Mount NZBs as a virtual filesystem and stream</tspan>
+    <tspan x="96" y="492">directly from Usenet, without downloading first.</tspan>
+  </text>
+  <text x="96" y="560" font-family="Geist Mono" font-weight="400" font-size="26" fill="#3b9cf5">infinidysk.com</text>
+</svg>
