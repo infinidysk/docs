@@ -1,128 +1,106 @@
 ---
-title: The NzbDAV SuperFork — stream Usenet media over WebDAV
-description: infinidysk, the NzbDAV SuperFork, mounts NZB files as a virtual filesystem and streams media directly from Usenet, with a SABnzbd-compatible API for Sonarr and Radarr.
+title: infinidysk — stream Usenet media over WebDAV and FUSE
+description: infinidysk mounts NZB files as a virtual filesystem and streams media directly from Usenet, with a SABnzbd-compatible API for Sonarr and Radarr. Docs for 1.x (stable) and 2.x (alpha).
 template: splash
 hero:
-  title: infinidysk
-  tagline: The NzbDAV SuperFork. Mount NZBs as a virtual filesystem and stream directly from Usenet, without downloading full media files first.
+  title: infini<span class="wordmark-accent">dysk</span>
+  tagline: Mount NZBs as a virtual filesystem and stream directly from Usenet, without downloading full media files first.
   image:
     file: ../../assets/overview.png
     alt: infinidysk overview dashboard
   actions:
-    - text: Get started
-      link: /getting-started/
+    - text: 1.x docs
+      link: /v1/
       variant: primary
-    - text: View on GitHub
-      link: https://github.com/infinidysk/infinidysk
+    - text: 2.x docs (alpha)
+      link: /v2/
       variant: secondary
-      icon: github
-    - text: Docker image
-      link: https://github.com/infinidysk/infinidysk/pkgs/container/infinidysk
+    - text: Discord
+      link: https://discord.gg/DAya7W6QMa
       variant: minimal
+      icon: discord
 ---
 
-import { CardGrid, LinkButton, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Aside, Badge, Card, CardGrid, LinkButton } from '@astrojs/starlight/components';
 
-<div class="badges">
-
-[![Latest release](https://img.shields.io/github/v/release/infinidysk/infinidysk)](https://github.com/infinidysk/infinidysk/releases)
-[![Docker](https://img.shields.io/badge/ghcr.io-infinidysk%2Finfinidysk-0194f7?logo=docker&logoColor=white)](https://github.com/infinidysk/infinidysk/pkgs/container/infinidysk)
-[![CI](https://img.shields.io/github/actions/workflow/status/infinidysk/infinidysk/ci.yml?branch=main&label=CI)](https://github.com/infinidysk/infinidysk/actions)
-[![License](https://img.shields.io/github/license/infinidysk/infinidysk)](https://github.com/infinidysk/infinidysk/blob/main/LICENSE)
-
-</div>
-
-infinidysk is a **WebDAV server** that mounts NZB documents as a browsable virtual filesystem. Content streams on demand from your Usenet provider. A **SABnzbd-compatible API** lets Sonarr, Radarr and other Arr instances use it as a drop-in download client, so you can build an effectively infinite media library without storing full files on disk.
+infinidysk is a Usenet-backed virtual filesystem. A **SABnzbd-compatible API** lets Sonarr, Radarr and other Arr instances use it as a download client, and your media server plays files straight from your Usenet providers, without storing them on disk.
 
 ```mermaid
 flowchart LR
   Arr["Sonarr / Radarr"] -->|SABnzbd API| Queue[infinidysk queue]
-  Queue --> Mount[WebDAV mount]
+  Queue --> Mount[WebDAV or FUSE mount]
   Mount --> Stream[Usenet stream]
-  Player["Plex / Jellyfin / rclone"] --> Mount
+  Player["Plex / Jellyfin"] --> Mount
 ```
 
-## Why infinidysk
+## Pick your version
+
+Two versions are supported side by side for now. Use the docs for the version you run.
 
 <CardGrid>
-	<LinkCard title="Virtual filesystem" description="Browse NZB contents instantly over WebDAV. No full download before you open a file." href="/features/webdav-filesystem/" />
-	<LinkCard title="Stream and seek" description="Jump anywhere in a video. Optional NNTP pipelining for higher throughput and faster seeks." href="/features/streaming-seeking/" />
-	<LinkCard title="Arr compatible" description="SABnzbd API for Sonarr and Radarr, with symlink or STRM import strategies." href="/use-cases/infinite-library-arr/" />
-	<LinkCard title="Multi-provider" description="Cascade routing, circuit breakers, data caps and automatic failover across providers." href="/features/multi-provider/" />
+	<Card title="1.x" icon="approve-check">
+		<Badge text="Stable" variant="success" /> The current release, written in C#. Mounts through an rclone sidecar over WebDAV. Has the full feature set, including Stremio, search and backups.
+
+		Image: `ghcr.io/infinidysk/infinidysk`
+
+		<LinkButton href="/v1/">1.x docs</LinkButton>
+	</Card>
+	<Card title="2.x" icon="rocket">
+		<Badge text="Alpha" variant="caution" /> The Rust rewrite, for early testers. Built-in FUSE mount, lower CPU and memory use, and a one-step upgrade from a 1.x config.
+
+		Image: `ghcr.io/infinidysk/infinidysk-next`
+
+		<LinkButton href="/v2/">2.x docs</LinkButton>
+	</Card>
 </CardGrid>
 
-## How infinidysk compares
+<Aside title="Which version am I running?">
+Check the image in your compose file. `ghcr.io/infinidysk/infinidysk` is 1.x. `ghcr.io/infinidysk/infinidysk-next` is 2.x.
+</Aside>
 
-Choosing between streaming WebDAV tools and classic download clients depends on your media server, disk budget, and how much operations work you want.
+## How the versions compare
 
-<LinkCard title="Compare alternatives" description="infinidysk vs AltMount vs classic SABnzbd/NZBGet: feature table and audience guidance." href="/guides/compare/" />
+Both versions speak the same SABnzbd API and serve the same WebDAV paths, so Arrs and media servers see no difference. What sits behind them differs.
 
-## Quick start
+| | 1.x | 2.x |
+|---|---|---|
+| SABnzbd API for Arrs | Yes | Yes |
+| WebDAV | Yes | Yes |
+| Mount | rclone sidecar | Built-in FUSE |
+| Symlink and STRM imports | Yes | Yes |
+| Health checks and Arr replacement | Yes | Yes |
+| PAR2 repair | Yes | Not yet |
+| Multiple providers with priority levels | Yes | Yes |
+| Provider catalog with backbones | No | Yes |
+| Download speed limit | Yes | Yes |
+| Global connection cap | Yes | Not yet |
+| Disk segment cache | Yes | Yes |
+| SQLite and PostgreSQL | Yes | Yes |
+| Prometheus metrics | Yes | Yes |
+| Stremio and addon routes | Yes | Not yet |
+| Search, indexers and Prowlarr | Yes | Not yet |
+| Backup and restore | Yes | Not yet |
+| Watchtower, Preflight and Warden | Yes | No |
+| Imports a 1.x config | — | Yes |
 
-<Tabs>
-<TabItem label="Docker run">
+### Performance
 
-```bash
-docker run --rm -it -p 3000:3000 ghcr.io/infinidysk/infinidysk:latest
-```
+| Measure | 1.x | 2.x |
+|---|---|---|
+| Startup | 6.2 s | 0.4–0.5 s |
+| CPU time per GB streamed | 13.2–13.3 s | 3.7–4.1 s |
+| Memory at idle | 165–302 MB | 68–70 MB |
+| Memory per stream | 1.28–1.53 GB | 1.14–1.26 GB |
+| Sequential throughput | 103–111 MB/s | 92–103 MB/s, on par within run-to-run variance |
+| Rebuffers at a 3.1 MB/s playback rate | 0 of 5 | 0 of 5 |
 
-Ephemeral trial: settings are discarded when the container exits.
-
-</TabItem>
-<TabItem label="Docker Compose">
-
-```yaml
-services:
-  nzbdav:
-    image: ghcr.io/infinidysk/infinidysk:latest
-    container_name: nzbdav
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      PUID: "1000"
-      PGID: "1000"
-      TZ: Etc/UTC
-    volumes:
-      - ./config:/config
-```
-
-</TabItem>
-<TabItem label="DUMB stack">
-
-infinidysk is a supported core module in [Debrid Unlimited Media Bridge (DUMB)](https://dumbarr.com/). Enable infinidysk during DUMB onboarding (or set Arr `core_service` to include `nzbdav`) for guided Usenet WebDAV and download-client wiring.
-
-<LinkButton href="https://dumbarr.com/services/core/nzbdav/" variant="secondary">infinidysk on dumbarr.com</LinkButton>
-<LinkButton href="/getting-started/#setup-and-hosting-options" variant="minimal">Hosting options</LinkButton>
-
-</TabItem>
-</Tabs>
-
-Then open `http://localhost:3000` (self-hosted) or your DUMB service URL, create your admin account if needed, and add a Usenet provider under Settings.
-
-:::caution[Expose carefully]
-Port `3000` is plain HTTP. Put infinidysk behind HTTPS for remote access. WebDAV uses Basic auth, so TLS matters. Prefer binding `127.0.0.1:3000:3000` when a reverse proxy runs on the host.
-:::
-
-<LinkButton href="/getting-started/docker/">Full Docker guide</LinkButton>
-<LinkButton href="/getting-started/migration/" variant="secondary">Migrate from another build</LinkButton>
-<LinkButton href="/getting-started/first-run/" variant="minimal">First-run checklist</LinkButton>
-
-## Documentation
-
-<CardGrid>
-	<LinkCard title="Getting started" description="Install with Docker, complete first-run setup, connect Radarr and Sonarr." href="/getting-started/" />
-	<LinkCard title="Guides" description="Architecture, import strategies, rclone mounts, media servers, Stremio, troubleshooting." href="/guides/architecture/" />
-	<LinkCard title="Configuration" description="What every Settings control does, plus the headless NZBDAV_CONFIG__ schema." href="/configuration/" />
-	<LinkCard title="Use cases" description="Infinite library with Arrs, streaming-only setups, multi-provider failover." href="/use-cases/" />
-</CardGrid>
+<small>
+Measured on 27 October 2026 with 1.6.3 and 2.0.0-alpha.8 in Docker on one Apple M4 Pro host, one commercial provider with 20 connections, five posts with a median size of 10.7 GB, three passes. Ranges span the three passes.
+</small>
 
 ## Community
 
-Chat on Discord, track releases on GitHub, and file issues when you need a durable bug report.
-
-After joining Discord, use the channel and role selector to enable **infinidysk - SuperFork** for release notifications and development channels.
+Chat on Discord and follow releases. After joining, use the channel and role selector to enable release notifications.
 
 <LinkButton href="https://discord.gg/DAya7W6QMa" icon="discord" iconPlacement="start">Join Discord</LinkButton>
-<LinkButton href="https://github.com/infinidysk/infinidysk" variant="secondary">Repository</LinkButton>
-<LinkButton href="https://github.com/infinidysk/infinidysk/releases" variant="minimal">Releases</LinkButton>
+<LinkButton href="https://github.com/infinidysk/infinidysk/releases" variant="secondary">1.x releases</LinkButton>
