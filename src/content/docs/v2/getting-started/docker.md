@@ -10,13 +10,15 @@ This sets up a new 2.x install. Coming from 1.x? Follow [Upgrade from 1.x](/v2/g
 ```yaml
 services:
   infinidysk:
-    image: ghcr.io/infinidysk/infinidysk-next:v2.0.0-alpha.8
+    image: ghcr.io/infinidysk/infinidysk-next:edge
     container_name: infinidysk
     restart: unless-stopped
+    # pid: host # optional: show which process reads each file, see below
     environment:
       PUID: 1000
       PGID: 1000
       TZ: Etc/UTC # your time zone, e.g. Europe/Oslo; the maintenance window follows it
+      # INFINIDYSK__MOUNT__EPOCH_TIMES: "true" # only if your old rclone mount used --no-modtime, see below
     ports:
       - "3000:3000"
     volumes:
@@ -31,7 +33,7 @@ services:
       - apparmor:unconfined
 ```
 
-Pin an alpha tag. There is no `latest` tag; `edge` follows every change and may be broken.
+`edge` follows the latest 2.x build. There is no `latest` tag while 2.x is in alpha.
 
 ## First start
 
@@ -57,6 +59,35 @@ Containers that read the mount (Sonarr, Radarr, Plex and so on) need the same ho
 - `/dev/fuse`, `SYS_ADMIN` and `apparmor:unconfined` let the container mount. Without `/dev/fuse`, 2.x logs a warning and serves WebDAV only.
 - `:rshared` on the parent directory makes the mount visible on the host and in other containers.
 - The `/sys/devices/virtual/bdi` volume lets the Settings > Performance preset set the kernel's readahead. Docker mounts `/sys` read-only, so without it readahead stays at the kernel's 128 KB.
+
+## Coming from rclone with `--no-modtime`
+
+By default, media files on the mount report their import time as their date. An rclone mount with `--no-modtime` reported 1970 instead, and media servers re-read every file whose date changed. To keep the old dates and skip a full library rescan, set:
+
+```yaml
+    environment:
+      INFINIDYSK__MOUNT__EPOCH_TIMES: "true"
+```
+
+Set it before your media server's first scan after the move. You can also turn on **Report 1970 file dates** under Settings; it takes effect after a restart.
+
+## See which process reads a file
+
+The mount shows the process name, pid and user of each reader. The kernel reports readers as seen from the infinidysk container, so a reader on the host or in another container (Plex, for example) shows as `pid unavailable` with only its user. Sharing the mount with `:rshared` does not change this.
+
+To see those process names, add `pid: host` to the service:
+
+```yaml
+services:
+  infinidysk:
+    pid: host
+```
+
+:::caution
+`pid: host` lets the container see every process on the host. Only add it if you accept that.
+:::
+
+## Restarts
 
 On shutdown the mount is removed. After a crash, the next start clears the dead mount. See [Restarts and crashes](/v2/guides/restarts/).
 

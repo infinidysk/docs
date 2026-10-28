@@ -23,7 +23,7 @@ The importer needs a 1.x config from v1.3.0 or later (`db.sqlite`).
 2. Optional dry run. This prints what will be carried over, what will not, and why, without importing anything:
 
    ```sh
-   docker run --rm -v ./config-2.0:/config ghcr.io/infinidysk/infinidysk-next:v2.0.0-alpha.8 import-report
+   docker run --rm -v ./config-2.0:/config ghcr.io/infinidysk/infinidysk-next:edge import-report
    ```
 
 3. Set `TZ` on 2.x to the same zone 1.x ran in. 1.x stored local times, so a different zone shifts every file date, and media servers may then re-read your whole library.
