@@ -81,6 +81,13 @@
 	color: var(--sl-color-white);
 }
 
+.sidebar-content a[aria-current='page'],
+.sidebar-content a[aria-current='page']:hover,
+.sidebar-content a[aria-current='page']:focus {
+	background-color: var(--sl-color-gray-6);
+	color: var(--sl-color-white);
+}
+
 .sl-link-button {
 	border-radius: var(--radius-md);
 }
