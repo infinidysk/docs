@@ -45,11 +45,11 @@ PAR2 reconstruction is not in 2.x yet.
 
 Under Settings > Automation > Health monitoring:
 
-| Setting | Default | Effect |
-|---------|---------|--------|
-| Health checks | On | Run routine checks. Playback failures are still recorded when off. |
-| Check percent | 5 | Share of articles each check asks about, 5–100. Also used by imports. |
-| Automatic repair | On | Ask the Arr for a replacement. Off marks the file "action needed" instead. |
-| Degraded tolerance | On | Allow playback over small gaps. Off treats any confirmed miss as missing. |
-| Unowned files | Delete | Delete, or mark "action needed". |
-| Media analysis | On | Read each good media file once with ffprobe and show its codecs in the Explorer. Never changes health. |
+| Setting | What it does |
+|---------|--------------|
+| **Routine checks** | Run routine checks. Playback failures are still recorded when off. On by default. |
+| **Sample size** | Share of articles each check asks about, 5–100%. Also used by imports. 5% by default. |
+| **Analyze media automatically** | Read each good media file once with ffprobe and show its codecs in the Explorer. Never changes health. On by default. |
+| **Replace broken files automatically** | Ask the Arr for a replacement. Off marks the file "action needed" instead. On by default. |
+| **Broken files not imported by an Arr** | Delete them (the default), or mark them "action needed". |
+| **Keep files with small gaps** | Allow playback over small gaps. Off treats any confirmed miss as missing. On by default. |

@@ -1,0 +1,19 @@
+---
+title: What's new in 2.x
+description: How infinidysk 2.x differs from 1.x, which 1.x features are not in the beta, and how the two compare on speed and memory.
+---
+
+import VersionDiff from '../../../components/VersionDiff.astro';
+import Performance from '../../../components/Performance.astro';
+
+Both versions speak the same SABnzbd API and serve the same WebDAV paths, so Arrs and media servers see no difference.
+
+## Differences
+
+<VersionDiff />
+
+The [upgrade](/v2/upgrade/) report lists every 1.x setting it could not carry over. Rclone RC notifications and cache flags are dropped; the built-in mount does not need them.
+
+## Performance
+
+<Performance />

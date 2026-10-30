@@ -4,11 +4,13 @@ description: infinidysk mounts NZB files as a virtual filesystem and streams med
 template: splash
 editUrl: false
 hero:
-  title: infini<span class="wordmark-accent">dysk</span>
-  tagline: Mount NZBs as a virtual filesystem and stream directly from Usenet, without downloading full media files first.
+  title: Stream from Usenet without downloading first
+  tagline: infini<span class="wordmark-accent">dysk</span> mounts NZBs as a virtual filesystem for Sonarr, Radarr and your media server, and fetches only the articles a player reads.
 ---
 
-import { Badge, Icon, LinkButton } from '@astrojs/starlight/components';
+import { LinkButton, Icon, Badge } from '@astrojs/starlight/components';
+import VersionDiff from '../../components/VersionDiff.astro';
+import Performance from '../../components/Performance.astro';
 
 <div class="home">
 
@@ -18,7 +20,7 @@ import { Badge, Icon, LinkButton } from '@astrojs/starlight/components';
 			<span class="version-number">1.x</span>
 			<Badge text="Stable" variant="success" />
 		</span>
-		<span class="version-body">The current release, written in C#. Mounts through an rclone sidecar over WebDAV, with the full feature set, including Stremio, search and backups.</span>
+		<span class="version-body">Written in C#. Mounts through an rclone sidecar and has every feature, including Stremio, search and backups.</span>
 		<code class="version-image">ghcr.io/infinidysk/infinidysk</code>
 		<span class="version-cta">Read the 1.x docs <Icon name="right-arrow" /></span>
 	</a>
@@ -27,13 +29,13 @@ import { Badge, Icon, LinkButton } from '@astrojs/starlight/components';
 			<span class="version-number">2.x</span>
 			<Badge text="Beta" variant="caution" />
 		</span>
-		<span class="version-body">The Rust rewrite, in beta. Built-in FUSE mount, lower CPU and memory use, and a one-step upgrade from a 1.x config.</span>
+		<span class="version-body">The Rust rewrite. Built-in FUSE mount, lower CPU and memory use, and a one-step upgrade from 1.x.</span>
 		<code class="version-image">ghcr.io/infinidysk/infinidysk-next</code>
 		<span class="version-cta">Read the 2.x docs <Icon name="right-arrow" /></span>
 	</a>
 </nav>
 
-<p class="version-hint">Not sure which one you run? Match the image name in your compose file.</p>
+<p class="version-hint">New install? Pick 1.x for a stable setup, or 2.x to try the beta. Already running infinidysk? Match the image name in your compose file.</p>
 
 ## How it works
 
@@ -67,47 +69,11 @@ Both versions speak the same SABnzbd API and serve the same WebDAV paths, so Arr
 
 What differs:
 
-| Feature | 1.x | 2.x |
-|---|---|---|
-| Mount | rclone sidecar | Built-in FUSE |
-| Provider catalog with backbones | <span class="no">No</span> | Yes |
-| Imports a 1.x config | <span class="no">—</span> | Yes |
-| PAR2 repair | Yes | <span class="no">Not yet</span> |
-| Stremio and addon routes | Yes | <span class="no">Not yet</span> |
-| Search, indexers and Prowlarr | Yes | <span class="no">Not yet</span> |
-| Backup and restore | Yes | <span class="no">Not yet</span> |
-| Watchtower, Preflight and Warden | Yes | <span class="no">No</span> |
+<VersionDiff />
 
 ### Performance
 
-Lower is better. Bars show the range across three passes.
-
-<div class="not-content perf">
-	<div class="perf-metric">
-		<p class="perf-label">Startup</p>
-		<div class="perf-row"><span class="perf-version">1.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '100%', '--max': '100%' }}></span></span><span class="perf-value">6.2 s</span></div>
-		<div class="perf-row is-next"><span class="perf-version">2.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '6.5%', '--max': '8.1%' }}></span></span><span class="perf-value">0.4–0.5 s</span></div>
-	</div>
-	<div class="perf-metric">
-		<p class="perf-label">CPU time per GB streamed</p>
-		<div class="perf-row"><span class="perf-version">1.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '99.2%', '--max': '100%' }}></span></span><span class="perf-value">13.2–13.3 s</span></div>
-		<div class="perf-row is-next"><span class="perf-version">2.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '27.8%', '--max': '30.8%' }}></span></span><span class="perf-value">3.7–4.1 s</span></div>
-	</div>
-	<div class="perf-metric">
-		<p class="perf-label">Memory at idle</p>
-		<div class="perf-row"><span class="perf-version">1.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '54.6%', '--max': '100%' }}></span></span><span class="perf-value">165–302 MB</span></div>
-		<div class="perf-row is-next"><span class="perf-version">2.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '22.5%', '--max': '23.2%' }}></span></span><span class="perf-value">68–70 MB</span></div>
-	</div>
-	<div class="perf-metric">
-		<p class="perf-label">Memory per stream</p>
-		<div class="perf-row"><span class="perf-version">1.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '83.7%', '--max': '100%' }}></span></span><span class="perf-value">1.28–1.53 GB</span></div>
-		<div class="perf-row is-next"><span class="perf-version">2.x</span><span class="perf-track" aria-hidden="true"><span class="perf-bar" style={{ '--min': '74.5%', '--max': '82.4%' }}></span></span><span class="perf-value">1.14–1.26 GB</span></div>
-	</div>
-</div>
-
-Sequential throughput is on par within run-to-run variance: 103–111 MB/s on 1.x, 92–103 MB/s on 2.x. Neither version rebuffered in five plays at a 3.1 MB/s playback rate.
-
-<p class="perf-method">Measured on 27 October 2026 with 1.6.3 and 2.0.0-alpha.8 in Docker on one Apple M4 Pro host, one commercial provider with 20 connections, five posts with a median size of 10.7 GB, three passes.</p>
+<Performance />
 
 ## Community and support
 
@@ -116,6 +82,7 @@ Chat on Discord and follow releases. After joining, use the channel and role sel
 <div class="not-content button-row">
 	<LinkButton href="https://discord.gg/DAya7W6QMa" icon="discord" iconPlacement="start">Join Discord</LinkButton>
 	<LinkButton href="https://github.com/infinidysk/infinidysk/releases" icon="github" iconPlacement="start" variant="secondary">1.x releases</LinkButton>
+	<LinkButton href="https://github.com/orgs/infinidysk/packages/container/package/infinidysk-next" icon="github" iconPlacement="start" variant="secondary">2.x images</LinkButton>
 </div>
 
 infinidysk is free and open source. If it is useful to you, you can support its development.

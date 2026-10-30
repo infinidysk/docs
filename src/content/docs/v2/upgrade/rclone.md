@@ -1,9 +1,9 @@
 ---
 title: Move off rclone
-description: Replace the rclone sidecar with the built-in FUSE mount and keep library symlinks working.
+description: Replace the 1.x rclone sidecar with the built-in FUSE mount and keep library symlinks and file dates.
 ---
 
-2.x mounts the library itself over FUSE, so the rclone sidecar is no longer needed.
+2.x mounts the library itself over FUSE, so the rclone sidecar is no longer needed. Do these steps before 2.x starts for the first time. If 1.x had no rclone sidecar, skip this page.
 
 :::caution
 Your library symlinks only keep working if the 2.x mount sits at exactly the path rclone mounted.
@@ -20,28 +20,32 @@ Your library symlinks only keep working if the 2.x mount sits at exactly the pat
    sudo umount -l /mnt/remote/infinidysk  # only if it still does
    ```
 
-3. Give the infinidysk container what the rclone container had: `/dev/fuse`, `SYS_ADMIN`, `apparmor:unconfined`, and the parent directory with `:rshared` (as in the [compose file](/v2/getting-started/docker/#compose-file)). The mount directory must be visible at the same path inside the container: if rclone used `/mnt:/mnt:rshared`, use the same bind here.
-4. Check your rclone command for `--no-modtime`. If it was there, set this on infinidysk **before its first start**:
+3. Give the infinidysk container what the rclone container had: `/dev/fuse`, `SYS_ADMIN`, `apparmor:unconfined`, and the parent directory with `:rshared` (as in the [compose file](/v2/install/docker/#compose-file)). The mount directory must be visible at the same path inside the container: if rclone used `/mnt:/mnt:rshared`, use the same bind here.
+4. Check your rclone command for `--no-modtime`. If it was there, set this on infinidysk:
 
    ```yaml
        environment:
          INFINIDYSK__MOUNT__EPOCH_TIMES: "true"
    ```
 
-   With `--no-modtime`, every file on the rclone mount showed a 1970 date and your media server stored that. 2.x shows real dates by default, so without this Plex and similar servers re-read every file on their next scan. Settings > Mount > Disable file timestamps does the same, but takes effect only after a restart and must be on before any library scan. Without `--no-modtime`, leave it off.
+   With `--no-modtime`, every file on the rclone mount showed a 1970 date and your media server stored that. 2.x shows real dates by default, so without this Plex and similar servers re-read every file on their next scan. **Disable file timestamps** under Settings > Platform > Mount does the same, but takes effect only after a restart and must be on before any library scan. Without `--no-modtime`, leave it off.
 
-5. Start 2.x and check from the host and from an Arr container:
+Then [run the upgrade](/v2/upgrade/run/).
 
-   ```sh
-   ls /mnt/remote/infinidysk   # expect .ids, completed-symlinks, content, nzbs
-   ```
+## Check after the first start
 
-   Then open one existing library symlink and confirm it plays.
+From the host and from an Arr container:
+
+```sh
+ls /mnt/remote/infinidysk   # expect .ids, completed-symlinks, content, nzbs
+```
+
+Then open one existing library symlink and confirm it plays.
 
 ## Moving the mount later
 
-Set your library folders under Settings > Library first, then change the mount directory under Settings > Mount. After the restart, 2.x rewrites the symlinks in those folders. The library folders must be bound into the infinidysk container at the same paths your Arrs use.
+Set your [library folders](/v2/operate/library-folders/) first, then change **Directory** under Settings > Platform > Mount. After the restart, 2.x rewrites the symlinks in those folders.
 
 ## Without FUSE
 
-If the container cannot get `/dev/fuse`, 2.x logs a warning and runs WebDAV only. You can keep rclone in that case, pointed at `http://infinidysk:3000/`. 2.x does not send rclone refresh notifications, so keep `--dir-cache-time` short.
+If the container cannot get `/dev/fuse`, 2.x logs a warning and runs WebDAV only. You can keep rclone in that case; see [WebDAV](/v2/operate/webdav/#without-fuse).

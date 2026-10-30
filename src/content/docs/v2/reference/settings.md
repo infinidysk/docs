@@ -1,5 +1,5 @@
 ---
-title: Settings and environment
+title: Settings and environment variables
 description: How infinidysk 2.x stores settings, how to force one with an environment variable, and the startup variables.
 ---
 
@@ -16,36 +16,30 @@ Forced values show in the UI but are not written back to the database.
 
 These are read once at startup and are not settings.
 
-| Variable | Default | |
-|----------|---------|---|
-| `INFINIDYSK_LISTEN` | `0.0.0.0:3000` | Address for the UI, the SABnzbd API and WebDAV |
-| `INFINIDYSK_DATABASE_URL` | `sqlite:/config/infinidysk.sqlite` | Use `postgres://…` for PostgreSQL |
-| `PUID` / `PGID` | `1000` | Owner shown on files in the mount |
-| `TZ` | UTC | Time zone for the maintenance window and file dates |
-| `INFINIDYSK_LOG_DIR` | `/config/logs` | Where log files are written |
-| `RUST_LOG` | `info` | Log filter |
-| `INFINIDYSK_FFPROBE` | `ffprobe` | ffprobe binary for media analysis. The image includes it; without it, analysis is off. |
+| Variable | What it does |
+|----------|--------------|
+| `INFINIDYSK_LISTEN` | Address for the UI, the SABnzbd API and WebDAV. Default `0.0.0.0:3000`. |
+| `INFINIDYSK_DATABASE_URL` | Database. Default `sqlite:/config/infinidysk.sqlite`; use `postgres://…` for PostgreSQL. |
+| `PUID` / `PGID` | Owner shown on files in the mount. Default `1000`. |
+| `TZ` | Time zone for the maintenance window and file dates. Default UTC. |
+| `INFINIDYSK_LOG_DIR` | Where log files are written. Default `/config/logs`. |
+| `RUST_LOG` | Log filter. Default `info`. See [Logs and traces](/v2/operate/logs-traces/). |
+| `INFINIDYSK_FFPROBE` | ffprobe binary for media analysis. Default `ffprobe`; the image includes it, and without it analysis is off. |
 
 ## Useful settings
 
-| Setting | Key | Notes |
-|---------|-----|-------|
-| Mount directory | `mount.dir` | `/mnt/infinidysk` by default. Read at startup. |
-| Disable file timestamps | `mount.epoch_times` | For libraries moved off an rclone mount that used `--no-modtime`. |
-| Download limit | `network.download_limit_mb_per_s` | One cap on the combined download speed from all providers, in MB/s. Serving files to players is not limited. |
-| Public URL | `network.public_url` | The address Arrs and browsers use, such as a reverse-proxy URL. |
-| Trusted proxies | `network.trusted_proxies` | Proxies whose `X-Forwarded-For` header is trusted. |
-| Import strategy | `imports.strategy` | `symlinks` or `strm`. See [Import strategies](/v2/guides/import-strategies/). |
-| Jobs at once | `queue.concurrency` | 1–10, default 2. |
-| NZB retention | `queue.nzb_retention_days` | Days an unused NZB is kept, default 30. |
-| Performance preset | `performance.preset` | Read-ahead, memory cache and optional disk cache. |
-| Prometheus | `metrics.prometheus` | Serves `/metrics` behind the admin API key. |
+| Setting | What it does |
+|---------|--------------|
+| Mount directory<br/>`mount.dir` | Settings > Platform > Mount. `/mnt/infinidysk` by default. Read at startup. |
+| Disable file timestamps<br/>`mount.epoch_times` | Settings > Platform > Mount. For libraries moved off an rclone mount that used `--no-modtime`; see [Move off rclone](/v2/upgrade/rclone/). |
+| Performance preset<br/>`performance.preset` | Settings > Platform > Performance. Read-ahead, memory cache and optional disk cache. |
+| Download speed limit<br/>`network.download_limit_mb_per_s` | Settings > Platform > Performance. One cap on the combined download speed from all providers, in MB/s. Serving files to players is not limited. |
+| Import strategy<br/>`imports.strategy` | Settings > Automation > Library. `symlinks` or `strm`; see [Choose an import strategy](/v2/install/import-strategy/). |
+| Library folders<br/>`imports.library_dirs` | Settings > Automation > Library. See [Library folders](/v2/operate/library-folders/). |
+| Imports at once<br/>`queue.concurrency` | Settings > Automation > Imports. 1–10, default 2. |
+| Keep unused NZBs<br/>`queue.nzb_retention_days` | Settings > Automation > Imports. Days an unused NZB is kept, default 30. |
+| Public URL<br/>`network.public_url` | Settings > System > Network. The address Arrs and media servers use; see [Reverse proxy](/v2/operate/reverse-proxy/#public-url). |
+| Trusted proxies<br/>`network.trusted_proxies` | Settings > System > Network. Proxies whose `X-Forwarded-For` header is trusted. |
+| Prometheus metrics<br/>`metrics.prometheus` | Settings > System > Access. Serves `/metrics` behind the admin API key. |
 
-Health settings are listed in [Health checks and repair](/v2/guides/health/#settings).
-
-## Who is reading
-
-The Overview and Traces pages show who opened each read, for troubleshooting.
-
-- **WebDAV** shows the user agent and address. Behind a reverse proxy, add the proxy to trusted proxies so the real client is shown.
-- **FUSE** shows the process name, pid, uid and gid. A reader in another container or on the host shows as `pid unavailable`. Run infinidysk with `pid: host` to see those names; this lets the container see every process on the host.
+Health settings are listed in [Health checks and repair](/v2/how-it-works/health/#settings).

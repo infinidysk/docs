@@ -17,7 +17,7 @@ Every scheduled job runs once per window, one after another. A restart inside th
 
 Deletes downloads nothing in your library uses. A file is **unlinked** when no symlink or STRM file in a library folder points to it and its job is no longer in the download history. Files you only played through the mount or WebDAV count as unlinked.
 
-The job refuses to delete anything when:
+It needs your [library folders](/v2/operate/library-folders/). The job refuses to delete anything when:
 
 - no library folder is set, or one is missing, unreadable or empty;
 - fewer than 5 pointers are found;

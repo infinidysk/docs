@@ -11,22 +11,31 @@ infinidysk 2.x is a from-scratch rewrite of infinidysk in Rust. It keeps what So
 2.x is in beta. Expect some bugs, and keep your 1.x install and its config until you are happy. 1.x stays supported with bug fixes while 2.x matures.
 </Aside>
 
+## Start here
+
+<CardGrid>
+	<LinkCard title="New install" description="Run 2.x with Docker, add providers and connect your Arrs and media server." href="/v2/install/docker/" />
+	<LinkCard title="Upgrade from 1.x" description="Import your 1.x config, library and history into 2.x." href="/v2/upgrade/" />
+</CardGrid>
+
 ## What changes from 1.x
 
 <CardGrid>
-	<Card title="Built-in mount" icon="seti:folder">
+	<Card title="Built-in mount">
 		2.x mounts the library itself over FUSE. No rclone sidecar, no RC notifications, no VFS cache flags.
 	</Card>
-	<Card title="One port" icon="random">
+	<Card title="One port">
 		The UI, the SABnzbd API and WebDAV all share port 3000.
 	</Card>
-	<Card title="Lighter" icon="rocket">
-		Starts in under half a second and uses about a third of the CPU per GB streamed. See the [comparison](/#what-changes-in-2x).
+	<Card title="Lighter">
+		Starts in under half a second and uses about a third of the CPU per GB streamed.
 	</Card>
-	<Card title="Provider catalog" icon="list-format">
+	<Card title="Provider catalog">
 		Pick your provider from a catalog. Hostname, port and backbone come from the profile.
 	</Card>
 </CardGrid>
+
+Some 1.x features are not in 2.x yet. [What's new in 2.x](/v2/whats-new/) lists every difference and the benchmark results.
 
 ## Image
 
@@ -34,27 +43,8 @@ infinidysk 2.x is a from-scratch rewrite of infinidysk in Rust. It keeps what So
 
 | Tag | What it is |
 |-----|------------|
-| `v2.0.0-beta.N` | A beta release. Pin one of these to stay put. |
-| `edge` | Every change on `main`, untested. May be broken. |
+| `edge` | The latest 2.x build, updated with every change. The docs use this tag during the beta. |
+| `v2.0.0-beta.N` | One beta release. |
 | `sha-<commit>` | One exact build, for reproducing a bug. |
 
 There is no `latest` tag on purpose, so nothing upgrades onto the beta by accident. When 2.0 ships it moves to the main `infinidysk` image and this one stops updating.
-
-## Start here
-
-<CardGrid>
-	<LinkCard title="Run with Docker" description="A new install from scratch." href="/v2/getting-started/docker/" />
-	<LinkCard title="Upgrade from 1.x" description="Import your 1.x config into 2.x." href="/v2/getting-started/upgrade/" />
-	<LinkCard title="Move off rclone" description="Keep your library symlinks working with the built-in mount." href="/v2/getting-started/rclone/" />
-	<LinkCard title="Connect Radarr and Sonarr" description="Add infinidysk as a SABnzbd download client." href="/v2/getting-started/connect-arr/" />
-</CardGrid>
-
-## Not in 2.x yet
-
-These 1.x features are missing in the beta. The upgrade report lists every setting it could not carry over.
-
-- PAR2 reconstruction during repair
-- Global connection cap across providers (per-provider connection counts carry over)
-- Stremio and addon routes, search, indexers and Prowlarr
-- Backup and restore
-- Rclone RC notifications (not needed with the built-in mount)

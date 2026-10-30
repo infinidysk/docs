@@ -5,7 +5,7 @@ description: Add Usenet providers in infinidysk 2.x from the catalog, and set pr
 
 ## Add a provider
 
-Pick your provider from the catalog under Settings > Providers. The profile fills in the hostname, port and **backbone**, so you only enter your username, password and connection count.
+Pick your provider from the catalog under Settings > Platform > Providers. The profile fills in the hostname, port and **backbone**, so you only enter your username, password and connection count.
 
 If your provider is not in the catalog, enter a custom hostname and port. A custom provider can pick a backbone from the catalog; without one it is a group of its own.
 

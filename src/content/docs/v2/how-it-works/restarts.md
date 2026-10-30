@@ -9,7 +9,7 @@ Nothing is rebuilt at startup. The library is servable as soon as the mount is u
 
 ## Stopping
 
-| | Graceful stop (`docker stop`) | Crash (`kill -9`, out of memory) |
+| What happens | Graceful stop (`docker stop`) | Crash (`kill -9`, out of memory) |
 |---|---|---|
 | Unmount | Clean, about 1 ms. A file still open makes it fall back to a lazy detach. | None. The kernel keeps a dead mount until the next start clears it. |
 | Reads while down | The mount point is an empty directory. | "Transport endpoint is not connected". |
@@ -34,7 +34,7 @@ Turn off "Empty trash automatically after every scan" in Plex, and avoid schedul
 
 ## STRM libraries
 
-With the [STRM strategy](/v2/guides/import-strategies/), media servers read `.strm` files on their own disk, so a scan while infinidysk is down keeps every item. Playback started while it is down fails at once; pressing play again after it is back works.
+With the [STRM strategy](/v2/install/import-strategy/), media servers read `.strm` files on their own disk, so a scan while infinidysk is down keeps every item. Playback started while it is down fails at once; pressing play again after it is back works.
 
 ## Restart from the UI
 
@@ -42,6 +42,4 @@ The mount directory, file dates, read-ahead memory and FUSE tuning are read only
 
 ## Logs
 
-Every log event is written to `/config/logs/infinidysk.log` (rotated at 10 MB, three old files kept), so a crash keeps its lead-up. The System page shows the previous run after a restart.
-
-`RUST_LOG=info,infinidysk_fuse=debug` logs every mount request with the operation, path, calling process, error and duration.
+The log file keeps the lead-up to a crash, and the System page shows the previous run after a restart. See [Logs and traces](/v2/operate/logs-traces/).
