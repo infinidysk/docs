@@ -11,6 +11,7 @@ Your 1.x files are opened read-only and never changed. Still, work on a copy.
 - **DUMB users.** 2.x does not ship binaries packaged for DUMB yet. Stay on 1.x for now.
 - **1.x on PostgreSQL.** The importer only reads a SQLite 1.x database (`db.sqlite`). Without one, 2.x starts as a new, empty install instead of importing, and `import-report` says `no C# database`.
 - **1.x older than v1.3.0.** Update 1.x and start it once first.
+- **The original NzbDAV (`nzbdav-dev/nzbdav` 0.6.4).** [Migrate to the latest 1.x](/v1/getting-started/migration/) and start it once first.
 - **You need a 1.x feature 2.x does not have yet.** See [What's new in 2.x](/v2/whats-new/#feature-comparison).
 :::
 

@@ -218,7 +218,28 @@
 @media (min-width: 50rem) {
 	.version-picker {
 		grid-template-columns: 1fr 1fr;
-		gap: 1.5rem;
+		gap: 0.75rem 1.5rem;
+	}
+}
+
+/* Sits under the 1.x card: below it on mobile, in its column on desktop. */
+.version-from {
+	margin: -0.25rem 0 0.5rem;
+	padding-inline: calc(1.5rem + 1px);
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
+}
+
+.version-from a {
+	color: var(--sl-color-text-accent);
+	font-weight: 600;
+	text-underline-offset: 0.2em;
+}
+
+@media (min-width: 50rem) {
+	.version-from {
+		grid-area: 2 / 1;
+		margin: 0;
 	}
 }
 
