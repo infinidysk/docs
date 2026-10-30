@@ -39,4 +39,4 @@ When a provider uses up its cap, requests go to other providers until it resets.
 
 ## The catalog
 
-The catalog is maintained by the community. To add or fix a provider, ask on [Discord](https://discord.gg/DAya7W6QMa).
+The catalog is maintained by the community. To add or fix a provider, ask in `#infinidysk-development` on [Discord](https://discord.gg/DAya7W6QMa).

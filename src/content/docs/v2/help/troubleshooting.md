@@ -3,7 +3,7 @@ title: Troubleshooting
 description: Fix common mount, upgrade and library problems in infinidysk 2.x.
 ---
 
-Still stuck? See [Reporting a bug](/v2/help/reporting/).
+Still stuck? Ask in `#infinidysk-development` on [Discord](https://discord.gg/DAya7W6QMa); [Reporting a bug](/v2/help/reporting/) lists what to include.
 
 ## The mount is empty or missing
 
