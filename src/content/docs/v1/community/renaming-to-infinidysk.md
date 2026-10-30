@@ -1,5 +1,6 @@
 ---
 title: "NzbDAV is now infinidysk"
+description: NzbDAV, the NzbDAV SuperFork, is now called infinidysk. Same project, maintainers and releases. Switch from ghcr.io/nzbdav/nzbdav to ghcr.io/infinidysk/infinidysk.
 ---
 **infinidysk** is the name of the project formerly known as NzbDAV. The product, maintainers, release
 history, and commitment to streaming directly from Usenet remain the same.

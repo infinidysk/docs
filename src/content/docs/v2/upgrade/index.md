@@ -3,7 +3,7 @@ title: Before you upgrade
 description: Check that you can upgrade from 1.x to infinidysk 2.x, copy your config and run a dry run.
 ---
 
-The upgrade reads your 1.x config and imports it into a new database: providers, Arr instances, categories, the SAB API key, WebDAV and admin logins, the mount directory, the library and its item ids, history and the queue.
+The upgrade reads your 1.x config, including one from the old `ghcr.io/nzbdav/nzbdav` image, and imports it into a new database: providers, Arr instances, categories, the SAB API key, WebDAV and admin logins, the mount directory, the library and its item ids, history and the queue.
 
 Your 1.x files are opened read-only and never changed. Still, work on a copy.
 
