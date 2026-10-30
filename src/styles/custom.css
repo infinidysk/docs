@@ -128,6 +128,10 @@
 	box-shadow: none;
 }
 
+.sl-markdown-content img.screenshot {
+	border: 1px solid var(--sl-color-hairline);
+}
+
 /* One accent for every card icon instead of Starlight's rotating colours. */
 .card {
 	--sl-card-border: var(--sl-color-accent);

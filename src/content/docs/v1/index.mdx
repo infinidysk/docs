@@ -4,6 +4,8 @@ description: Docs for infinidysk 1.x (formerly NzbDAV), the stable C# release. I
 ---
 
 import { Aside, CardGrid, LinkButton, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Image } from 'astro:assets';
+import overview from '../../../assets/overview.png';
 
 <div class="badges">
 
@@ -16,9 +18,13 @@ import { Aside, CardGrid, LinkButton, LinkCard, Tabs, TabItem } from '@astrojs/s
 
 infinidysk (formerly [NzbDAV](/v1/community/renaming-to-infinidysk/)) is a **WebDAV server** that mounts NZB documents as a browsable virtual filesystem. Content streams on demand from your Usenet provider. A **SABnzbd-compatible API** lets Sonarr and Radarr use it as a download client, so you can build a large media library without storing full files on disk.
 
+<Image src={overview} alt="infinidysk 1.x overview dashboard showing throughput, provider activity and active streams" class="screenshot" loading="eager" />
+
 <Aside type="note" title="Stable, bug fixes only">
 1.x is the stable release. It gets bug fixes only; new features go into 2.x, which is in alpha. See [What's new in 2.x](/v2/whats-new/).
 </Aside>
+
+## Why infinidysk
 
 ```mermaid
 flowchart LR
@@ -27,8 +33,6 @@ flowchart LR
   Mount --> Stream[Usenet stream]
   Player["Plex / Jellyfin / rclone"] --> Mount
 ```
-
-## Why infinidysk
 
 <CardGrid>
 	<LinkCard title="Virtual filesystem" description="Browse NZB contents over WebDAV. No full download before you open a file." href="/v1/features/webdav-filesystem/" />
