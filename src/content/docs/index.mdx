@@ -11,6 +11,7 @@ hero:
 import { LinkButton, Icon, Badge } from '@astrojs/starlight/components';
 import VersionDiff from '../../components/VersionDiff.astro';
 import Performance from '../../components/Performance.astro';
+import HowItWorks from '../../components/HowItWorks.astro';
 
 <div class="home">
 
@@ -39,17 +40,9 @@ import Performance from '../../components/Performance.astro';
 
 ## How it works
 
-Sonarr, Radarr and other Arr instances add infinidysk as a SABnzbd download client. Instead of downloading a release, infinidysk reads the NZB and shows its files on a mount. When your media server plays a file, infinidysk fetches only the articles it needs from your Usenet providers.
+Your Arr instances add infinidysk as a SABnzbd download client, but it never downloads the release. Work happens at two moments:
 
-<figure class="not-content flow" aria-label="How infinidysk connects Arrs, media servers and Usenet providers">
-	<div class="flow-node flow-arr"><strong>Sonarr, Radarr</strong><span>Arr instances</span></div>
-	<div class="flow-edge flow-e1"><span>SABnzbd API</span></div>
-	<div class="flow-node flow-core"><strong>infini<span class="wordmark-accent">dysk</span></strong><span>Queue and virtual filesystem</span></div>
-	<div class="flow-edge flow-e2"><span>WebDAV or FUSE</span></div>
-	<div class="flow-node flow-player"><strong>Plex, Jellyfin</strong><span>Play from the mount</span></div>
-	<div class="flow-edge flow-e3"><span>NNTP</span></div>
-	<div class="flow-node flow-usenet"><strong>Usenet providers</strong><span>Articles fetched on read</span></div>
-</figure>
+<HowItWorks />
 
 ## What changes in 2.x
 

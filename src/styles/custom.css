@@ -295,40 +295,57 @@
 	font-size: var(--sl-text-sm);
 }
 
-/* How it works: a tree from the Arr through infinidysk to the player and Usenet. */
-.flow {
+/* How it works: two numbered steps, each a chain of nodes. */
+.how {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-areas:
-		'arr arr'
-		'e1 e1'
-		'core core'
-		'e2 e3'
-		'player usenet';
-	column-gap: 0.75rem;
-	margin-block: 1.5rem 0;
+	gap: 2.5rem;
+	margin: 1.5rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.how-title {
+	display: flex;
+	align-items: center;
+	gap: 0.625rem;
+	margin: 0 0 1rem;
+	color: var(--sl-color-white);
+	font-size: var(--sl-text-lg);
+	font-weight: 600;
+}
+
+.how-num {
+	display: inline-grid;
+	place-items: center;
+	flex: none;
+	width: 1.75rem;
+	height: 1.75rem;
+	border: 1px solid var(--sl-color-accent);
+	border-radius: 999px;
+	background: var(--sl-color-accent-low);
+	color: var(--sl-color-text-accent);
+	font-size: var(--sl-text-sm);
+	font-variant-numeric: tabular-nums;
+}
+
+.how-chain {
+	display: grid;
+	gap: 1.75rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
 @media (min-width: 50rem) {
-	.flow {
-		grid-template-columns: minmax(0, 1fr) 8.5rem minmax(0, 1.1fr) 8.5rem minmax(0, 1fr);
-		grid-template-areas:
-			'arr e1 core e2 player'
-			'arr e1 core e3 usenet';
-		row-gap: 0.75rem;
-		align-items: center;
+	.how-chain {
+		grid-auto-flow: column;
+		grid-auto-columns: minmax(0, 1fr);
+		gap: 2rem;
 	}
 }
 
-.flow-arr { grid-area: arr; }
-.flow-e1 { grid-area: e1; }
-.flow-core { grid-area: core; }
-.flow-e2 { grid-area: e2; }
-.flow-player { grid-area: player; }
-.flow-e3 { grid-area: e3; }
-.flow-usenet { grid-area: usenet; }
-
-.flow-node {
+.how-node {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	gap: 0.125rem;
@@ -336,65 +353,110 @@
 	border: 1px solid var(--sl-color-gray-5);
 	border-radius: var(--radius-lg);
 	background: var(--sl-color-gray-6);
-	text-align: center;
 }
 
-.flow-node strong {
-	color: var(--sl-color-white);
-	font-weight: 600;
-}
-
-.flow-node > span {
-	color: var(--sl-color-gray-3);
-	font-size: var(--sl-text-sm);
-}
-
-.flow-core {
+.how-node.is-core {
 	border-color: var(--sl-color-accent);
 	background: var(--sl-color-accent-low);
 }
 
-.flow-core strong {
-	font-size: var(--sl-text-lg);
+.how-node strong {
+	color: var(--sl-color-white);
+	font-weight: 600;
 }
 
-.flow-edge {
-	position: relative;
-	display: grid;
-	place-items: center;
-	min-height: 3.25rem;
+.how-node > span {
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
 }
 
-.flow-edge::before {
-	content: '';
+.how-arrow {
 	position: absolute;
-	inset-block: 0;
-	inset-inline-start: 50%;
-	border-inline-start: 1px solid var(--sl-color-gray-4);
+	top: -0.875rem;
+	left: 50%;
+	color: var(--sl-color-gray-3);
+	font-size: 1.125rem;
+	transform: translate(-50%, -50%) rotate(90deg);
 }
 
 @media (min-width: 50rem) {
-	.flow-edge {
-		min-height: 0;
-		align-self: stretch;
-	}
-
-	.flow-edge::before {
-		inset-block: 50% auto;
-		inset-inline: 0;
-		border-inline-start: 0;
-		border-top: 1px solid var(--sl-color-gray-4);
+	.how-arrow {
+		top: 50%;
+		left: -1rem;
+		transform: translate(-50%, -50%);
 	}
 }
 
-.flow-edge span {
+.how-strip {
+	margin: 1.5rem 0 0;
+}
+
+.how-cells {
 	position: relative;
-	padding: 0.125rem 0.5rem;
-	border-radius: var(--radius-sm);
-	background: var(--sl-color-bg);
-	color: var(--sl-color-gray-2);
+	display: grid;
+	grid-template-columns: repeat(40, minmax(0, 1fr));
+	gap: 2px;
+	padding-top: 1.375rem;
+}
+
+.how-cell {
+	display: block;
+	height: 1.75rem;
+	border-radius: 2px;
+}
+
+.how-cell.is-idle {
+	background: var(--sl-color-gray-6);
+	box-shadow: inset 0 0 0 1px var(--sl-color-gray-5);
+}
+
+.how-cell.is-read {
+	background: var(--sl-color-accent);
+}
+
+.how-cell.is-ahead {
+	background: color-mix(in oklch, var(--sl-color-accent) 40%, transparent);
+}
+
+.how-playhead {
+	position: absolute;
+	inset-block: 0;
+	left: var(--seek);
+	padding-left: 0.3rem;
+	border-left: 2px solid var(--sl-color-white);
+	color: var(--sl-color-white);
 	font-size: var(--sl-text-xs);
-	white-space: nowrap;
+	font-weight: 600;
+	line-height: 1;
+}
+
+.how-legend {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5rem 1.25rem;
+	margin: 0.875rem 0 0;
+	padding: 0;
+	list-style: none;
+	color: var(--sl-color-gray-2);
+	font-size: var(--sl-text-sm);
+}
+
+.how-legend li {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.how-legend .how-cell {
+	width: 0.875rem;
+	height: 0.875rem;
+}
+
+.how-strip figcaption {
+	max-width: 68ch;
+	margin-top: 0.75rem;
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
 }
 
 .shared {
