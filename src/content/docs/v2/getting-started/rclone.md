@@ -21,7 +21,16 @@ Your library symlinks only keep working if the 2.x mount sits at exactly the pat
    ```
 
 3. Give the infinidysk container what the rclone container had: `/dev/fuse`, `SYS_ADMIN`, `apparmor:unconfined`, and the parent directory with `:rshared` (as in the [compose file](/v2/getting-started/docker/#compose-file)). The mount directory must be visible at the same path inside the container: if rclone used `/mnt:/mnt:rshared`, use the same bind here.
-4. Start 2.x and check from the host and from an Arr container:
+4. Check your rclone command for `--no-modtime`. If it was there, set this on infinidysk **before its first start**:
+
+   ```yaml
+       environment:
+         INFINIDYSK__MOUNT__EPOCH_TIMES: "true"
+   ```
+
+   With `--no-modtime`, every file on the rclone mount showed a 1970 date and your media server stored that. 2.x shows real dates by default, so without this Plex and similar servers re-read every file on their next scan. Settings > Mount > Disable file timestamps does the same, but takes effect only after a restart and must be on before any library scan. Without `--no-modtime`, leave it off.
+
+5. Start 2.x and check from the host and from an Arr container:
 
    ```sh
    ls /mnt/remote/infinidysk   # expect .ids, completed-symlinks, content, nzbs
@@ -29,15 +38,9 @@ Your library symlinks only keep working if the 2.x mount sits at exactly the pat
 
    Then open one existing library symlink and confirm it plays.
 
-## File dates
-
-If your rclone mount used `--no-modtime`, every file on it showed a 1970 date and your media server stored that. 2.x shows real dates by default, which makes Plex and similar servers re-read every file on their next scan.
-
-Before that scan, turn on Settings > Mount > Report 1970 file dates and restart.
-
 ## Moving the mount later
 
-Set your library folders under Settings first, then change the mount directory under Settings > Mount. After the restart, 2.x rewrites the symlinks in those folders. The library folders must be bound into the infinidysk container at the same paths your Arrs use.
+Set your library folders under Settings > Library first, then change the mount directory under Settings > Mount. After the restart, 2.x rewrites the symlinks in those folders. The library folders must be bound into the infinidysk container at the same paths your Arrs use.
 
 ## Without FUSE
 

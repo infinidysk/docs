@@ -22,13 +22,17 @@ Never post provider passwords or API keys. Release names are not needed; describ
 - The mount shows on the host and in other containers only when the parent directory is bound with `:rshared` here and `:rslave` in the readers.
 - After a crash, readers see "Transport endpoint is not connected" until infinidysk starts again.
 
+## 2.x started empty after the upgrade
+
+2.x imports only when it finds a SQLite 1.x database at `/config/db.sqlite`. Without one (a wrong config bind, or 1.x on PostgreSQL, which the importer does not read yet) it starts as a new install. Run [`import-report`](/v2/getting-started/upgrade/#steps) against the same directory: it says `no C# database` in that case. Stop 2.x, fix the bind, and start again on a fresh copy of the 1.x config.
+
 ## Library symlinks do not resolve after the upgrade
 
 The 2.x mount must sit at exactly the path rclone mounted. See [Move off rclone](/v2/getting-started/rclone/).
 
 ## Plex re-reads the whole library
 
-Either the time zone changed (set `TZ` to the zone 1.x ran in), or the old rclone mount used `--no-modtime`. Turn on Settings > Mount > Report 1970 file dates and restart before the next scan.
+Either the time zone changed (set `TZ` to the zone 1.x ran in), or the old rclone mount used `--no-modtime`. Turn on Settings > Mount > Disable file timestamps and restart before the next scan, or set `INFINIDYSK__MOUNT__EPOCH_TIMES: "true"`.
 
 ## Seeing who reads the mount
 

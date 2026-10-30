@@ -13,7 +13,7 @@ In each Arr, add a **SABnzbd** download client:
 |-------|-------|
 | Host | `infinidysk` (the container name) |
 | Port | `3000` |
-| API key | The SAB API key from Settings |
+| API key | The SAB API key from Settings > Download client |
 | Category | One of the categories under Settings, for example `tv` or `movies` |
 
 The Arr must see the mount at the same path infinidysk reports, `/mnt/infinidysk` by default. Bind the parent directory into the Arr container, for example `/mnt:/mnt:rslave`.

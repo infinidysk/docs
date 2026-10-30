@@ -7,8 +7,10 @@ The upgrade reads your 1.x config and imports it into a new database: providers,
 
 Your 1.x files are opened read-only and never changed. Still, work on a copy.
 
-:::note
-The importer needs a 1.x config from v1.3.0 or later (`db.sqlite`).
+:::caution[Who should not upgrade yet]
+- **DUMB users.** 2.x does not ship binaries packaged for DUMB yet. Stay on 1.x for now.
+- **1.x on PostgreSQL.** The importer only reads a SQLite 1.x database (`db.sqlite`). Without one, 2.x starts as a new, empty install instead of importing, and `import-report` says `no C# database`.
+- **1.x older than v1.3.0.** Update 1.x and start it once first.
 :::
 
 ## Steps
@@ -27,10 +29,8 @@ The importer needs a 1.x config from v1.3.0 or later (`db.sqlite`).
    ```
 
 3. Set `TZ` on 2.x to the same zone 1.x ran in. 1.x stored local times, so a different zone shifts every file date, and media servers may then re-read your whole library.
-4. Start 2.x with `./config-2.0:/config` (see the [compose file](/v2/getting-started/docker/#compose-file)). The import runs on first start; the UI shows progress and the full report. Sign in with your 1.x admin login.
+4. If 1.x used an rclone sidecar, follow [Move off rclone](/v2/getting-started/rclone/) first: the mount path and file dates must be right before 2.x starts, or library symlinks stop resolving and media servers re-read every file. Then start 2.x with `./config-2.0:/config` (see the [compose file](/v2/getting-started/docker/#compose-file)). The import runs on first start; the UI shows progress and the full report. Sign in with your 1.x admin login.
 5. If the container name or port changed, update the SABnzbd download client in each Arr. 1.x served on port 8080; 2.x uses 3000. The API key stays the same.
-
-Most 1.x installs used an rclone sidecar. Read [Move off rclone](/v2/getting-started/rclone/) before you start 2.x, or your library symlinks may stop resolving.
 
 ## Do not run both
 

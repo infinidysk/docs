@@ -48,7 +48,7 @@ Create the admin account before you expose port 3000 to an untrusted network. Un
 ## Where things are
 
 - **Port 3000** serves the UI, the SABnzbd API and WebDAV.
-- **The library** is mounted at `/mnt/infinidysk` by default. Change it under Settings, or with `INFINIDYSK__MOUNT__DIR`.
+- **The library** is mounted at `/mnt/infinidysk` by default. Change it under Settings > Mount, or with `INFINIDYSK__MOUNT__DIR`.
 - **The database** is `/config/infinidysk.sqlite`. Set `INFINIDYSK_DATABASE_URL` to a `postgres://…` URL to use PostgreSQL instead.
 - **Logs** go to `/config/logs/infinidysk.log` and the Logs page.
 
@@ -69,7 +69,7 @@ By default, media files on the mount report their import time as their date. An 
       INFINIDYSK__MOUNT__EPOCH_TIMES: "true"
 ```
 
-Set it before your media server's first scan after the move. You can also turn on **Report 1970 file dates** under Settings; it takes effect after a restart.
+Set it before your media server's first scan after the move. You can also turn on **Disable file timestamps** under Settings > Mount; it takes effect after a restart. See [Move off rclone](/v2/getting-started/rclone/).
 
 ## See which process reads a file
 

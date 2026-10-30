@@ -31,7 +31,7 @@ These are read once at startup and are not settings.
 | Setting | Key | Notes |
 |---------|-----|-------|
 | Mount directory | `mount.dir` | `/mnt/infinidysk` by default. Read at startup. |
-| Report 1970 file dates | `mount.epoch_times` | For libraries moved off an rclone mount that used `--no-modtime`. |
+| Disable file timestamps | `mount.epoch_times` | For libraries moved off an rclone mount that used `--no-modtime`. |
 | Download limit | `network.download_limit_mb_per_s` | One cap on the combined download speed from all providers, in MB/s. Serving files to players is not limited. |
 | Public URL | `network.public_url` | The address Arrs and browsers use, such as a reverse-proxy URL. |
 | Trusted proxies | `network.trusted_proxies` | Proxies whose `X-Forwarded-For` header is trusted. |
