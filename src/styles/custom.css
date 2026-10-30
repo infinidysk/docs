@@ -484,6 +484,56 @@
 	font-size: var(--sl-text-sm);
 }
 
+/* Pipelining timeline: one row per mode, both on the same 24-unit time axis. */
+.pipe {
+	display: grid;
+	gap: 1rem;
+}
+
+.pipe-row {
+	display: grid;
+	gap: 0.5rem;
+}
+
+@media (min-width: 50rem) {
+	.pipe-row {
+		grid-template-columns: 10rem minmax(0, 1fr);
+		align-items: center;
+		gap: 1rem;
+	}
+}
+
+.pipe-label {
+	display: flex;
+	flex-direction: column;
+	margin: 0;
+}
+
+.pipe-label strong {
+	color: var(--sl-color-white);
+	font-weight: 600;
+}
+
+.pipe-label span {
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
+}
+
+.pipe-track {
+	display: grid;
+	grid-template-columns: repeat(24, minmax(0, 1fr));
+	gap: 2px;
+}
+
+.pipe-seg {
+	display: grid;
+	place-items: center;
+	color: var(--sl-color-black);
+	font-size: var(--sl-text-xs);
+	font-weight: 600;
+	font-variant-numeric: tabular-nums;
+}
+
 .version-diff {
 	display: table;
 	width: 100%;

@@ -7,13 +7,6 @@ Watchtower keeps titles on your lists **ready**: each is pre-resolved to a healt
 
 ## Loops
 
-```mermaid
-flowchart LR
-  Sync[Sync_lists] --> Resolve[Resolve_winners]
-  Resolve --> Keep[Keep_fresh_STAT]
-  Keep -->|dead| Resolve
-```
-
 1. **Sync**: enumerate enabled sources into a deduplicated wanted set.
 2. **Resolve**: search, filter by size and grabs, fetch candidate NZBs, STAT-verify, and keep a shortlist. Bounded by the warm-set cap and by the daily resolve budget, unless **Auto throughput** is enabled (then indexer limits set the pace).
 3. **Keep-fresh**: re-STAT winners without grabbing; promote backups or re-resolve.

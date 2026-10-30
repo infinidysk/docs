@@ -1,21 +1,36 @@
 ---
 title: "Connection warming"
 ---
+import Flow from '../../../../components/Flow.astro';
+
 Connection warming <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a> keeps a small number of pre-connected, authenticated NNTP sockets standing by on each pooled provider. Playback and queue work borrow one instantly instead of paying the TCP + TLS + login handshake first — which is most of the wait between pressing play and the first bytes moving after an idle period.
 
 ## How it works
 
 Each pooled provider gets a **warm floor**: a target count of idle, ready-to-use connections. By default the floor is **2** (1 when the **Provider Connection Limit** is 1) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>; releases before 1.5.0 derived roughly one sixth of the limit, clamped to 1–8. An explicit `usenet.warm-connections.floor` value is unchanged.
 
-```mermaid
-flowchart TD
-  pool["Warm floor: idle NNTP connections"]
-  borrow["Playback / queue borrow"] -->|"no handshake"| pool
-  sweep["Sweeper: every idle-timeout / 2"] --> ping["DATE ping"]
-  ping -->|"stale socket"| refill["Dispose and refill"]
-  refill --> pool
-  sweep --> reap["Reap idle above floor"]
-```
+<Flow
+	numbered={false}
+	core={['Warm floor']}
+	steps={[
+		{
+			title: 'In the background',
+			nodes: [
+				['Sweeper', 'Runs every half idle timeout, 30 seconds by default'],
+				['DATE ping', 'Keeps each warm socket alive before the provider drops it'],
+				['Refill', 'Replaces stale sockets and closes idle ones above the floor'],
+			],
+		},
+		{
+			title: 'When playback or the queue needs a connection',
+			nodes: [
+				['Playback, queue', 'Ask the pool for a connection'],
+				['Warm floor', 'Hands over a socket that is already logged in'],
+				['Usenet provider', 'Gets the first request with no TCP, TLS or login wait'],
+			],
+		},
+	]}
+/>
 
 - A background sweeper runs every half of the [idle connection timeout](/v1/configuration/streaming/) (default: every 30 seconds). It refills the floor when sockets were lost and reaps idle connections **only above the floor** — warm connections are never closed just for being idle.
 - Before a provider's own idle timeout can drop a warm socket, the sweeper pings it with a lightweight NNTP `DATE` command. A failed ping means the socket went stale; it is disposed and the floor refills.

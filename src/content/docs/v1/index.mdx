@@ -6,6 +6,7 @@ description: Docs for infinidysk 1.x (formerly NzbDAV), the stable C# release. I
 import { Aside, CardGrid, LinkButton, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
 import { Image } from 'astro:assets';
 import overview from '../../../assets/overview.png';
+import HowItWorks from '../../../components/HowItWorks.astro';
 
 <div class="badges">
 
@@ -24,15 +25,33 @@ infinidysk (formerly [NzbDAV](/v1/community/renaming-to-infinidysk/)) is a **Web
 1.x is the stable release. It gets bug fixes only; new features go into 2.x, which is in alpha. See [What's new in 2.x](/v2/whats-new/).
 </Aside>
 
-## Why infinidysk
+## How it works
 
-```mermaid
-flowchart LR
-  Arr["Sonarr / Radarr"] -->|SABnzbd API| Queue[infinidysk queue]
-  Queue --> Mount[WebDAV mount]
-  Mount --> Stream[Usenet stream]
-  Player["Plex / Jellyfin / rclone"] --> Mount
-```
+Your Arr instances add infinidysk as a SABnzbd download client, but it never downloads the release. Work happens at two moments:
+
+<HowItWorks
+	steps={[
+		{
+			title: 'When Sonarr or Radarr grabs a release',
+			nodes: [
+				['Sonarr, Radarr', 'Send the NZB over the SABnzbd API'],
+				['infinidysk', 'Reads the NZB and the first article of each file'],
+				['WebDAV', 'The files appear, without a full download'],
+				['Library', 'The Arr imports a symlink or STRM file'],
+			],
+		},
+		{
+			title: 'When you press play',
+			nodes: [
+				['Plex, Jellyfin, Emby', 'Read a byte range through rclone or a STRM URL'],
+				['infinidysk', 'Finds the articles that hold that range'],
+				['Usenet providers', 'Send only those articles, several at once'],
+			],
+		},
+	]}
+/>
+
+## Why infinidysk
 
 <CardGrid>
 	<LinkCard title="Virtual filesystem" description="Browse NZB contents over WebDAV. No full download before you open a file." href="/v1/features/webdav-filesystem/" />

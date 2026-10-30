@@ -2,40 +2,53 @@
 title: "Architecture"
 description: "How infinidysk streams media from Usenet providers through a virtual WebDAV filesystem without downloading files to disk."
 ---
+import Flow from '../../../../components/Flow.astro';
 
-infinidysk sits between download clients / search and Usenet providers, exposing a virtual filesystem and SAB-compatible API.
+infinidysk sits between download clients / search and Usenet providers, exposing a virtual filesystem and SAB-compatible API. Each caller enters through its own door; the highlighted steps run inside infinidysk.
 
-```mermaid
-flowchart TB
-  subgraph clients [Clients]
-    Arr[Sonarr_Radarr]
-    Browser[Admin_UI]
-    Player[Plex_Jellyfin_rclone]
-    Stremio[Stremio_AIOStreams]
-  end
-  subgraph nzbdav [infinidysk]
-    SAB[SAB_API]
-    Queue[Queue_processor]
-    WebDAV[WebDAV_store]
-    UI[Frontend_proxy]
-  end
-  subgraph usenet [Usenet]
-    NNTP[NNTP_providers]
-  end
-  Arr -->|addfile_addurl| SAB
-  SAB --> Queue
-  Queue --> WebDAV
-  Browser --> UI
-  UI --> SAB
-  UI --> WebDAV
-  Player -->|HTTP_range| WebDAV
-  WebDAV --> NNTP
-  Stremio -->|API_WebDAV| UI
-```
+<Flow
+	numbered={false}
+	core={['SAB API', 'Queue', 'WebDAV store', 'Addon routes', 'Admin UI', 'SAB API, WebDAV']}
+	steps={[
+		{
+			title: 'Arr instances',
+			nodes: [
+				['Sonarr, Radarr', 'Call addfile or addurl'],
+				['SAB API', 'The SABnzbd-compatible /api endpoint'],
+				['Queue', 'Reads the NZB and checks its articles exist'],
+				['WebDAV store', 'Lists the release under /content'],
+			],
+		},
+		{
+			title: 'Media servers',
+			nodes: [
+				['Plex, Jellyfin, rclone', 'Read files with HTTP range requests'],
+				['WebDAV store', 'Serves /content, /.ids and /view'],
+				['Usenet providers', 'Send the articles behind each range over NNTP'],
+			],
+		},
+		{
+			title: 'Stremio',
+			nodes: [
+				['Stremio, AIOStreams', 'Ask for streams for a title'],
+				['Addon routes', 'Resolve and queue the NZB under /adapters/addon/'],
+				['WebDAV store', 'Playback redirects to /view'],
+			],
+		},
+		{
+			title: 'Admin UI',
+			nodes: [
+				['Your browser', 'Opens the web UI on port 3000'],
+				['Admin UI', 'Frontend that proxies to the backend'],
+				['SAB API, WebDAV', 'Queue, history, settings and the file browser'],
+			],
+		},
+	]}
+/>
 
 ## Two common flows
 
-### Automation (Arr + media server) {#automation-arr-media-server}
+### Automation (Arr + media server)
 
 1. Radarr or Sonarr sends an NZB to infinidysk as a SABnzbd download client.
 2. infinidysk mounts the release on WebDAV without downloading the full file.

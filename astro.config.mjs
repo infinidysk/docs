@@ -2,7 +2,6 @@
 import { defineConfig } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import starlight from '@astrojs/starlight';
-import mermaid from 'astro-mermaid';
 import starlightChangelogs, { makeChangelogsSidebarLinks } from 'starlight-changelogs';
 import starlightImageZoom from 'starlight-image-zoom';
 import starlightLinksValidator from 'starlight-links-validator';
@@ -82,7 +81,6 @@ export default defineConfig({
 		processor: satteri({ features: { headingAttributes: true } }),
 	},
 	integrations: [
-		mermaid({ autoTheme: true }),
 		starlight({
 			title: 'infinidysk',
 			description:

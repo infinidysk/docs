@@ -1,6 +1,8 @@
 ---
 title: "Infinite library with Arr"
 ---
+import Flow from '../../../../components/Flow.astro';
+
 Opinionated production path for an always-available library with minimal local storage.
 
 ## Checklist
@@ -14,20 +16,28 @@ Opinionated production path for an always-available library with minimal local s
 5. Enable [Repairs](/v1/configuration/repairs/) with **Library Directory**.
 6. Optional: [Watchtower](/v1/features/watchtower/), indexer [profiles](/v1/configuration/profiles/), [backups](/v1/guides/backups-upgrades/).
 
-```mermaid
-sequenceDiagram
-  participant Arr as Sonarr_Radarr
-  participant NZB as infinidysk
-  participant Mount as WebDAV_rclone
-  participant Plex as Media_server
-  Arr->>NZB: addfile NZB
-  NZB->>NZB: mount on WebDAV
-  NZB->>Arr: completed path
-  Arr->>Mount: import symlink_or_STRM
-  Plex->>Mount: read ranges
-  Mount->>NZB: HTTP range
-  NZB->>NZB: Usenet articles
-```
+## How a release reaches your player
+
+<Flow
+	steps={[
+		{
+			title: 'Sonarr or Radarr grabs a release',
+			nodes: [
+				['Sonarr, Radarr', 'Send the NZB to infinidysk as a SABnzbd download client'],
+				['infinidysk', 'Mounts the release on WebDAV and reports a completed path'],
+				['Library', 'The Arr imports a symlink (Plex) or a STRM file (Emby, Jellyfin)'],
+			],
+		},
+		{
+			title: 'Your media server plays it',
+			nodes: [
+				['Media server', 'Opens the symlink through the rclone mount, or the STRM URL'],
+				['infinidysk', 'Turns each byte range into Usenet articles'],
+				['Usenet providers', 'Send only those articles'],
+			],
+		},
+	]}
+/>
 
 ## Operations
 

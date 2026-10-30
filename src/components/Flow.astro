@@ -1,0 +1,34 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+interface Props {
+	steps: { title: string; nodes: [name: string, detail: string][] }[];
+	numbered?: boolean;
+	core?: string[];
+}
+
+const { steps, numbered = true, core = ['infinidysk'] } = Astro.props;
+---
+
+<ol class="not-content how">
+	{
+		steps.map(({ title, nodes }, s) => (
+			<li class="how-step">
+				<h3 class="how-title">
+					{numbered && <span class="how-num">{s + 1}</span>}
+					{title}
+				</h3>
+				<ol class="how-chain">
+					{nodes.map(([name, detail], n) => (
+						<li class:list={['how-node', { 'is-core': core.includes(name) }]}>
+							{n > 0 && <Icon name="right-arrow" class="how-arrow" />}
+							<strong>{name === 'infinidysk' ? <>infini<span class="wordmark-accent">dysk</span></> : name}</strong>
+							<span>{detail}</span>
+						</li>
+					))}
+				</ol>
+				{s === steps.length - 1 && <slot />}
+			</li>
+		))
+	}
+</ol>
