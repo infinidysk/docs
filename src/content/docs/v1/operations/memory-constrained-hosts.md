@@ -22,16 +22,17 @@ hit it while its RSS is comparatively small.
 
 On 64-bit Linux, the .NET regions GC reserves virtual address space up front.
 When only `DOTNET_GCHeapHardLimit` is configured, the default region range is
-five times that limit. Set `DOTNET_GCRegionRange` explicitly if that reservation
-does not fit alongside the rest of the process.
+up to five times that limit, subject to the virtual address space limit. Set
+`DOTNET_GCRegionRange` explicitly if that reservation does not fit alongside
+the rest of the process.
 
 Environment-variable byte values for these .NET GC settings are hexadecimal:
 
 ```yaml
 environment:
-  # 512 MiB managed heap ceiling
+  # 0x20000000 bytes (about 537 MB) managed heap ceiling
   DOTNET_GCHeapHardLimit: "20000000"
-  # 1 GiB regions reservation (2× the heap ceiling)
+  # 0x40000000 bytes (about 1.07 GB) regions reservation, 2× the heap ceiling
   DOTNET_GCRegionRange: "40000000"
   # Upper bound (0–9). Prefer 5–7 as a first measured canary; see below.
   DOTNET_GCConserveMemory: "9"
@@ -47,7 +48,8 @@ an address-space limit, because its percentage is based on physical/cgroup
 memory rather than `RLIMIT_AS`.
 
 Set these values before the backend starts. Confirm the active values in
-Settings → Support → downloaded `environment.json`: `runtime.addressSpaceLimitBytes`
+`environment.json` inside the support pack ZIP (**Settings → Support**):
+`runtime.addressSpaceLimitBytes`
 is the finite `RLIMIT_AS` when Linux exposes one, and the `gc` section reports
 the region range, size, hard limit, committed heap, detected heap limit,
 collection identity, memory-load, and LOH-specific hard limits.
@@ -57,11 +59,11 @@ infinidysk default. The image does not set it. A value in the 5–7 range can
 reduce LOH fragmentation at the cost of more frequent collections and longer
 pauses; measure playback and import latency before keeping it.
 
-## Repeated 64 MiB `PROT_NONE` mappings
+## Repeated 67 MB `PROT_NONE` mappings {#repeated-64-mib-prot_none-mappings}
 
 On a **glibc** host, a repeated pair of anonymous RW and `PROT_NONE` mappings
-whose combined size is 64 MiB commonly identifies glibc malloc arenas. It is
-not evidence that each NNTP socket has allocated 64 MiB.
+whose combined size is 67 MB (64 × 2²⁰ bytes) commonly identifies glibc malloc
+arenas. It is not evidence that each NNTP socket has allocated 67 MB.
 
 After verifying that map shape, try a conservative arena cap:
 

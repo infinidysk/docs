@@ -1,5 +1,5 @@
 ---
-title: "Plex “newly added” churn on /content mounts"
+title: "Plex shows items as newly added"
 ---
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
@@ -21,7 +21,7 @@ If the mtime is recent or the path changed (new release name, or a `(2)` suffix)
 
 ## 2. Is background repair enabled?
 
-Settings → Repairs → **Enable Background Repairs**. Default is **on**. If off, health-repair deletion is ruled out.
+Settings → Health & Repairs → **Enable Background Repairs**. Default is **on**. If off, health-repair deletion is ruled out.
 
 ## 3. Look for a server-side deletion
 
@@ -32,17 +32,17 @@ WHERE RepairStatus IN (1, 2)
 ORDER BY CreatedAt DESC;
 ```
 
-`RepairStatus` values: `1` = Arr remove-and-blocklist, `2` = deleted as unlinked/force. Also grep container logs for:
+`RepairStatus` values: `1` = Repaired, `2` = Deleted. Neither value tells Arr blocklisting apart from a forced deletion; read the `Message` column and the matching deletion audit line. Also search the container logs:
 
 ```bash
-grep "dav-delete" /var/log/docker.log  # or docker logs nzbdav 2>&1 | grep dav-delete
+docker logs <container> 2>&1 | grep dav-delete
 ```
 
-Health-repair deletes are logged as `dav-delete source=health-repair ... reason="auto-removed after repeated streaming failures"` or similar. See [Deletion audit](/v1/operations/deletion-audit/) for all sources.
+Health-repair deletes are logged as `dav-delete source=health-repair ... reason=health validation failed; ...` or `reason=auto-removed after repeated streaming failures (count=N)`. See [Deletion audit](/v1/operations/deletion-audit/) for all sources.
 
 ## 4. Transient scan failure
 
-If mtime is old and no `dav-delete` exists, the most likely cause is a scan that raced an unavailable or stale rclone view:
+If mtime is old and no `dav-delete` exists, the most likely cause is a scan that raced an unavailable or stale rclone view. Likely triggers:
 
 - container restart or auto-update while Plex was scanning
 - rclone `vfs/forget` of `/content/{category}` immediately after an import forces a fresh PROPFIND
@@ -50,11 +50,11 @@ If mtime is old and no `dav-delete` exists, the most likely cause is a scan that
 - frontend proxy timeout on a large season folder
 - network or mount blip
 
-Plex’s **Empty trash automatically after every scan** turns that temporary unavailability into a deleted library row; the next scan re-adds it.
+Plex’s **Empty trash automatically after every scan** likely turns that temporary unavailability into a deleted library row; the next scan re-adds it.
 
 ## 5. Confirm the Plex trash setting
 
-Plex Settings → Library → **Empty trash automatically after every scan** must be enabled for this symptom to appear. Disabling it prevents the re-add churn but leaves stale “unavailable” items after real upgrades.
+Plex Settings → Library → **Empty trash automatically after every scan** is likely enabled when this symptom appears. Disabling it prevents the re-add churn but leaves stale “unavailable” items after real upgrades.
 
 ## 6. Sonarr history
 

@@ -13,12 +13,12 @@ Map config keys below to `NZBDAV_CONFIG__...` with the
 
 ## Connection allocation
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Max Download Connections | `usenet.max-download-connections` | `0` (auto = pool) | Streaming connection budget |
-| Apply limit per stream | `usenet.max-download-connections-per-stream` | off | Give each concurrent stream its own budget |
-| Per-stream performance | `usenet.max-download-connections-per-stream-preset` | `high` | low/medium/high/max = 25/50/75/100% |
-| Streaming Priority (vs Queue) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a> | `usenet.streaming-priority` | `80` | Favor playback when streaming and queue imports overlap |
+| Setting | What it does |
+|---|---|
+| Max Download Connections<br/>`usenet.max-download-connections` | Streaming connection budget. `0` (the Auto toggle) uses all Pool provider connections. Default `0`. |
+| Apply limit per stream<br/>`usenet.max-download-connections-per-stream` | Give each concurrent stream its own budget. Default off. |
+| Per-stream performance<br/>`usenet.max-download-connections-per-stream-preset` | Low/Medium/High/Max = 25/50/75/100% of the budget per stream. Shown when Apply limit per stream is on. Default `high`. |
+| Streaming Priority (vs Queue) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a><br/>`usenet.streaming-priority` | Percentage favored for playback when streaming and queue imports overlap. Default `80`. |
 
 Provider limits still cap total connections. Spare capacity is not held idle
 for playback; the priority setting only affects admission when a provider pool
@@ -32,27 +32,27 @@ from inside the container against the backend.
 
 ## Streaming performance
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Enable Segment Cache | `usenet.segment-cache.enabled` | off (new installs) | Cache decoded segments on disk; restart required |
-| Cache path | `usenet.segment-cache.path` | `/config/segment-cache` | Segment-cache directory |
-| Maximum size (GB) | `usenet.segment-cache.max-gb` | `10` | Segment-cache size limit |
-| Cache write-behind (MiB) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `usenet.segment-cache.write-behind-mb` | `0` | Advanced, restart-required RAM budget for asynchronous cache writes. `0` keeps inline writes; nonzero values are 16–1024 MiB |
-| Streaming Segment Timeout | `usenet.streaming-segment-timeout-seconds` | `8` | Per-segment deadline, 2–40 seconds |
-| Streaming Read Timeout <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a> | `usenet.streaming-read-timeout-seconds` | `30` | Initial 5–120 second wait to open a GET/range |
-| Streaming Write Timeout | `usenet.streaming-write-timeout-seconds` | `60` | Per-write deadline, 0–600 seconds (0 disables); also cancels a stream that transfers less than 64 KB per timeout window while other streams wait on Article RAM |
-| Streaming Segment Retries | `usenet.streaming-segment-retries` | `3` | Fresh-connection retries after timeout, 0–5 |
-| Article Buffer Size | `usenet.article-buffer-size` | `40` | Articles buffered ahead per stream |
-| In-flight article budget (MiB) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a> | `usenet.in-flight-article-budget-mb` | auto | Host-wide decoded-byte cap. Auto uses 25% of the detected managed-heap ceiling, clamped to 64–8192 MiB; explicit values also range from 64–8192 MiB |
-| Global Usenet bandwidth limit (Mbit/s) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `usenet.bandwidth-limit-mbps` | unlimited | Process-wide cap on live provider BODY/ARTICLE payload ingress for queue and WebDAV. Empty or `0` is unlimited. 1 Mbit/s = 125,000 bytes/s. Provider speed tests, cache hits, and LAN delivery are never limited. Takes effect immediately. A cap cannot raise a latency-limited workload. |
-| Idle connection timeout | `usenet.idle-connection-timeout-seconds` | `60` | Close unused connections after 15–300 seconds; also sets the [connection warming](/v1/features/connection-warming/) sweep and keepalive cadence |
-| Read-start warm-up <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `usenet.read-start-warmup.enabled` | on | Expand pooled-provider connections in parallel when a long buffered WebDAV read starts; captured when each stream opens. Skipped for a provider that is backing off after a failed connection open |
-| NNTP response timeout <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `usenet.nntp-read-timeout-seconds` | `30` | Stalled-read inactivity deadline for BODY, ARTICLE, STAT, authentication, and other NNTP responses, 5–120 seconds. This is not a total transfer deadline. Streaming segment/read budgets and the 15-second connect/auth ceiling can expire first. Takes effect on the next provider-pool rebuild or restart. |
-| Fresh connection open timeout <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a> | `usenet.connection-open-timeout-seconds` | `5` | Advanced budget for fresh TCP/TLS/AUTHINFO connection creation, 1-15 seconds. Applies to subsequent attempts without rebuilding live pools. |
-| Replacement reconnect spacing <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `usenet.reconnect-delay-milliseconds` | `500` | Minimum spacing between replacement handshakes after a poisoned connection is closed, 0–5000 milliseconds. Zero disables ordinary replacement spacing; TCP/TLS/AUTHINFO factory failures still back off from a 500ms floor, doubling up to 60 seconds. Takes effect on the next provider-pool rebuild or restart. |
-| Batched article downloads | `usenet.pipelined-body-requests` | on | Fetch WebDAV BODY requests in small batches |
-| Streaming batch width <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a> | `usenet.streaming-body-batch-width` | `4` | Maximum articles per BODY batch (1–8) |
-| Container-aware gap fill <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a> | `usenet.container-aware-fill` | on | MPEG-TS null-packet fill for confirmed gaps |
+| Setting | What it does |
+|---|---|
+| Enable Segment Cache (fast storage)<br/>`usenet.segment-cache.enabled` | Cache decoded segments on disk; restart required. Default off (new installs). |
+| Cache path<br/>`usenet.segment-cache.path` | Segment-cache directory. Default `/config/segment-cache`. |
+| Maximum size (GB)<br/>`usenet.segment-cache.max-gb` | Segment-cache size limit. Default `10`. |
+| Cache write-behind <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a><br/>`usenet.segment-cache.write-behind-mb` | Restart-required RAM budget for asynchronous cache writes, in units of 1,048,576 bytes. `0` keeps inline writes; nonzero values are 16–1024. Not in the UI; set with `NZBDAV_CONFIG__USENET__SEGMENT_CACHE__WRITE_BEHIND_MB`. Default `0`. |
+| Streaming Segment Timeout<br/>`usenet.streaming-segment-timeout-seconds` | Per-segment deadline, 2–40 seconds. Default `8`. |
+| Streaming Read Timeout <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a><br/>`usenet.streaming-read-timeout-seconds` | Initial 5–120 second wait to open a GET/range. Default `30`. |
+| Streaming Write Timeout<br/>`usenet.streaming-write-timeout-seconds` | Per-write deadline, 0–600 seconds (0 disables); also cancels a stream that transfers less than 65,536 bytes (about 66 KB) per timeout window while other streams wait on Article RAM. Default `60`. |
+| Streaming Segment Retries<br/>`usenet.streaming-segment-retries` | Fresh-connection retries after timeout, 0–5. Default `3`. |
+| Article Buffer Size<br/>`usenet.article-buffer-size` | Articles buffered ahead per stream. Default `40`. |
+| In-flight article budget (MiB) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a><br/>`usenet.in-flight-article-budget-mb` | Host-wide decoded-byte cap. Auto uses 25% of the detected managed-heap ceiling, clamped to 64–8192; explicit values use the same range. Default auto. |
+| Global Usenet bandwidth limit (Mbit/s) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a><br/>`usenet.bandwidth-limit-mbps` | Process-wide cap on live provider BODY/ARTICLE payload ingress for queue and WebDAV. Empty or `0` is unlimited; the ceiling is 100,000 Mbit/s. 1 Mbit/s = 125,000 bytes/s. Provider speed tests, cache hits, and LAN delivery are never limited. Takes effect immediately. A cap cannot raise a latency-limited workload. Default unlimited. |
+| Idle connection timeout (seconds)<br/>`usenet.idle-connection-timeout-seconds` | Close unused connections after 15–300 seconds; also sets the [connection warming](/v1/features/connection-warming/) sweep and keepalive cadence. Default `60`. |
+| Read-start warm-up <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a><br/>`usenet.read-start-warmup.enabled` | Expand pooled-provider connections in parallel when a long buffered WebDAV read starts; captured when each stream opens. Skipped for a provider that is backing off after a failed connection open. Not in the UI; set with `NZBDAV_CONFIG__USENET__READ_START_WARMUP__ENABLED`. Default on. |
+| NNTP response timeout (seconds) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a><br/>`usenet.nntp-read-timeout-seconds` | Stalled-read inactivity deadline for BODY, ARTICLE, STAT, authentication, and other NNTP responses, 5–120 seconds. This is not a total transfer deadline. Streaming segment/read budgets and the 15-second connect/auth ceiling can expire first. Takes effect on the next provider-pool rebuild or restart. Default `30`. |
+| Fresh Connection Open Timeout <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a><br/>`usenet.connection-open-timeout-seconds` | Advanced budget for fresh TCP/TLS/AUTHINFO connection creation, 1-15 seconds. Applies to subsequent attempts without rebuilding live pools. Default `5`. |
+| Replacement reconnect spacing (milliseconds) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a><br/>`usenet.reconnect-delay-milliseconds` | Minimum spacing between replacement handshakes after a poisoned connection is closed, 0–5000 milliseconds. Zero disables ordinary replacement spacing; TCP/TLS/AUTHINFO factory failures still back off from a 500 ms floor, doubling up to 60 seconds. Takes effect on the next provider-pool rebuild or restart. Default `500`. |
+| Batched article downloads<br/>`usenet.pipelined-body-requests` | Fetch WebDAV BODY requests in small batches. Default on. |
+| Streaming batch width <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a><br/>`usenet.streaming-body-batch-width` | Maximum articles per BODY batch (1–8). Default `4`. |
+| Container-aware gap fill <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a><br/>`usenet.container-aware-fill` | MPEG-TS null-packet fill for confirmed gaps. Default on. |
 
 The NNTP stalled-read timeout, streaming segment timeout, streaming read budget, fresh
 connection-open timeout, and idle connection timeout are separate deadlines. The fresh-open
@@ -105,7 +105,7 @@ timeout.
 Segment Cache is **off by default on new installs**
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>.
 Installs upgraded from an earlier release that never changed the setting keep the cache
-**on**: the upgrade pins the previous effective value so behaviour does not change
+**on**: the upgrade pins the previous effective value so behavior does not change
 silently. Review it under **Settings → Streaming** and turn it off if you do not need it.
 
 When enabled, the cache can improve repeated reads and seeks, but it also writes decoded
@@ -197,14 +197,14 @@ same time. Shared streams join those overlapping requests onto one Usenet
 fetch when their byte offsets are close enough, instead of opening a private
 stream per request.
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Share one stream across concurrent readers | `usenet.shared-streams.enabled` | on | Master switch; off restores a private stream per request without a restart |
-| Max shared streams | `usenet.shared-streams.max-entries` | `4` | Global cap on live shared streams (1–32) |
-| Max regions per file | `usenet.shared-streams.max-entries-per-file` | `3` | Separate streams for far-apart offsets of the same file (1–8) |
-| Ring size (MiB) | `usenet.shared-streams.ring-mb` | `32` | Recently fetched bytes late joiners can read without refetching (4–256) |
-| Grace period (seconds) | `usenet.shared-streams.grace-seconds` | `10` | Keep a stream warm after the last reader disconnects (0–60) |
-| Small-range skip (MiB) | `usenet.shared-streams.small-range-max-mb` | `16` | Closed ranges at or below this size stay private unless they already overlap a live stream (1–256) |
+| Setting | What it does |
+|---|---|
+| Share one stream across concurrent readers<br/>`usenet.shared-streams.enabled` | Master switch; off restores a private stream per request without a restart. Default on. |
+| Max shared streams<br/>`usenet.shared-streams.max-entries` | Global cap on live shared streams (1–32). Default `4`. |
+| Max regions per file<br/>`usenet.shared-streams.max-entries-per-file` | Separate streams for far-apart offsets of the same file (1–8). Default `3`. |
+| Ring size (MiB)<br/>`usenet.shared-streams.ring-mb` | Recently fetched bytes late joiners can read without refetching (4–256). Default `32`. |
+| Grace period (seconds)<br/>`usenet.shared-streams.grace-seconds` | Keep a stream warm after the last reader disconnects (0–60). Default `10`. |
+| Small-range skip (MiB)<br/>`usenet.shared-streams.small-range-max-mb` | Closed ranges at or below this size stay private unless they already overlap a live stream (1–256). Default `16`. |
 
 HEAD requests never join a shared stream. Unsatisfiable ranges still return
 416 before any stream is opened. A declined attach uses today's private-stream
@@ -213,15 +213,15 @@ path unchanged.
 Ring bytes are rented from `ArrayPool` as needed and returned when readers
 catch up or the entry is torn down. Support packs and Prometheus report:
 
-- `sharedStreamRingConfiguredMaxBytes` — max-entries × ring size (128 MiB at
-  the defaults). This is the theoretical ceiling under sustained maximal
+- `sharedStreamRingConfiguredMaxBytes`: max entries × ring size (about 134 MB
+  at the defaults). This is the theoretical ceiling under sustained maximal
   divergence on every slot at once.
-- `sharedStreamRingLogicalBytes` — decoded bytes currently sitting in ring
-  chunks (reader divergence plus about 4 MiB of lead data in the steady state).
-- `sharedStreamRingRetainedBytes` / `…Peak` — actual `ArrayPool` array
+- `sharedStreamRingLogicalBytes`: decoded bytes currently sitting in ring
+  chunks (reader divergence plus about 4.2 MB of lead data in the steady state).
+- `sharedStreamRingRetainedBytes` / `…Peak`: actual `ArrayPool` array
   capacity currently (and ever) rented by those chunks. Bucket sizes are
   typically larger than the requested chunk length.
-- `sharedStreamPumpScratchRentedBytes` — the pump's separate scratch buffer,
+- `sharedStreamPumpScratchRentedBytes`: the pump's separate scratch buffer,
   counted in its own category.
 
 Returning an array to `ArrayPool` does **not** give those pages back to the

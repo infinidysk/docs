@@ -1,7 +1,7 @@
 ---
 title: "Indexers"
 ---
-Newznab indexers/aggregators, global request defaults, and title exclude patterns.
+Newznab indexers and aggregators, global request defaults, and title exclude patterns.
 
 :::tip[Headless ENV]
 Map config keys below to `NZBDAV_CONFIG__...` with the
@@ -11,17 +11,19 @@ Map config keys below to `NZBDAV_CONFIG__...` with the
 
 ## Global defaults
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| HTTP(S) Proxy URL | in `indexers.instances` | empty | Used when indexer has no override |
-| Default Search User-Agent | `api.search-user-agent` | empty → `nzbdav/{ver}` or `NZB_SEARCH_USER_AGENT` | Search/caps queries |
-| Default Retrieve User-Agent | `api.user-agent` | empty → `SABnzbd/5.1.0` or `NZB_GRAB_USER_AGENT` | Fetching `.nzb` |
-| Request timeout (seconds) | in instances | `30` | Per-request timeout |
-| Search results per indexer | in instances | `100` | Page size |
-| Max indexer response (bytes) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.8">since 1.2.8</a> | in instances (`MaxResponseBytes`) | `4194304` (4 MiB) | Reject oversized Newznab caps/search XML before parse; counts HTTP-client bytes (no automatic decompression). Per-indexer override. Max `16777216` (16 MiB). |
-| Exclude result patterns | `search.exclude-patterns` | empty | JS regex per line (case-insensitive) |
-| Synced exclude URLs | `search.exclude-sync-urls` | empty | Auto-updating JSON lists |
-| Refresh every (minutes) | `search.exclude-sync-refresh-minutes` | `720` | Sync interval 15–10080 |
+These are on the **Connection defaults** and **Result exclusions** cards.
+
+| Setting | What it does |
+|---|---|
+| HTTP(S) Proxy URL<br/>in `indexers.instances` | Used when an indexer has no override. Default empty. |
+| Default Search User-Agent<br/>`api.search-user-agent` | Sent on search and caps queries. Default empty, which uses `nzbdav/{ver}` or `NZB_SEARCH_USER_AGENT`. |
+| Default Retrieve User-Agent<br/>`api.user-agent` | Sent when fetching `.nzb` files. Default empty, which uses `SABnzbd/5.1.0` or `NZB_GRAB_USER_AGENT`. |
+| Request timeout (seconds)<br/>in `indexers.instances` | Per-request timeout. Default `30`. |
+| Search results per indexer<br/>in `indexers.instances` | Page size. Default `100`. |
+| Max indexer response (bytes) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.8">since 1.2.8</a><br/>in `indexers.instances` (`MaxResponseBytes`) | Reject oversized Newznab caps/search XML before parsing; counts HTTP-client bytes (no automatic decompression). Per-indexer override. Max `16777216` (about 16.8 MB). Default `4194304` (about 4.2 MB). |
+| Exclude result patterns<br/>`search.exclude-patterns` | One JavaScript-style regex per line, case-insensitive. Default empty. |
+| Synced exclude URLs<br/>`search.exclude-sync-urls` | Auto-updating JSON lists, one URL per line. Default empty. |
+| Refresh every<br/>`search.exclude-sync-refresh-minutes` | Sync interval in minutes, 15–10080. Default `720`. |
 
 Synced patterns take precedence; last-good cache survives temporary URL failures.
 
@@ -29,14 +31,14 @@ Synced patterns take precedence; last-good cache survives temporary URL failures
 
 infinidysk can pull its indexer list from one Prowlarr instance. Configure the connection in infinidysk under **Settings → Indexers → Prowlarr pull sync** — do **not** add infinidysk under Prowlarr's Apps list, and do not use infinidysk's SABnzbd-compatible settings for this integration.
 
-| Setting | Config key | Environment variable | Default |
-|---------|------------|----------------------|---------|
-| Prowlarr URL | `prowlarr.url` | `NZBDAV_CONFIG__PROWLARR__URL` | empty |
-| Prowlarr API key | `prowlarr.api-key` | `NZBDAV_CONFIG__PROWLARR__API_KEY` | empty |
-| Automatically sync | `prowlarr.sync-enabled` | `NZBDAV_CONFIG__PROWLARR__SYNC_ENABLED` | `false` |
-| Sync interval (minutes) | `prowlarr.sync-interval-minutes` | `NZBDAV_CONFIG__PROWLARR__SYNC_INTERVAL_MINUTES` | `60` |
+| Setting | What it does |
+|---|---|
+| Prowlarr URL<br/>`prowlarr.url` | Default empty. |
+| Prowlarr API key<br/>`prowlarr.api-key` | Default empty. |
+| Automatically sync<br/>`prowlarr.sync-enabled` | Default off. |
+| Sync every<br/>`prowlarr.sync-interval-minutes` | Interval in minutes, 5–10080. Default `60`. |
 
-Use **Test Connection** to verify the URL and API key, save the settings, then use **Sync now**. Automatic sync runs on the configured interval (5–10080 minutes). The URL may include a Prowlarr URL base such as `http://prowlarr:9696/prowlarr`; credentials, query strings, and fragments are not accepted.
+Use **Test Connection** to verify the URL and API key, save the settings, then use **Sync now**. The URL may include a Prowlarr URL base such as `http://prowlarr:9696/prowlarr`; credentials, query strings, and fragments are not accepted.
 
 A Prowlarr hostname without a dot (for example the Docker service name `prowlarr`) is
 contacted directly, bypassing any `HTTP_PROXY` / `HTTPS_PROXY` configured for the
@@ -55,20 +57,20 @@ Pull sync writes imported indexers to SQLite, so `indexers.instances` must **not
 
 ## Per-indexer
 
-| Control | Effect |
-|---------|--------|
-| Name / URL / API Key | Newznab endpoint |
-| Search / Retrieve User-Agent | Optional overrides |
-| Proxy URL | Optional override |
-| Timeout / search result limit / max response | Optional overrides |
-| Skip TLS certificate verification | Accept an invalid HTTPS certificate; off by default |
-| Max requests / minute | `0` = unlimited |
-| API hit / download limits + reset hour | Cap usage; blank reset = rolling 24h |
-| Enabled | Include in searches |
-| Strict matching | Drop titles that don't match the request |
-| Extra movie/TV categories | Appended to 2000/2070 or 5000/5070 |
-| Ignore category filter | Omit `cat=` |
-| Result filtering | Skip passworded, min grabs, grace period, age/zero-download drops, rank by grabs |
+| Setting | What it does |
+|---|---|
+| Name / URL / API Key | Newznab endpoint. |
+| Search User-Agent / Retrieve User-Agent | Optional overrides of the global defaults. |
+| HTTP(S) Proxy URL | Optional override. |
+| Request timeout (seconds) / Search result limit / Max indexer response (bytes) | Optional overrides. |
+| Skip TLS certificate verification | Accept an invalid HTTPS certificate. Default off. |
+| Max requests / minute | `0` = unlimited. |
+| API hit limit / Download limit / Hit reset time | Cap usage. Reset time is a UTC hour (0–23); blank = rolling 24 hours. |
+| Enabled | Include in searches. |
+| Strict matching | Drop titles that don't match the request. |
+| Extra movie categories / Extra TV categories | Appended to 2000/2070 or 5000/5070. |
+| Ignore category filter | Omit `cat=`. |
+| Result filtering | Skip password-protected releases, Minimum download count, Grace period for new releases, drop old zero-download releases, Rank by download count. |
 
 ## Invalid indexer certificates <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 

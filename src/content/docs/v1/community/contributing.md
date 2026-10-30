@@ -29,7 +29,7 @@ cd frontend && npm install && npm run dev
 
 UI: `http://localhost:5173` → proxies to backend `:5000`.
 
-`run-backend.sh` defaults `LOG_LEVEL=Debug` and `LOG_BUFFER_SIZE=2000` for local debugging. Docker leaves these unset. The script also enables the contributor-only admin API reference locally: sign in and use `http://localhost:5173/scalar/` through the frontend. The backend's `/openapi/admin.json` endpoint requires `x-api-key` when accessed directly. Set `ENABLE_API_DOCS=false` to disable it; Docker keeps the reference disabled unless explicitly enabled.
+`run-backend.sh` defaults `LOG_LEVEL=Debug` and `LOG_BUFFER_SIZE=2000` for local debugging. The Docker image sets `LOG_LEVEL=warning`; `LOG_BUFFER_SIZE` is unset and the backend defaults to 2000. The script also enables the contributor-only admin API reference locally: sign in and use `http://localhost:5173/scalar/` through the frontend. The backend's `/openapi/admin.json` endpoint requires `x-api-key` when accessed directly. Set `ENABLE_API_DOCS=false` to disable it; Docker keeps the reference disabled unless explicitly enabled.
 
 After changing a frontend-used admin endpoint, refresh the committed contract with `./scripts/export-admin-openapi.sh` and regenerate types with `cd frontend && npm run generate:api`.
 
@@ -50,10 +50,18 @@ npm run format:check
 npm run typecheck
 npm run build
 npm test
+npm run test:coverage
 cd ..
 dotnet test tests/NzbWebDAV.Tests/NzbWebDAV.Tests.csproj -c Release
-dotnet test tests/NzbWebDAV.ArchitectureTests/NzbWebDAV.ArchitectureTests.csproj -c Debug
+dotnet test \
+  tests/NzbWebDAV.ArchitectureTests/NzbWebDAV.ArchitectureTests.csproj \
+  -c Debug
 ```
+
+The backend checks also run the quality-ratchet scripts and
+`dotnet format whitespace --verify-no-changes`; see
+[CONTRIBUTING.md](https://github.com/infinidysk/infinidysk/blob/main/CONTRIBUTING.md)
+for the exact commands.
 
 Branch protection on `main` should require **`CI / Required quality gate`**
 (plus Documentation build and the three CodeQL language jobs). That aggregate
@@ -67,9 +75,9 @@ and [AGENTS.md](https://github.com/infinidysk/infinidysk/blob/main/AGENTS.md).
 
 ## Performance regression gates
 
-Pull request CI compares **deterministic** fields from the streaming and SAB API
-reports (`transportRequests`, `transportBytes`, SAB `rowsReturned` /
-`totalCount` / `dbCommands`) against
+Pull request CI compares **deterministic** fields from the streaming, SAB API
+and NNTP whole-path reports (`transportRequests`, `transportBytes`, SAB
+`rowsReturned` / `totalCount` / `dbCommands`) against
 [`backend.Benchmarks/Baselines/`](https://github.com/infinidysk/infinidysk/blob/main/backend.Benchmarks/Baselines).
 Timing never blocks a PR.
 
@@ -79,14 +87,23 @@ count constants in
 `tests/NzbWebDAV.Tests/Streams/RepeatableStreamingBenchmarkCoverageTests.cs`):
 
 ```bash
-dotnet run --project backend.Benchmarks -c Release -- --streaming-report --json /tmp/streaming.json
-dotnet run --project backend.Benchmarks -c Release -- --sab-api-report --json /tmp/sab-api.json
+BENCH=backend.Benchmarks/NzbWebDAV.Benchmarks.csproj
+BASE=backend.Benchmarks/Baselines
+dotnet run --project $BENCH -c Release -- \
+  --streaming-report --json /tmp/streaming.json
+dotnet run --project $BENCH -c Release -- \
+  --sab-api-report --json /tmp/sab-api.json
+dotnet run --project $BENCH -c Release -- \
+  --nntp-whole-path-report --set quick --json /tmp/nntp-whole-path.json
 python3 scripts/check-performance-baseline.py \
   --candidates /tmp/streaming.json \
-  --write-baseline backend.Benchmarks/Baselines/streaming-baseline.json
+  --write-baseline $BASE/streaming-baseline.json
 python3 scripts/check-performance-baseline.py \
   --candidates /tmp/sab-api.json \
-  --write-baseline backend.Benchmarks/Baselines/sab-api-baseline.json
+  --write-baseline $BASE/sab-api-baseline.json
+python3 scripts/check-performance-baseline.py \
+  --candidates /tmp/nntp-whole-path.json \
+  --write-baseline $BASE/nntp-whole-path-baseline.json
 ```
 
 Nightly [Performance](https://github.com/infinidysk/infinidysk/actions/workflows/performance.yml)

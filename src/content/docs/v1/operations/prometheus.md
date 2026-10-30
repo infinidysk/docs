@@ -28,10 +28,10 @@ anonymous.
 Operation-aware providers expose their live budget through the existing bounded-label
 NNTP gauge families:
 
-| Metric | Label | Values |
-|--------|-------|--------|
-| `nzbdav_nntp_pool_connections` | `state` | `transfer_active`, `metadata_active`, `transfer_waiting`, `metadata_waiting` |
-| `nzbdav_nntp_pool_max_connections` | `limit` | `transfer_configured`, `transfer_effective`, `metadata_base`, `metadata_burst`, `metadata_max` |
+| Metric | What it reports |
+|--------|-----------------|
+| `nzbdav_nntp_pool_connections` | Label `state`: `transfer_active`, `metadata_active`, `transfer_waiting`, `metadata_waiting`. |
+| `nzbdav_nntp_pool_max_connections` | Label `limit`: `transfer_configured`, `transfer_effective`, `metadata_base`, `metadata_burst`, `metadata_max`. |
 
 Both metric families also carry `provider_key`, the provider's stable normalized identifier.
 The existing pool states (`live`, `idle`, `active`, `available`, and `pending`) and limits
@@ -56,10 +56,10 @@ nzbdav_nntp_pool_max_connections{limit=~"transfer_effective|metadata_max"}
 The process-wide verification gate exports a bounded `state` label for current
 admission and a bounded `limit` label for its effective connection ceiling:
 
-| Metric | Label | Values |
-|--------|-------|--------|
-| `nzbdav_health_check_gate_operations` | `state` | `active`, `waiting_queue`, `waiting_background` |
-| `nzbdav_health_check_gate_limit` | `limit` | `effective` |
+| Metric | What it reports |
+|--------|-----------------|
+| `nzbdav_health_check_gate_operations` | Label `state`: `active`, `waiting_queue`, `waiting_background`. |
+| `nzbdav_health_check_gate_limit` | Label `limit`: `effective`. |
 
 Queue article validation and background library checks share this gate. Queue
 waiters receive released capacity first, so compare `waiting_queue` and

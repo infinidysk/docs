@@ -1,5 +1,5 @@
 ---
-title: "OIDC / SSO"
+title: "OIDC single sign-on"
 ---
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
@@ -41,16 +41,16 @@ identity provider.
 
 ## Environment variable reference
 
-| Variable | Required | Default | Purpose |
-| --- | --- | --- | --- |
-| `OIDC_ISSUER` | Yes | — | OIDC issuer identifier. infinidysk discovers provider metadata from this issuer. |
-| `OIDC_CLIENT_ID` | Yes | — | Confidential client identifier registered with the provider. |
-| `OIDC_CLIENT_SECRET` | Yes | — | Confidential client secret. Keep it out of logs and source control. |
-| `OIDC_REDIRECT_URI` | Recommended | `general.base-url`, then incoming request origin, plus `/auth/oidc/callback` | Public callback URI registered with the provider. |
-| `OIDC_SCOPES` | No | `openid profile email` | Space-separated scopes requested during login. Must include `openid`. |
-| `OIDC_USERNAME_CLAIM` | No | `preferred_username` | ID-token claim used as the displayed username. infinidysk falls back to `preferred_username`, `email`, then `sub`. |
-| `OIDC_ADMIN_CLAIM` | No | — | Claim inspected to decide whether the session is admin or read-only. If omitted, all OIDC users are admins. |
-| `OIDC_ADMIN_CLAIM_VALUE` | With `OIDC_ADMIN_CLAIM` | — | Exact string or array member that grants the admin role. If the claim is configured without a value, all OIDC users are read-only. |
+| Variable | What it does |
+|---|---|
+| `OIDC_ISSUER` | Required. OIDC issuer identifier. infinidysk discovers provider metadata from this issuer. |
+| `OIDC_CLIENT_ID` | Required. Confidential client identifier registered with the provider. |
+| `OIDC_CLIENT_SECRET` | Required. Confidential client secret. Keep it out of logs and source control. |
+| `OIDC_REDIRECT_URI` | Recommended. Public callback URI registered with the provider. Default `general.base-url`, then incoming request origin, plus `/auth/oidc/callback`. |
+| `OIDC_SCOPES` | Space-separated scopes requested during login. Must include `openid`. Default `openid profile email`. |
+| `OIDC_USERNAME_CLAIM` | ID-token claim used as the displayed username. infinidysk falls back to `preferred_username`, `email`, then `sub`. Default `preferred_username`. |
+| `OIDC_ADMIN_CLAIM` | Claim inspected to decide whether the session is admin or read-only. If omitted, all OIDC users are admins. |
+| `OIDC_ADMIN_CLAIM_VALUE` | Required when `OIDC_ADMIN_CLAIM` is set. Exact string or array member that grants the admin role. If the claim is configured without a value, all OIDC users are read-only. |
 
 These are frontend process variables, not `NZBDAV_CONFIG__...` settings. They
 are read when the frontend starts and are not stored in SQLite or displayed in

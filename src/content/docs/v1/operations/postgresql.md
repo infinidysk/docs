@@ -19,8 +19,13 @@ Set both variables on the backend container:
 ```yaml
 environment:
   DATABASE_PROVIDER: postgres
-  DATABASE_CONNECTION_STRING: Host=postgres;Port=5432;Database=infinidysk;Username=infinidysk;Password=change-me
+  DATABASE_CONNECTION_STRING: >-
+    Host=postgres;Port=5432;Database=infinidysk;
+    Username=infinidysk;Password=change-me
 ```
+
+The `>-` block joins its lines with a space, which the connection string
+parser ignores between `;`-separated keys.
 
 `DATABASE_PROVIDER` defaults to `sqlite`, so existing installations continue to
 use `/config/db.sqlite` unchanged.
@@ -52,9 +57,27 @@ a different user can always overwrite it.
   "migrationHistoryHash": "sha256:…",
   "transientObjects": ["TMP_LINKED_FILES", "TMP_LINKED_FILES_UNIQUE"],
   "databases": {
-    "main": { "provider": "sqlite", "terminalMigration": "…", "migrationCount": 51, "migrationHistoryHash": "sha256:…", "transientObjects": ["TMP_LINKED_FILES", "TMP_LINKED_FILES_UNIQUE"] },
-    "metrics": { "provider": "sqlite", "terminalMigration": "…", "migrationCount": 12, "migrationHistoryHash": "sha256:…", "transientObjects": [] },
-    "usenetMigration": { "provider": "sqlite", "terminalMigration": null, "migrationCount": 0, "migrationHistoryHash": null, "transientObjects": [] }
+    "main": {
+      "provider": "sqlite",
+      "terminalMigration": "…",
+      "migrationCount": 51,
+      "migrationHistoryHash": "sha256:…",
+      "transientObjects": ["TMP_LINKED_FILES", "TMP_LINKED_FILES_UNIQUE"]
+    },
+    "metrics": {
+      "provider": "sqlite",
+      "terminalMigration": "…",
+      "migrationCount": 12,
+      "migrationHistoryHash": "sha256:…",
+      "transientObjects": []
+    },
+    "usenetMigration": {
+      "provider": "sqlite",
+      "terminalMigration": null,
+      "migrationCount": 0,
+      "migrationHistoryHash": null,
+      "transientObjects": []
+    }
   }
 }
 ```

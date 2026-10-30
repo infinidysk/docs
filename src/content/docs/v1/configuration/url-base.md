@@ -1,5 +1,5 @@
 ---
-title: "URL base (sub-path hosting)"
+title: "Base URL and sub-paths"
 ---
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 
@@ -9,10 +9,13 @@ without any `sub_filter` response rewriting in the proxy.
 The setting is the `NZBDAV_URL_BASE` value (bare `URL_BASE` is accepted as a
 fallback) and it has **two halves that must match**:
 
-| Half | When | What it controls |
-| --- | --- | --- |
-| `--build-arg NZBDAV_URL_BASE=/nzbdav` | Docker image build | React Router basename, Vite asset paths, and the `__URL_BASE__` constant baked into the client bundle |
-| `NZBDAV_URL_BASE=/nzbdav` env var | Container runtime | The Express mount prefix, WebSocket endpoint path, and login-redirect Locations |
+| Half | What it controls |
+| --- | --- |
+| Docker image build<br/>`--build-arg NZBDAV_URL_BASE=/nzbdav` | React Router basename, Vite asset paths, and the `__URL_BASE__` constant baked into the client bundle. |
+| Container runtime<br/>`NZBDAV_URL_BASE=/nzbdav` env var | The Express mount prefix, WebSocket endpoint path, and login-redirect Locations. |
+
+This is not the public **Base URL** under **Settings → General → Public access**
+(`general.base-url`); that one sets the external origin used for generated links.
 
 React Router's `basename` is build-time only — the framework exposes no runtime
 override — so the sub-path cannot be changed without rebuilding the frontend.

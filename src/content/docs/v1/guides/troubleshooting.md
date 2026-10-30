@@ -36,7 +36,8 @@ variable before the next restart.
 If you have shell access to `/config` and prefer not to restart:
 
 ```bash
-sqlite3 "${CONFIG_PATH:-/config}/db.sqlite" "DELETE FROM Accounts WHERE Type = 1;"
+sqlite3 "${CONFIG_PATH:-/config}/db.sqlite" \
+  "DELETE FROM Accounts WHERE Type = 1;"
 ```
 
 Then visit the UI and complete onboarding. Queue, history, settings, and WebDAV
@@ -74,7 +75,9 @@ does not trigger restarts. To opt into readiness for routing or monitoring, prob
 
 ```yaml
 healthcheck:
-  test: ["CMD-SHELL", "curl -fsSL http://localhost:8080/ready > /dev/null || exit 1"]
+  test:
+    - CMD-SHELL
+    - curl -fsSL http://localhost:8080/ready > /dev/null || exit 1
   interval: 30s
   timeout: 5s
   retries: 3
@@ -100,7 +103,8 @@ because the backend process exits on failure.
 - Confirm WebDAV username/password.
 - Behind a proxy: TLS, `/ws` Upgrade, `SECURE_COOKIES`, Base URL / `TRUST_PROXY`.
 - Overview **Active Reads**: unexpected traffic → rclone VFS or media-server scans.
-- Try disabling segment cache or adjusting Max Download Connections — [WebDAV](/v1/configuration/webdav/).
+- Try disabling Segment Cache or adjusting Max Download Connections under **Settings → Streaming**
+  ([Streaming settings](/v1/configuration/streaming/)).
 - `503 Service Unavailable` with `Retry-After`, logged as `could not be confirmed missing`
   <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>: a
   provider was skipped by its circuit breaker, or timed out or failed, while an article was looked
@@ -168,7 +172,7 @@ Generate a pack from **Settings → Support** — [Technical support pack](/v1/c
 - STRM: Base URL reachable from Emby/Jellyfin?
 - STRM items show `0m 0s` or no audio languages in Jellyfin until played once? Expected —
   see [Media servers](/v1/guides/media-servers/#emby-jellyfin).
-- Check Automatic Queue Management rules — [Arrs](/v1/configuration/arrs/).
+- Check Automatic Queue Management rules: [Arr apps](/v1/configuration/arrs/).
 
 ## 403 / 405 on MKCOL, PUT or DELETE {#403-405-on-mkcol-put-or-delete}
 
@@ -194,21 +198,19 @@ Allow Docker DNS or LAN hosts under **Trusted local hosts** — [SABnzbd API](/v
 
 ## Why did files disappear?
 
-See [Deletion audit](/v1/operations/deletion-audit/) — history retention ≠ deleting mounts; unlinked-file cleanup and Arr actions can remove content. History rows disappearing after import are usually the Arr or a `/completed-symlinks` folder delete, not infinidysk deleting the file. If Remove Orphaned Files lists imported files, check that **Library Directory** is your organized library root, not the rclone mount.
+See [Deletion audit](/v1/operations/deletion-audit/) and [Retention and cleanup](/v1/operations/retention-cleanup/). History retention is not the same as deleting mounts; unlinked-file cleanup and Arr actions can remove content. History rows disappearing after import are usually the Arr app or a `/completed-symlinks` folder delete, not infinidysk deleting the file. If Remove Orphaned Files lists imported files, check that **Library Directory** is your organized library root, not the rclone mount.
 
 ## Plex marks old episodes as newly added <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
-infinidysk does not change WebDAV `Last-Modified` after import, and it does not issue ETags. Plex keys library items by **file path**, so an old episode showing up as “newly added” means Plex deleted its library row and then re-created it on a later scan.
+infinidysk does not change WebDAV `Last-Modified` after import. Plex keys library items by file path, so an old episode showing up as “newly added” means Plex deleted its library row and re-created it on a later scan. The usual cause is a brief scan-time failure on an rclone mount of `/content` combined with Plex's **Empty trash automatically after every scan**.
 
-The most common cause on an rclone mount of `/content` is a transient scan-time failure (container restart, rclone re-list after `vfs/forget`, lazy RAR size correction, proxy timeout) combined with Plex's **Empty trash automatically after every scan**. The path is briefly unavailable, trash collection removes the item, and the next clean scan re-adds it — triggering intro/credits analysis again.
-
-Quick check: compare the file's mtime in the mount (`ls -l`) with Plex's “added” date. An old mtime with a new “added” date means the server never recreated the file. For the full checklist see [Plex “newly added” churn on /content mounts](/v1/operations/plex-readd-diagnosis/).
+Quick check: compare the file's mtime in the mount (`ls -l`) with Plex's “added” date. For causes and the full checklist, see [Plex “newly added” churn on /content mounts](/v1/operations/plex-readd-diagnosis/).
 
 ## Provider / missing articles {#provider-missing-articles}
 
-- Circuit breaker may pause a bad provider — check Usenet settings and Overview.
-- Storage groups skip sibling resellers after a miss — only group identical upstream storage.
-- Health/repairs can replace unhealthy library items — [Health and repairs](/v1/operations/health-repairs/).
+- The circuit breaker may pause a bad provider: check Usenet settings and Overview.
+- Storage groups skip sibling resellers after a miss; only group identical upstream storage.
+- Health checks and repairs can replace unhealthy library items: [Health and repairs](/v1/operations/health-repairs/).
 
 ## Still stuck
 

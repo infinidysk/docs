@@ -13,9 +13,7 @@ Use this when infinidysk should search your Newznab indexers and return playable
 2. Set a public base URL / reverse proxy so AIOStreams and the playback client can reach infinidysk over HTTPS.
 3. Create a **Search Profile**, choose indexers, enable **Addon**, and configure query fallback if you want it.
 4. Copy the Addon **manifest URL**. Treat the full URL as a secret: it contains the profile token.
-5. In AIOStreams Marketplace:
-   - After a release that includes the dedicated **infinidysk** preset, add that preset and paste the manifest URL. No infinidysk/NzbDAV service credentials are required.
-   - Until that preset is released, add **Custom Addon** and paste the same manifest URL. Custom Addon fetches streams but does **not** report AIOStreams' final order to `/failover_order`.
+5. In the AIOStreams Marketplace, add the dedicated **infinidysk** preset and paste the manifest URL. No infinidysk service credentials are required.
 6. Do **not** also add the infinidysk/NzbDAV service, and do **not** duplicate those indexers as AIOStreams Newznab addons.
 7. Save and install the combined AIOStreams addon in Stremio.
 
@@ -47,11 +45,10 @@ Then in **Addons → Marketplace → Usenet → Newznab**, add each indexer (URL
 
 ## Repairs without Arr <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a>
 
-**Background Repairs** is on by default <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>: health checks, PAR2 reconstruction of recoverable gaps,
-and limited damage tolerance run without a Library Directory or Arr. Those are only necessary to
+**Background Repairs** is on by default <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>: health checks and limited damage tolerance run without a Library Directory or Arr app. PAR2 gap repair is off by default and runs only when you enable it. A Library Directory and Arr app are only needed to
 replace linked library items. To auto-remove a broken unlinked item after repeated playback failures,
 set **Repair After Streaming Failures** above `0`; the default (`0`) keeps the item and marks it
-**Action needed**. Turn the toggle off if you do not want background health checks, PAR2 work, or limited damage-tolerance handling.
+**Action needed**. Turn Background Repairs off if you do not want background health checks or damage-tolerance handling. See [Repairs settings](/v1/configuration/repairs/).
 
 ## Security and reachability
 

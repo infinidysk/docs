@@ -5,15 +5,19 @@ infinidysk implements the SABnzbd-compatible operations used by Sonarr, Radarr, 
 
 ## Supported operations
 
+Every operation is a `mode=` value on `/api`:
+
 - `version`, `status`, `fullstatus`, `get_config`, and `get_cats`
 - `server_stats` and `warnings` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
 - `addfile` and `addurl`
-- `queue` listing and `queue&name=delete`, `queue&name=pause`, `queue&name=resume`, `queue&name=priority`, `queue&name=move`, and `queue&name=change_cat` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
+- `queue` listing, plus `name=` actions `delete`, `pause`, `resume`, `priority`, and `move` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
 - `switch` for placing one queued job at another job's position or an absolute queue index <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
-- `pause` / `resume` (also `queue&name=pause` / `queue&name=resume`) and `speedlimit` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
+- `pause`, `resume`, and `speedlimit` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 - `change_cat` for per-job category changes on queued items <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
 - `retry` for failed history re-queue (single or bulk) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 - `history` listing and `history&name=delete`
+
+Other modes and `queue` actions are not implemented.
 
 Queue and history filters accept both `cat` and `category`. The default category sentinel returned by `get_cats` is `*`.
 

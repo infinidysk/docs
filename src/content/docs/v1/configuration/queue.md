@@ -12,10 +12,10 @@ Map config keys below to `NZBDAV_CONFIG__...` with the
 
 ## Processing capacity
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Concurrent Queue Downloads <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a> | `queue.worker-count` | `1` | Process 1–10 NZBs concurrently; the oldest active item is preferred |
-| Queue Download Connections | `usenet.max-queue-connections` | blank = all | Provider connections shared by queue workers and background health checks |
+| Setting | What it does |
+|---|---|
+| Concurrent Queue Downloads <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a><br/>`queue.worker-count` | Process 1–10 NZBs concurrently; the oldest active item is preferred. Default `1`. |
+| Queue Download Connections<br/>`usenet.max-queue-connections` | Provider connections shared by queue workers and background health checks. Default blank = all. |
 
 Adding workers does not add provider capacity. Additional workers use spare
 connections from the same queue budget, so raising concurrency primarily lets
@@ -30,10 +30,10 @@ Playback has a separate connection budget and priority policy under
 
 ## Queue admission
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Maximum queued jobs <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a> | `queue.max-items` | `0` (unlimited) | Reject new SAB submissions at this queue depth |
-| Resume threshold <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a> | `queue.resume-threshold` | `0` | Resume admission at or below this depth |
+| Setting | What it does |
+|---|---|
+| Maximum queued jobs <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a><br/>`queue.max-items` | Reject new SAB submissions at this queue depth. Default `0` (unlimited). |
+| Resume threshold <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a><br/>`queue.resume-threshold` | Resume admission at or below this depth. Default `0`. |
 
 At the maximum, infinidysk returns the standard SAB-compatible
 `{"status": false, "error": "..."}` response without storing the NZB. Sonarr
@@ -47,9 +47,9 @@ not increase queue depth.
 
 ## Download schedule <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Download schedule | `queue.processing-schedule` | empty (always on) | JSON weekly windows that admit **new** queue downloads |
+| Setting | What it does |
+|---|---|
+| Download schedule<br/>`queue.processing-schedule` | JSON weekly windows that admit **new** queue downloads. Default empty (always on). |
 
 Empty or disabled JSON is today's unrestricted behavior. Enabled schedules need at least one window. Weekdays are `0` (Sunday) through `6` (Saturday). Minutes are half-open `[start, end)` in the host's local timezone (container `TZ`). `end` before `start` is overnight. Active imports finish if a window closes; WebDAV playback is never gated. The scheduler never writes `queue.paused` — SAB `mode=pause|resume` remains the manual override. When only the schedule is closed, SAB `queue.paused` is `true` and `pause_int` is whole seconds until the next open window. Manual pause reports `pause_int` as `0`.
 

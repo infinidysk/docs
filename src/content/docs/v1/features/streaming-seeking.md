@@ -7,12 +7,13 @@ Players issue HTTP range requests; infinidysk fetches the corresponding Usenet a
 
 | Area | Settings |
 |------|----------|
-| Connection budget | **WebDAV → Max Download Connections**, per-stream presets, streaming priority vs queue |
+| Connection budget | **Settings → Streaming → Max Download Connections**, per-stream presets, **Streaming Priority (vs Queue)** |
 | Latency | Segment timeout/retries, article buffer size, idle connection timeout |
-| Throughput | [NNTP pipelining](/v1/features/nntp-pipelining/) (queue + WebDAV toggles), provider connection counts |
-| Local smoothing | Optional segment cache; rclone VFS cache for symlink mounts |
+| Throughput | [NNTP pipelining](/v1/features/nntp-pipelining/) (queue and streaming toggles), provider connection limits |
+| Local smoothing | Optional Segment Cache; rclone VFS cache for symlink mounts |
 
-Tune methodically — [First run](/v1/getting-started/first-run/) and speed notes in the old setup guide live under WebDAV: raise connections until speed plateaus without pegging CPU.
+Tune one setting at a time: raise connections until speed plateaus without pegging the CPU.
+See [Streaming settings](/v1/configuration/streaming/).
 
 ## Playback automation
 
@@ -32,10 +33,10 @@ article metadata.
 
 Some articles declare positive part counts or file sizes that conflict with the NZB and PAR2 metadata. When import finds a matching file prefix and complete, checksum-verified PAR2 file and slice metadata, it can use PAR2-verified reads for that file. A matching prefix selects the candidate file; it does not establish the integrity of later bytes.
 
-Reads within the first 16 KiB verify that complete prefix against the checksum in the PAR2 file description. This keeps archive-header discovery bounded. Reads beyond that prefix buffer and verify an entire PAR2 slice using both MD5 and CRC32 before returning any bytes. This includes seeks, cached content, and physical archive volumes. Failed verification is retried against eligible providers; if verification still fails, the read fails without returning the unverified bytes. Article CRC validation and ordinary provider fallback remain enabled. Checksum-failing combinations of alternate article IDs are not exhaustively searched.
+Reads within the first 16,384 bytes verify that complete prefix against the checksum in the PAR2 file description. This keeps archive-header discovery bounded. Reads beyond that prefix buffer and verify an entire PAR2 slice using both MD5 and CRC32 before returning any bytes. This includes seeks, cached content, and physical archive volumes. Failed verification is retried against eligible providers; if verification still fails, the read fails without returning the unverified bytes. Article CRC validation and ordinary provider fallback remain enabled. Checksum-failing combinations of alternate article IDs are not exhaustively searched.
 
-Uncached short reads can therefore download several megabytes, depending on the release's PAR2 slice size. Supported slices are at most 32 MiB. PAR2 discovery is bounded to 32 MiB, 64 articles, 2 MiB per decoded article, and 30 seconds per import. Missing, incomplete, conflicting, or unsupported PAR2 proof does not authorize relaxing the yEnc count check.
+Uncached short reads can therefore download several megabytes, depending on the release's PAR2 slice size. Supported slices are at most 33,554,432 bytes (about 33.5 MB). PAR2 discovery is bounded to about 33.5 MB, 64 articles, about 2.1 MB per decoded article, and 30 seconds per import. Missing, incomplete, conflicting, or unsupported PAR2 proof does not authorize relaxing the yEnc count check.
 
-Retry failed imports, or reimport already-mounted releases, to record the new proof. Existing mounts are not rewritten automatically. Files whose first inspected header does not expose a positive metadata conflict retain the ordinary read path; later conflicting headers may still be rejected. This recovery path does not change the separate PAR2 repair-discovery workflow or verify an entire file during import. Successful import is not a full-file integrity check.
+Retry failed imports, or reimport already-mounted releases, to record the new proof. Existing mounts are not rewritten automatically. Files whose first inspected header does not expose a positive metadata conflict retain the ordinary read path; later conflicting headers may still be rejected. This recovery path does not change the separate PAR2 repair-discovery workflow or verify an entire file during import. A completed import is not a full-file integrity check.
 
-When an NZB contains decoded PAR2 candidates, import logs one `PAR2 metadata discovery finished` summary listing descriptors found, verified proofs, unverified descriptors, a bounded sample of PAR2 slice sizes, and bounded download work. When a file's first article header conflicts with the NZB but no usable proof exists, import logs a `Conflicting yEnc metadata ... cannot use PAR2-verified recovery` warning with reasons such as no PAR2 descriptors, no first-16-KiB match, a descriptor length outside the size window, an unsupported slice size, or missing slice checksums. Article mismatch warnings also report `GeometryImpliedTotalParts`, the part count implied when the article's size, offset, and part number establish regular multipart geometry, and whether the requested ID was a primary or fallback message ID.
+When an NZB contains decoded PAR2 candidates, import logs one `PAR2 metadata discovery finished` summary listing descriptors found, verified proofs, unverified descriptors, a bounded sample of PAR2 slice sizes, and bounded download work. When a file's first article header conflicts with the NZB but no usable proof exists, import logs a `Conflicting yEnc metadata ... cannot use PAR2-verified recovery` warning with reasons such as no PAR2 descriptors, no match within the first 16,384 bytes, a descriptor length outside the size window, an unsupported slice size, or missing slice checksums. Article mismatch warnings also report `GeometryImpliedTotalParts`, the part count implied when the article's size, offset, and part number establish regular multipart geometry, and whether the requested ID was a primary or fallback message ID.

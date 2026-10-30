@@ -13,22 +13,22 @@ Map config keys below to `NZBDAV_CONFIG__...` with the
 
 ## Access
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| WebDAV User | `webdav.user` | `admin` / `WEBDAV_USER` | Username accepted by WebDAV clients |
-| WebDAV Password | `webdav.pass` | env `WEBDAV_PASSWORD` | Password required by rclone and other clients |
+| Setting | What it does |
+|---|---|
+| WebDAV User<br/>`webdav.user` | Username accepted by WebDAV clients. Default `admin` / `WEBDAV_USER`. |
+| WebDAV Password<br/>`webdav.pass` | Password required by rclone and other clients. Default env `WEBDAV_PASSWORD`. |
 
 Use these credentials in rclone, Plex integrations, direct WebDAV clients, and
 other applications that mount or read infinidysk.
 
-## Filesystem and Explorer {#filesystem-explorer}
+## Filesystem & Explorer {#filesystem-explorer}
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Enforce Read-Only | `webdav.enforce-readonly` | on | Make `/content` read-only |
-| Sanitize paths for Windows | `webdav.windows-safe-paths` | on | Replace Windows-invalid characters on newly mounted content |
-| Show hidden files | `webdav.show-hidden-files` | off | Show dot-prefixed names in Files |
-| Preview par2 files | `webdav.preview-par2-files` | off | Render PAR2 file descriptors as text in Files |
+| Setting | What it does |
+|---|---|
+| Enforce Read-Only<br/>`webdav.enforce-readonly` | Make `/content` read-only and block clearing completed history by deleting release folders under `/completed-symlinks`. Symlink deletes needed for Arr imports are always allowed. Default on. |
+| Sanitize paths for Windows<br/>`webdav.windows-safe-paths` | Replace Windows-invalid characters on newly mounted content. Default on. |
+| Show hidden files on Dav Explorer<br/>`webdav.show-hidden-files` | Show dot-prefixed names in Dav Explorer. Default off. |
+| Preview par2 files on Dav Explorer<br/>`webdav.preview-par2-files` | Render PAR2 file descriptors as text in Dav Explorer. Default off. |
 
 [Mounting WebDAV](/v1/guides/mounting-webdav/) ·
 [Streaming settings](/v1/configuration/streaming/) ·

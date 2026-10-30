@@ -1,10 +1,11 @@
 ---
-title: "Connect Radarr / Sonarr"
+title: "Connect Arr instances"
+description: "Add infinidysk as a SABnzbd download client in Sonarr and Radarr, and register them in infinidysk."
 ---
 infinidysk speaks the SABnzbd API surface Arr apps expect. Hostnames below assume a shared Docker network.
 
-The [Setup Guide](/v1/getting-started/setup-guide/) can collect and test Radarr/Sonarr connections
-and displays the download-client values below. Use this page for the complete
+The [setup guide](/v1/getting-started/setup-guide/) can collect and test Radarr and Sonarr connections
+and shows the download-client values below. Use this page for the complete
 manual procedure or troubleshooting.
 
 ## Add the download client
@@ -21,7 +22,7 @@ In Radarr or Sonarr → **Settings** → **Download Clients** → **Add** → **
 
 Test the connection. Prefer `addfile` when clients can upload NZB bytes; `addurl` to private indexers needs [Trusted local hosts](/v1/configuration/sabnzbd/) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a>.
 
-### Remove Completed
+### Remove completed downloads
 
 Enable **Remove Completed** under **Completed Download Handling** on the
 download client's edit dialog. Enable **Show Advanced** to see it. The global
@@ -41,13 +42,13 @@ meantime. The Arr only removes downloads it grabbed, so releases grabbed by
 
 ## Register Arr in infinidysk
 
-**Settings → Radarr/Sonarr**:
+**Settings → Arr Apps**:
 
 1. Add Radarr host (`http://radarr:7878`) + API key.
 2. Add Sonarr host (`http://sonarr:8989`) + API key.
 3. Configure **Automatic Queue Management** for stuck import messages (remove / blocklist / search).
 
-Registered and enabled instances light up the Overview **Arr Health** widget <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>. See [Radarr/Sonarr settings](/v1/configuration/arrs/).
+Registered and enabled instances light up the Overview **Arr Health** widget <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>. See [Arr apps](/v1/configuration/arrs/).
 
 ## Align import paths
 

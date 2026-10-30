@@ -1,19 +1,18 @@
 ---
-title: "Arr instances"
+title: "Arr apps"
 ---
-Supported Arr app credentials and automatic stuck-queue handling. Radarr and
-Sonarr are supported today; this settings area is intended to accommodate
-additional Arr apps such as Lidarr in the future. Config key: `arr.instances`
-(`NZBDAV_CONFIG__ARR__INSTANCES` — see [headless](/v1/configuration/headless/)).
+Radarr and Sonarr credentials and automatic stuck-queue handling. Config key:
+`arr.instances` (`NZBDAV_CONFIG__ARR__INSTANCES`; see
+[headless](/v1/configuration/headless/)).
 
-| Control | Effect |
-|---------|--------|
-| Name | Optional display name (Overview Arr Health falls back to the host URL) |
-| Enabled | When off, the instance is excluded from queue management, Arr-linked repairs, **and** Arr Health |
-| Radarr Host / API Key | Test Conn available |
-| Sonarr Host / API Key | Test Conn available |
-| Arr Health | Master toggle `arr.health-enabled` (`NZBDAV_CONFIG__ARR__HEALTH_ENABLED`) — default on |
-| Automatic Queue Management | Per status message: Do Nothing / Remove / Remove+Blocklist / Remove+Blocklist+Search |
+| Setting | What it does |
+|---|---|
+| Name | Optional display name; Overview Arr Health falls back to the host URL. |
+| Enabled | When off, the instance is excluded from queue management, Arr-linked repairs **and** Arr Health. Default on. |
+| Host / API Key | One pair per Radarr or Sonarr instance. **Test Conn** appears once both are filled. |
+| Show Arr Health on Overview<br/>`arr.health-enabled` | Polls enabled instances for the Overview widget (`NZBDAV_CONFIG__ARR__HEALTH_ENABLED`). Default on. |
+| Automatic replacement searches / Per window (minutes) | Replacement-search limit per movie or episode (1–10 searches, 1–1440 minutes). Default 3 in 30 minutes. |
+| Automatic queue management | Per status message: **Do Nothing**, **Remove**, **Remove and Blocklist**, or **Remove, Blocklist, and Search**. Default **Do Nothing**. |
 
 **Test Conn** validates host reachability, API key auth, and a successful API response
 (`GET /api`). It works with already-saved (masked) API keys — you do not need to re-enter
@@ -49,7 +48,9 @@ requests 30 seconds, and Prowlarr requests 15 seconds. When one expires, logs, T
 the Overview Arr Health panel report it as a timeout with the routing used, for example:
 
 ```text
-Arr health poll failed for "http://sonarr:8989". Reason: "Sonarr queue request to http://sonarr:8989 timed out after 10 seconds; routing: direct (single-label hostname)."
+Arr health poll failed for "http://sonarr:8989". Reason: "Sonarr queue
+request to http://sonarr:8989 timed out after 10 seconds; routing: direct
+(single-label hostname)."
 ```
 
 "Operation canceled" is no longer used for expired waits; it now indicates only a genuine
@@ -62,13 +63,13 @@ season numbering in the release name disagrees with Sonarr's metadata. A
 representative queue reason is:
 
 > Episode 11x01 was unexpected considering the
-> American.Dad.S10E01... folder name
+> `<release-name>` folder name
 
 Sonarr determines episode identity and import eligibility. infinidysk cannot
 remap the episode or force Sonarr to import it, but it can automatically
 resolve the stuck queue record.
 
-In **Settings -> Arr Apps -> Automatic queue management**, choose an action
+In **Settings → Arr Apps → Automatic queue management**, choose an action
 for **Episode(s) was/were unexpected considering the folder name**:
 
 - **Remove** removes the stuck queue record.
@@ -99,11 +100,11 @@ The queue-monitor warning includes the matching Arr import message, so support p
 show the actual rejection (for example, an archive, an ineligible file, or an import
 path problem) that led to the action.
 
-Disabling an instance opts it out of stuck-queue actions, Arr-linked repairs, and health polling. Use **Arr Health** off when you still want queue rules without Overview polling.
+Disabling an instance opts it out of stuck-queue actions, Arr-linked repairs, and health polling. Turn **Show Arr Health on Overview** off when you still want queue rules without Overview polling.
 
 ## Blocklisted re-grab protection <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a>
 
-When a queue rule applies **Remove, Blocklist** or **Remove, Blocklist, Search**,
+When a queue rule applies **Remove and Blocklist** or **Remove, Blocklist, and Search**,
 infinidysk remembers a bounded sample of article IDs from the removed download. A later NZB
 containing any remembered article is failed in the download queue before import or Usenet article
 requests, even when another indexer supplied it under a different release name. Plain **Remove**
@@ -137,7 +138,7 @@ The feature is **completely dormant** otherwise:
 
 Turn off **Show Arr Health on Overview** (`arr.health-enabled`) to keep instances for queue rules/repairs without health polling.
 
-Handoff events are stored in the local metrics database (`metrics.sqlite`) for **90 days**, so the Overview **All** window for this widget is effectively ~90 days. API keys are never sent to the widget.
+Handoff events are stored in the local metrics database (`metrics.sqlite`) for **90 days**, so the Overview **All** window for this widget is effectively about 90 days. API keys are never sent to the widget.
 
 Back up `/config` before upgrading: the metrics store gains an additive `ArrImportEvents` table that auto-applies on startup.
 

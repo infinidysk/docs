@@ -1,5 +1,5 @@
 ---
-title: "Docker"
+title: "Run with Docker"
 description: "Run infinidysk in Docker with Docker Compose or docker run. Includes volume mounts, environment variables, and reverse proxy setup."
 ---
 
@@ -7,13 +7,7 @@ infinidysk ships as a single multi-arch image: `ghcr.io/infinidysk/infinidysk`. 
 
 The examples use `:latest` (current stable). See [Release channels and tags](/v1/getting-started/#release-channels-and-tags) for the `lts`, `rc`, and `dev` channels — and pin an exact version tag (`v1.2.3`) when you want reproducible deploys.
 
-:::tip[Hosted with DUMB]
-Prefer a batteries-included Arr stack? infinidysk is a **fully supported core module** in [Debrid Unlimited Media Bridge (DUMB)](https://dumbarr.com/) — see the [infinidysk service guide](https://dumbarr.com/services/core/nzbdav/) and [setup options](/v1/getting-started/#setup-and-hosting-options).
-:::
-
-:::tip[IPv6-only hosts]
-`ghcr.io` is not reachable over IPv6. Use the Docker Hub mirror `nzbdav/nzbdav` instead.
-:::
+On IPv6-only hosts, `ghcr.io` is not reachable. Use the Docker Hub mirror `infinidysk/infinidysk` instead.
 
 ## Persistent Compose
 
@@ -24,7 +18,9 @@ services:
     container_name: nzbdav
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsSL http://localhost:3000/healthz > /dev/null || exit 1"]
+      test:
+        - CMD-SHELL
+        - curl -fsS http://localhost:3000/healthz > /dev/null || exit 1
       interval: 30s
       retries: 3
       start_period: 60s
@@ -46,16 +42,9 @@ docker compose up -d
 
 Set `PUID`/`PGID` from `id` on the host. Map `/mnt` (or your media paths) so completed downloads and library folders share paths with Arr and media servers.
 
-The container fails startup before migrations if `/config` is missing, is a file, or is not writable by `PUID`/`PGID`. Ownership repair is best-effort; ACLs and group-writable mounts are accepted when the runtime user can create and delete a probe file. The image already contains an empty `/config` directory, so a path existing inside the container is not proof a host volume is mounted. The frontend session key at `/config/session.key` is mode `0600`; if your supervisor repairs ownership using an allowlist, include that file without recursively chowning `blobs/`.
+The container fails startup before migrations if the config directory (`CONFIG_PATH`, default `/config`) is missing, is a file, or is not writable by `PUID`/`PGID`. Ownership repair is best-effort; ACLs and group-writable mounts are accepted when the runtime user can create and delete a probe file. The image already contains an empty `/config` directory, so a path existing inside the container is not proof a host volume is mounted. The frontend session key at `/config/session.key` is mode `0600`; if your supervisor repairs ownership using an allowlist, include that file without recursively chowning `blobs/`.
 
-:::tip[Headless Settings]
-<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
-
-Prefer infrastructure-as-code for Usenet, WebDAV, Arr, and other Settings? Use authoritative
-[`NZBDAV_CONFIG__...`](/v1/configuration/headless/) variables — see the
-[fully hydrated Compose example](/v1/configuration/headless/#fully-hydrated-compose-example).
-Process variables on this page (`PUID`, `TZ`, …) stay separate.
-:::
+To manage Settings as code, use [`NZBDAV_CONFIG__...` variables](/v1/configuration/headless/) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>; see the [full Compose example](/v1/configuration/headless/#fully-hydrated-compose-example).
 
 ## Change the published port
 
@@ -72,11 +61,7 @@ the Compose healthcheck at `http://localhost:3000/healthz`. A mapping such as
 `3001:3001` does not work unless the frontend is separately configured to listen
 on `3001`.
 
-:::tip
-For ordinary bridge-networked Docker and Compose deployments, changing the
-host side of the port mapping is the recommended approach. Do not set `PORT`
-just to avoid a host port conflict.
-:::
+With bridge networking, change only the host side of the mapping. Do not set `PORT` just to avoid a host port conflict.
 
 ### Host networking and internal port conflicts
 

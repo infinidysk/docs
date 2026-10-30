@@ -9,11 +9,11 @@ Map config keys below to `NZBDAV_CONFIG__...` with the
 (`preflight.mode` → `NZBDAV_CONFIG__PREFLIGHT__MODE`).
 :::
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Mode | `preflight.mode` | `off` | off / light / standard / full |
-| Max candidates to try | `preflight.max-attempts` | `20` | Walk top results until one passes |
-| Keep preflight state for (seconds) | `preflight.ttl-seconds` | `120` | Warm TTL |
-| Skip if indexer wait exceeds (seconds) | `preflight.indexer-max-wait-seconds` | `5` | Avoid queueing behind rate limits |
+| Setting | What it does |
+|---|---|
+| Mode<br/>`preflight.mode` | `off` (no background work), `light` (quick existence check on the top results), `standard` (light + cache the article descriptor) or `full` (standard + resolve archive layout for previously completed items). Default `off`. |
+| Max candidates to try<br/>`preflight.max-attempts` | Walk top results until one passes (1–50). Default `20`. |
+| Keep preflight state for (seconds)<br/>`preflight.ttl-seconds` | How long a result stays warm (10–1800). Default `120`. |
+| Skip if indexer wait exceeds (seconds)<br/>`preflight.indexer-max-wait-seconds` | Avoid queueing behind indexer rate limits (0–120). Default `5`. |
 
-Watchtower can also warm the same cache path for list titles — [Watchtower](/v1/configuration/watchtower/).
+Watchtower can also warm the same cache path for list titles; see [Watchtower](/v1/configuration/watchtower/).

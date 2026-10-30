@@ -6,7 +6,7 @@ title: "Headless environment configuration"
 Authoritative, opt-in configuration of every user-owned Settings (`ConfigItems`) value via `NZBDAV_CONFIG__...` environment variables. Designed for infrastructure-as-code / Docker Compose deployments where the Settings UI should not own those values.
 
 :::tip[Operational vs headless]
-Process wiring (`CONFIG_PATH`, `PORT`, `LOG_LEVEL`, cookies, …) and legacy Settings fallbacks (`WEBDAV_USER`, `MOUNT_DIR`, …) stay on the [Environment variables](/v1/configuration/environment-variables/) page. This page covers only the new authoritative `ConfigItems` overlay.
+Process variables (`CONFIG_PATH`, `PORT`, `LOG_LEVEL`, `FRONTEND_BACKEND_API_KEY`, …) and legacy Settings fallbacks (`WEBDAV_USER`, `MOUNT_DIR`, …), with their defaults, are documented on [Environment variables](/v1/configuration/environment-variables/). This page covers only the `NZBDAV_CONFIG__...` overlay: key mapping, validation and precedence.
 :::
 
 ## What is in scope
@@ -22,7 +22,7 @@ These remain separate persistence / operational domains — they are **not** dri
 - Frontend **admin account** bootstrap (first-run username/password)
 - **Warden** source lists and GitHub backup state (`warden.db`)
 - Database restore / one-off maintenance task actions
-- Process variables such as `CONFIG_PATH`, `PORT`, `LOG_LEVEL`, `FRONTEND_BACKEND_API_KEY` (unless also mirrored as a Settings key like `api.key`)
+- Process variables such as `CONFIG_PATH`, `PORT` and `LOG_LEVEL` ([Environment variables](/v1/configuration/environment-variables/))
 
 ## Naming algorithm
 
@@ -57,7 +57,10 @@ Persisted exclude settings such as `search.exclude-patterns` → `NZBDAV_CONFIG_
 ## Precedence
 
 ```
-NZBDAV_CONFIG__...  >  SQLite / Settings UI  >  legacy fallbacks (WEBDAV_*, MOUNT_DIR, …)  >  built-in defaults
+NZBDAV_CONFIG__...
+  > SQLite / Settings UI
+  > legacy fallbacks (WEBDAV_*, MOUNT_DIR, …)
+  > built-in defaults
 ```
 
 - ENV values are **not** written into SQLite.
@@ -88,9 +91,9 @@ When a key is ENV-managed:
 Even when Compose uses `${WEBDAV_PASS:?missing}` placeholders, resolved secrets are visible to the container runtime and inspection tools (`docker inspect`, orchestrator secret mounts that materialize as env, etc.). Prefer an uncommitted `.env` file or orchestrator secret injection. **Never** commit real credentials or paste resolved values into docs, issues, or logs.
 :::
 
-Headless stacks must still set **`FRONTEND_BACKEND_API_KEY`** for frontend↔backend proxy authentication. Mirror the same value into **`NZBDAV_CONFIG__API__KEY`** so Arr/SAB and the Settings UI agree on the download-client API key.
+Headless stacks still need `FRONTEND_BACKEND_API_KEY` for frontend↔backend authentication. Set **`NZBDAV_CONFIG__API__KEY`** to the same value so Arr, SABnzbd clients and the Settings UI use one download-client API key.
 
-`NZBDAV_CONFIG__WEBDAV__PASS` accepts plaintext; infinidysk hashes it at overlay load (same as the Settings UI). The example uses a Compose-only placeholder name `WEBDAV_PASS` — the legacy fallback variable remains **`WEBDAV_PASSWORD`** ([environment variables](/v1/configuration/environment-variables/)). Other secrets in JSON (Usenet `Pass`, indexer / Arr API keys, profile tokens) remain in the ENV JSON as supplied.
+`NZBDAV_CONFIG__WEBDAV__PASS` accepts plaintext; infinidysk hashes it at overlay load (same as the Settings UI). `WEBDAV_PASS` in the example is a Compose-only placeholder, not an infinidysk variable. Other secrets in JSON (Usenet `Pass`, indexer / Arr API keys, profile tokens) remain in the ENV JSON as supplied.
 
 ## Fully hydrated Compose example
 
@@ -103,7 +106,9 @@ services:
     container_name: nzbdav
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsSL http://localhost:3000/healthz > /dev/null || exit 1"]
+      test:
+        - CMD-SHELL
+        - curl -fsSL http://localhost:3000/healthz > /dev/null || exit 1
       interval: 30s
       retries: 3
       start_period: 60s
@@ -111,17 +116,17 @@ services:
     ports:
       - "3000:3000"
     environment:
-      # --- Process / operational (unchanged; see environment-variables.md) ---
+      # --- Process variables (see the Environment variables page) ---
       PUID: "1000"
       PGID: "1000"
       TZ: America/New_York
       TRUST_PROXY: "1"
       SECURE_COOKIES: "true"
-      FRONTEND_BACKEND_API_KEY: ${FRONTEND_BACKEND_API_KEY:?set FRONTEND_BACKEND_API_KEY}
+      FRONTEND_BACKEND_API_KEY: ${FRONTEND_BACKEND_API_KEY:?missing}
 
       # --- Authoritative ConfigItems overlay (NZBDAV_CONFIG__...) ---
-      # Mirror FRONTEND_BACKEND_API_KEY so proxy auth and *Arr/SAB share one key.
-      NZBDAV_CONFIG__API__KEY: ${FRONTEND_BACKEND_API_KEY:?set FRONTEND_BACKEND_API_KEY}
+      # Same value as FRONTEND_BACKEND_API_KEY: one key for proxy and Arr/SAB.
+      NZBDAV_CONFIG__API__KEY: ${FRONTEND_BACKEND_API_KEY:?missing}
       NZBDAV_CONFIG__API__CATEGORIES: "tv,movies"
       NZBDAV_CONFIG__API__MANUAL_CATEGORY: "uncategorized"
       NZBDAV_CONFIG__API__IMPORT_STRATEGY: "symlinks"
@@ -142,20 +147,34 @@ services:
       NZBDAV_CONFIG__USENET__PIPELINING__ENABLED: "false"
       NZBDAV_CONFIG__USENET__CASCADE__ENABLED: "true"
       NZBDAV_CONFIG__USENET__PROVIDERS: >-
-        {"Providers":[{"Type":1,"Host":"news.example.com","Port":563,"UseSsl":true,"User":"${USENET_USER:?set USENET_USER}","Pass":"${USENET_PASS:?set USENET_PASS}","MaxConnections":50,"MaxTransferConnections":20,"Nickname":"primary"}]}
+        {"Providers":[{"Type":1,"Host":"news.example.com","Port":563,
+        "UseSsl":true,
+        "User":"${USENET_USER:?set USENET_USER}",
+        "Pass":"${USENET_PASS:?set USENET_PASS}",
+        "MaxConnections":50,"MaxTransferConnections":20,
+        "Nickname":"primary"}]}
 
       NZBDAV_CONFIG__ARR__INSTANCES: >-
-        {"RadarrInstances":[{"Host":"http://radarr:7878","ApiKey":"${RADARR_API_KEY:?set RADARR_API_KEY}"}],"SonarrInstances":[{"Host":"http://sonarr:8989","ApiKey":"${SONARR_API_KEY:?set SONARR_API_KEY}"}],"QueueRules":[]}
-      # Optional. Default on. Set false to keep Arr queue rules without Overview health polling.
+        {"RadarrInstances":[{"Host":"http://radarr:7878",
+        "ApiKey":"${RADARR_API_KEY:?set RADARR_API_KEY}"}],
+        "SonarrInstances":[{"Host":"http://sonarr:8989",
+        "ApiKey":"${SONARR_API_KEY:?set SONARR_API_KEY}"}],
+        "QueueRules":[]}
+      # Optional. Default on. Set false to keep Arr queue rules
+      # without Overview health polling.
       # NZBDAV_CONFIG__ARR__HEALTH_ENABLED: "true"
-      # Optional Name/Enabled on each instance (since 1.2.0) are not forward compatible
-      # with older images — see Validation and restart.
+      # Optional Name/Enabled on each instance (since 1.2.0) are not
+      # forward compatible with older images; see Validation and restart.
 
       NZBDAV_CONFIG__INDEXERS__INSTANCES: >-
-        {"Indexers":[{"Name":"Example","Url":"https://indexer.example/api","ApiKey":"${INDEXER_API_KEY:?set INDEXER_API_KEY}","Enabled":true}]}
+        {"Indexers":[{"Name":"Example",
+        "Url":"https://indexer.example/api",
+        "ApiKey":"${INDEXER_API_KEY:?set INDEXER_API_KEY}",
+        "Enabled":true}]}
 
       NZBDAV_CONFIG__PROFILES__INSTANCES: >-
-        {"Profiles":[{"Name":"Default","Token":"${PROFILE_TOKEN:?set PROFILE_TOKEN}"}]}
+        {"Profiles":[{"Name":"Default",
+        "Token":"${PROFILE_TOKEN:?set PROFILE_TOKEN}"}]}
 
       NZBDAV_CONFIG__REPAIR__ENABLE: "true"
       NZBDAV_CONFIG__REPAIR__HEALTHCHECK_CONCURRENCY: "50"
@@ -183,7 +202,7 @@ services:
 ```
 
 :::note[JSON and Compose escaping]
-Multi-line `>-` YAML folds to a single line. Nested `${...}` inside JSON strings are expanded by Compose before the container starts.
+Multi-line `>-` YAML folds to a single line, joining lines with a space (valid JSON whitespace). Nested `${...}` inside JSON strings are expanded by Compose before the container starts.
 
 Use **PascalCase** property names exactly as the Settings UI persists them (`Providers`, `Type`, `Host`, `RadarrInstances`, `Indexers`, `Profiles`, …). camelCase or misspelled keys abort startup with an error naming the JSON path of the offending property, so a typo cannot leave you with empty or partial configuration.
 
@@ -218,8 +237,7 @@ PROFILE_TOKEN=
 
 ## Legacy compatibility
 
-- Existing `WEBDAV_USER` / `WEBDAV_PASSWORD` / `MOUNT_DIR` / `CATEGORIES` / … fallbacks are unchanged and still apply only when neither ENV overlay nor SQLite supplies a value.
-- Prefer `NZBDAV_CONFIG__...` for new headless deployments so Settings shows the authoritative source and rejects conflicting UI edits.
+Legacy fallbacks such as `WEBDAV_USER` and `MOUNT_DIR` still apply only when neither the overlay nor SQLite supplies a value; see [Settings fallbacks](/v1/configuration/environment-variables/#settings-fallbacks-when-ui-empty). Prefer `NZBDAV_CONFIG__...` for new headless deployments so Settings shows the authoritative source and rejects conflicting UI edits.
 
 ## Related pages
 

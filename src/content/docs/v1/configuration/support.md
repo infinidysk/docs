@@ -1,5 +1,5 @@
 ---
-title: "Technical support pack"
+title: "Support"
 ---
 <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
@@ -42,7 +42,7 @@ is bounded and resets on restart. `Finished` means the worker returned, not that
 the media was healthy; consult health-result history for the verdict.
 
 With stream tracing enabled, `stream-traces/events.jsonl` includes friendly
-filenames on `RangeOpen` events, so an opaque `/.ids/` URL can be matched to a movie.
+filenames on `RangeOpen` events, so an opaque `/.ids/` URL can be matched to a file name.
 Range-open events also export accumulated stall counters before a request ends.
 They reflect completed timing observations; a currently blocked operation may not
 have reported its duration yet. Do not sum range-open and range-end totals for the
@@ -52,7 +52,8 @@ capture was truncated, rather than proving a request is still active.
 ## Privacy
 
 The pack redacts passwords, API keys, tokens, URL credentials, sensitive URL
-parameters, authorization values, and IP addresses. It does **not** anonymize
+parameters, and authorization values. IP addresses are replaced with stable
+aliases (`[IP-1]`, `[IP-2]`, …) rather than removed. It does **not** anonymize
 file names, filesystem paths, account usernames, DNS names, or non-secret URL
 paths. Review the ZIP before sharing it.
 

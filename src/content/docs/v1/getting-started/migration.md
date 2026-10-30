@@ -1,15 +1,16 @@
 ---
-title: "Migration paths"
+title: "Migrate from nzbdav"
+description: "Move an existing nzbdav v0.6.4 install to infinidysk by swapping the image and keeping /config."
 ---
-infinidysk is designed as a **drop-in upgrade** from the NZB/WebDAV streaming lineage that started with [nzbdav-dev/nzbdav](https://github.com/nzbdav-dev/nzbdav). Migrations keep your `/config` volume (SQLite settings, queue/history metadata, blobs) and swap the container image.
+infinidysk started as nzbdav and upgrades it in place. Migrations keep your `/config` volume (SQLite settings, queue/history metadata, blobs) and swap the container image.
 
 :::caution[Back up first]
 Always snapshot the host directory mapped to `/config` before changing images. Schema migrations apply automatically on startup and some are irreversible — see [Backups and upgrades](/v1/guides/backups-upgrades/).
 :::
 
-## Official: nzbdav-dev/nzbdav `v0.6.4`
+## From nzbdav v0.6.4
 
-**Supported path.** infinidysk targets a direct upgrade from [nzbdav-dev/nzbdav](https://github.com/nzbdav-dev/nzbdav) **v0.6.4**.
+infinidysk supports a direct upgrade from nzbdav **v0.6.4**.
 
 1. Stop the old container.
 2. Back up `./config` (or whatever you mount at `/config`).
@@ -27,27 +28,9 @@ Enable this only behind a trusted proxy that sends correct `X-Forwarded-Host` an
 
 Arr download-client settings usually stay the same (host, port `3000`, API key) if networking is unchanged.
 
-Older than `0.6.0` installs may hit larger schema migrations — take a full `/config` backup and prefer stepping through a known-good intermediate if you are far behind.
+Installs older than `0.6.0` may hit larger schema migrations — take a full `/config` backup and prefer stepping through a known-good intermediate if you are far behind.
 
-## Community-reported: other forks
-
-Operators have also **migrated** to infinidysk from these forks by the same `/config` volume swap. These are **community-validated**, not a guarantee for every divergent commit on those repos:
-
-| Source | Notes |
-|--------|--------|
-| [Pukabyte/nzbdav](https://github.com/Pukabyte/nzbdav) | Fork of nzbdav-dev; same WebDAV + SAB shape. Back up `/config`, switch image to `ghcr.io/infinidysk/infinidysk`, verify settings after migrate. |
-| [qooode/nzbdavex](https://github.com/qooode/nzbdavex) (NzbDavEx) | Extended fork (Watchdog, multi-provider, indexers, search profiles, etc.). Many features overlap with infinidysk; after migrate, re-check Settings for providers, indexers, profiles, and Watchdog/Watchtower equivalents rather than assuming every UI field maps 1:1. |
-
-### Suggested steps (fork → infinidysk) {#suggested-steps-fork-infinidysk}
-
-1. Export or copy a cold backup of `/config` from the old stack.
-2. Note WebDAV credentials, SAB API key, Base URL, rclone mount paths, and Arr client settings.
-3. Replace the image with `ghcr.io/infinidysk/infinidysk` (same volume mounts).
-4. On first boot, watch logs for migration progress; do not interrupt mid-migration.
-5. Walk **Settings** tabs and confirm providers, WebDAV, SABnzbd, Arr, and import strategy.
-6. Test one known-good release (queue → mount → play) before relying on the library.
-
-If something fails, restore the `/config` backup and reopen the previous image — then [file an issue](https://github.com/infinidysk/infinidysk/issues) with versions and migration log excerpts (redact secrets).
+If an upgrade fails, restore the `/config` backup, start the previous image, and [file an issue](https://github.com/infinidysk/infinidysk/issues) with versions and migration log excerpts (redact secrets).
 
 ## What usually carries over
 
@@ -64,4 +47,6 @@ If something fails, restore the `/config` backup and reopen the previous image �
 
 ## Related
 
-- [Migrate from Altmount (experimental)](/v1/guides/altmount-migration/) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a> · [Docker](/v1/getting-started/docker/) · [First run](/v1/getting-started/first-run/) · [Compare alternatives](/v1/guides/compare/) · [About](/v1/community/about/)
+- [Migrate from AltMount](/v1/guides/altmount-migration/) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
+- [Backups and upgrades](/v1/guides/backups-upgrades/)
+- [First run](/v1/getting-started/first-run/)

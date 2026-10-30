@@ -9,28 +9,30 @@ Map any config key in the table to `NZBDAV_CONFIG__...` with the
 (`api.categories` → `NZBDAV_CONFIG__API__CATEGORIES`).
 :::
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| API Key | `api.key` | from `FRONTEND_BACKEND_API_KEY` if unset | Arr download client auth |
-| Categories | `api.categories` | env/`audio,software,tv,movies` | Letters/numbers/dashes |
-| Manual Upload Category (upload-time picker <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>) | `api.manual-category` | `uncategorized` | Queue page uploads; default for the category picker beside the Upload NZB button |
-| Import Strategy | `api.import-strategy` | `symlinks` | Symlinks (Plex) / STRM (Emby/Jellyfin) |
-| Rclone Mount Directory | `rclone.mount-dir` | env `MOUNT_DIR` or `/mnt/nzbdav` | When symlinks |
-| Completed Downloads Dir | `api.completed-downloads-dir` | `/data/completed-downloads` | When STRM |
-| Base URL | `general.base-url` | `http://localhost:3000` | STRM / adapter absolute URLs |
-| Ignored Files | `api.download-file-blocklist` | `*.nfo, *.par2, …` | Glob blocklist for mounts (`*` and `?`) |
-| Filter sample videos <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a> | `api.sample-filter-enabled` | on | Discard videos in sample release subfolders such as `Sample/` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>, even when no main video exists. Filename-only whole-word `sample`/`samples` matches are discarded only when under 20% of the largest video in the NZB. Category and release folder names are ignored. |
-| Rename a single video to the release name <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `api.rename-single-video-to-release` | on | When a job mounts exactly one video, rename it to `{release-folder}{extension}`. Season packs and collisions keep the original name. New imports only. |
-| Behavior for Duplicate NZBs | `api.duplicate-nzb-behavior` | `increment` | increment / mark-failed |
-| Trusted local hosts <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> | `api.addurl-trusted-hosts` | env `TRUSTED_INTERNAL_HOSTS` | SSRF allowlist for private addurl |
-| Fail downloads without video or audio | `api.ensure-importable-video` | on | Reject NZBs with no media after configured filtering; failures identify [RAR-inside-7z limitations](/v1/features/archives/) when applicable. Disabling this permits raw archive mounts, not nested-archive playback. |
-| Fail when non-media missing articles | inverse of `api.skip-non-video-on-missing-articles` | skip non-media by default | Media files (video/audio) always fail on missing articles; companion files are skipped unless this is enabled |
-| Article health check categories <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a> | `api.ensure-article-existence-categories` | empty (off) | Per-category STAT checks plus a final direct-media BODY readiness read; may be slow |
-| Article health check mode | `api.article-existence-check-mode` | `full` | Full or per-file sampled verification |
-| Always send full History | `api.ignore-history-limit` | on | Ignore client history limit |
-| Save backup copies of incoming NZBs | `api.nzb-backup-enabled` | off | On-disk `*.nzb` copies |
-| Backup location | `api.nzb-backup-location` | — | By category |
-| Keep NZB backups (days) | `api.nzb-backup-retention-days` | `30` | `0` = forever |
+| Setting | What it does |
+|---|---|
+| API Key<br/>`api.key` | Arr download client auth. Default from `FRONTEND_BACKEND_API_KEY` if unset. |
+| Categories<br/>`api.categories` | Letters, numbers, and dashes. Default env or `audio,software,tv,movies`. |
+| Manual Upload Category<br/>`api.manual-category` | Category for NZBs uploaded from the Queue page; also the default of the category picker beside the Upload NZB button <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>. Default `uncategorized`. |
+| Trusted local hosts <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a><br/>`api.addurl-trusted-hosts` | Hostnames, IPs, or CIDR ranges `addurl` may fetch from even though they resolve to private or loopback addresses. Default env `TRUSTED_INTERNAL_HOSTS`. |
+| Import Strategy<br/>`api.import-strategy` | Symlinks (Plex) or STRM Files (Emby/Jellyfin). Default `symlinks`. |
+| Rclone Mount Directory<br/>`rclone.mount-dir` | Shown for Symlinks. Path where rclone mounts the WebDAV root. Default env `MOUNT_DIR` or `/mnt/nzbdav`. |
+| Completed Downloads Dir<br/>`api.completed-downloads-dir` | Shown for STRM Files. Directory visible to Arr apps where STRM files are written. No default; suggested `/data/completed-downloads`. |
+| Ignored Files<br/>`api.download-file-blocklist` | Wildcard patterns (`*` and `?`) for files that are not mounted. Default `*.nfo, *.par2, *.sfv, *unpack.mkv, *.unpack.mp4`. |
+| Filter sample videos from downloads <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a><br/>`api.sample-filter-enabled` | Discard videos in sample release subfolders such as `Sample/` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>, even when no main video exists. Filename-only whole-word `sample`/`samples` matches are discarded only when under 20% of the largest video in the NZB. Category and release folder names are ignored. Default on. |
+| Rename a single video to the release name <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a><br/>`api.rename-single-video-to-release` | When a job mounts exactly one video, rename it to `{release-folder}{extension}`. Season packs and collisions keep the original name. New imports only. Default on. |
+| Behavior for Duplicate NZBs<br/>`api.duplicate-nzb-behavior` | `increment` downloads again with a suffix; `mark-failed` fails the download. Default `increment`. |
+| Fail downloads for NZBs without video or audio content<br/>`api.ensure-importable-video` | Fail NZBs with no media after filtering; failures identify [RAR-inside-7z limitations](/v1/features/archives/) when applicable. Turning this off permits raw archive mounts, not nested-archive playback. Default on. |
+| Fail downloads when non-media files have missing articles<br/>inverse of `api.skip-non-video-on-missing-articles` | Video and audio files always fail on missing articles; other files are skipped unless this is on. Default off. |
+| Perform article health check during downloads <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a><br/>`api.ensure-article-existence-categories` | Categories that get STAT checks plus a final direct-media BODY readiness read; may be slow. Default empty (off). |
+| Article health check mode<br/>`api.article-existence-check-mode` | Full or per-file sampled verification. Default `full`. |
+| Always send full History to Radarr/Sonarr<br/>`api.ignore-history-limit` | Ignore the client's History limit. Default on. |
+| Save backup copies of incoming NZBs<br/>`api.nzb-backup-enabled` | Write a copy of each incoming NZB to disk. Default off. |
+| Backup directory<br/>`api.nzb-backup-location` | Where backups go, in category subdirectories. Default empty. |
+| Keep NZB backups for (days)<br/>`api.nzb-backup-retention-days` | `0` keeps them forever. Default `30`. |
+
+STRM files also need the public **Base URL**, which is under **Settings → General → Public
+access**, not this tab; see [URL base](/v1/configuration/url-base/).
 
 Queue capacity and admission limits are configured separately under
 [Queue](/v1/configuration/queue/). The default user agent for retrieving NZBs, including
@@ -39,9 +41,10 @@ matched `addurl` requests, is configured under [Indexers](/v1/configuration/inde
 ## STRM sidecar cleanup <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 Generated STRM files are deleted together with their content (history
-delete-with-files, health repair, Remove Orphaned Files). Sidecars under the
-configured completed-downloads directory never count as library links for
-unlinked-file cleanup — even when that directory sits inside the Library Directory.
+delete-with-files, health repair, and the **Remove Orphaned Files** maintenance
+task). Sidecars under the configured completed-downloads directory never count
+as library links for unlinked-file cleanup, even when that directory sits inside
+the Library Directory.
 
 ## Sampled article checks <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.10.0">since 0.10.0</a>
 

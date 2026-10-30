@@ -1,5 +1,5 @@
 ---
-title: "Repairs"
+title: "Health and repairs settings"
 ---
 Background health monitoring, PAR2 reconstruction, and replacement of unhealthy library items.
 
@@ -10,41 +10,42 @@ Map config keys below to `NZBDAV_CONFIG__...` with the
 [Arr instances](/v1/configuration/arrs/) are optional; they are only needed to replace linked library items.
 :::
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Enable Background Repairs <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a> | `repair.enable` | on <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | Enables health checks, PAR2, and damage tolerance; Library Directory + Arr are only needed for linked-item replacement. An explicit `false` still disables them. Existing installs that already saved `false` stay off. |
-| Health Check Concurrency <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a> | `repair.healthcheck-concurrency` | `50` | Aggregate NNTP verification-connection limit shared by background checks and queue article validation (1–200, capped by pooled provider capacity) |
-| Health Check Workers <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `repair.healthcheck-workers` | `1` | Library files checked at once (1–8). All workers share Health Check Concurrency; this setting never multiplies it |
-| Health Check Depth | `repair.healthcheck-depth` | `standard` | `quick` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a> / standard / enhanced / deep / complete. `quick` STATs only ~two dozen head/tail/stride segments per file regardless of size (bypassing the 8000-segment floor and the size/age curve) — a fast first pass that reliably tells an intact posting from one lost to takedown or retention. Small files may be fully sampled, but `quick` checks never run damage classification; pair them with a periodic deeper pass. |
-| Check older releases less thoroughly <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a> | `repair.healthcheck-aging` | off | Aging taper |
-| Repair After Streaming Failures | `repair.auto-remove-after-failures` | `0` | Consecutive streaming failures before urgent repair; `0` = qualify for urgent repair immediately (removal and replacement still wait for the repair schedule and **Defer Removal After Reads**). Failures below the threshold are counted in memory and reset when infinidysk restarts. Once the threshold is reached and the urgent repair is scheduled, that qualification is stored with the file and survives restarts; raising the threshold afterwards defers the repair again until the new threshold is met. |
-| Defer Removal After Reads (minutes) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.6.3">since 1.6.3</a> | `repair.read-hold-minutes` | `15` | Minutes (`0`–`1440`) a file stays available after its last observed read before automatic removal or replacement. `0` turns the hold off. See [Recent-read hold](#recent-read-hold). |
-| Auto-remove unlinked files only | `repair.auto-remove-unlinked-only` | on | At the threshold, linked items are removed and blocklisted through Arr instead of force-deleted |
-| Degraded damage tolerance <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a> | `repair.degraded-tolerance-enabled` | on | Keep slightly damaged videos playable instead of replacing the release. When off, every missing or corrupt article found during playback counts toward repair |
-| Track corrupt articles during playback <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a> | `repair.corruption-tracking-enabled` | on | Record streaming-confirmed corrupt articles, include them in health classification, and skip the retry storm on later reads. Only controls persistence; corruption still counts toward repair when tolerance is off |
-| Max consecutive missing segments | `repair.degraded-max-consecutive-missing` | `2` | Longest tolerable run of adjacent holes (1–2) |
-| Max total missing segments | `repair.degraded-max-total-missing` | `5` | Total tolerable holes per file (1–1000) |
-| Max missing data (% of file) | `repair.degraded-max-missing-byte-percent` | `1.0` | Tolerable hole share of file bytes (0.01–50) |
-| Health-check schedule <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `repair.healthcheck-schedule` | empty (always on) | JSON weekly windows for **new** routine health checks |
-| Repair quiet hours <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `repair.action-schedule` | empty (always on) | JSON weekly windows for starting repairs |
-| Library Directory | `media.library-dir` | empty | Organized library root in the container — parent of your Arr root folders. Never the rclone mount or `/completed-symlinks` |
+| Setting | What it does |
+|---|---|
+| Enable Background Repairs <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.5">since 1.2.5</a><br/>`repair.enable` | Enables health checks, PAR2, and damage tolerance; Library Directory + Arr are only needed for linked-item replacement. An explicit `false` still disables them. Existing installs that already saved `false` stay off. Default on <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>. |
+| Maximum Health Check Connections <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a><br/>`repair.healthcheck-concurrency` | Aggregate NNTP verification-connection limit shared by background checks and queue article validation (1–200, capped by pooled provider capacity). Default `50`. |
+| Concurrent Health Checks <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a><br/>`repair.healthcheck-workers` | Library files checked at once (1–8). All checks share **Maximum Health Check Connections**; this setting never multiplies it. Default `1`. |
+| Health Check Depth<br/>`repair.healthcheck-depth` | `quick` <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a> / standard / enhanced / deep / complete. `quick` STATs only ~two dozen head/tail/stride segments per file regardless of size (bypassing the 8000-segment floor and the size/age curve) — a fast first pass that reliably tells an intact posting from one lost to takedown or retention. Small files may be fully sampled, but `quick` checks never run damage classification; pair them with a periodic deeper pass. Default `standard`. |
+| Check older releases less thoroughly <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a><br/>`repair.healthcheck-aging` | Aging taper. Default off. |
+| Repair After Streaming Failures<br/>`repair.auto-remove-after-failures` | Consecutive streaming failures before urgent repair; `0` = qualify for urgent repair immediately (removal and replacement still wait for the repair schedule and **Defer Removal After Reads**). Failures below the threshold are counted in memory and reset when infinidysk restarts. Once the threshold is reached and the urgent repair is scheduled, that qualification is stored with the file and survives restarts; raising the threshold afterwards defers the repair again until the new threshold is met. Default `0`. |
+| Defer Removal After Reads (minutes) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.6.3">since 1.6.3</a><br/>`repair.read-hold-minutes` | Minutes (`0`–`1440`) a file stays available after its last observed read before automatic removal or replacement. `0` turns the hold off. See [Recent-read hold](#recent-read-hold). Default `15`. |
+| Auto-remove unlinked files only<br/>`repair.auto-remove-unlinked-only` | At the threshold, linked items are removed and blocklisted through Arr instead of force-deleted. Default on. |
+| Enable degraded damage tolerance <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a><br/>`repair.degraded-tolerance-enabled` | Keep slightly damaged videos playable instead of replacing the release. When off, every missing or corrupt article found during playback counts toward repair. Default on. |
+| Track corrupt articles during playback <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a><br/>`repair.corruption-tracking-enabled` | Record streaming-confirmed corrupt articles, include them in health classification, and skip the retry storm on later reads. Only controls persistence; corruption still counts toward repair when tolerance is off. Default on. |
+| Max consecutive missing segments<br/>`repair.degraded-max-consecutive-missing` | Longest tolerable run of adjacent holes (1–2). Default `2`. |
+| Max total missing segments<br/>`repair.degraded-max-total-missing` | Total tolerable holes per file (1–1000). Default `5`. |
+| Max missing data (% of file)<br/>`repair.degraded-max-missing-byte-percent` | Tolerable hole share of file bytes (0.01–50). Default `1.0`. |
+| Health-check schedule <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a><br/>`repair.healthcheck-schedule` | JSON weekly windows for **new** routine health checks. Default empty (always on). |
+| Repair quiet hours <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a><br/>`repair.action-schedule` | JSON weekly windows for starting repairs. Default empty (always on). |
+| Library Directory<br/>`media.library-dir` | Organized library root in the container — parent of your Arr root folders. Never the rclone mount or `/completed-symlinks`. Default empty. |
 
 ## PAR2 gap repair <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
 PAR2 can reconstruct missing or corrupt Usenet articles using parity in the retained NZB.
 It does not require a Library Directory or an Arr instance; that prerequisite was removed
-in 1.2.5. Both Background Repairs and PAR2 gap repair must be enabled.
+in 1.2.5. PAR2 gap repair is off by default: turn on both **Enable Background Repairs** and
+**Enable PAR2 background repair**.
 
-| Control | Config key | Default | Effective range or behavior |
-|---------|------------|---------|-----------------------------|
-| PAR2 gap repair | `repair.par2-enabled` | on | Background Repairs is the master switch |
-| Prefer PAR2 over Arr replacement | `repair.par2-preferred-over-arr` | on | Try parity first; without an Arr replacement path, PAR2 is still attempted |
-| Maximum missing slices | `repair.par2-max-missing-slices` | `8` | 1-64; applies to the combined unavailable slices in the recovery set, including damage found during source checks |
-| Maximum release size (GiB) | `repair.par2-max-release-gb` | `16` | 1-200; total recoverable source-volume bytes, checked before content reads |
-| Maximum repair memory (MiB) | `repair.par2-max-memory-mb` | `256` | 64-2048; conservative repair-owned working-memory budget, not total process RSS |
-| Maximum patch store (GiB) | `repair.par2-max-patch-gb` | `4` | 1-100; cataloged patch-body capacity; restart to apply a changed store capacity |
-| PAR2 fetch concurrency | `repair.par2-fetch-concurrency` | `2` | 1-8; upper bound for repair fetches, not a promise to parallelize every phase |
-| Failure cooldown (hours) | `repair.par2-failure-cooldown-hours` | `6` | 1-168; failed/infeasible attempts are deferred, with at most three provider-repair attempts per job |
+| Setting | What it does |
+|---|---|
+| Enable PAR2 background repair<br/>`repair.par2-enabled` | Reconstruct missing segments from parity in the background. **Enable Background Repairs** is the master switch. Default off. |
+| Prefer PAR2 over Arr replacement<br/>`repair.par2-preferred-over-arr` | Try parity first; without an Arr replacement path, PAR2 is still attempted. Default on. |
+| Max missing slices<br/>`repair.par2-max-missing-slices` | 1–64; applies to the combined unavailable slices in the recovery set, including damage found during source checks. Default `8`. |
+| Max release size (GB)<br/>`repair.par2-max-release-gb` | 1–200; total recoverable source-volume size, checked before content reads. Default `16`. |
+| Max memory (MB)<br/>`repair.par2-max-memory-mb` | 64–2048; conservative repair-owned working-memory budget, not total process memory. Default `256`. |
+| Patch store cap (GB)<br/>`repair.par2-max-patch-gb` | 1–100; cataloged patch-body capacity; restart to apply a changed capacity. Default `4`. |
+| Fetch concurrency<br/>`repair.par2-fetch-concurrency` | 1–8; upper bound for repair fetches, not a promise to parallelize every phase. Default `2`. |
+| Failure cooldown (hours)<br/>`repair.par2-failure-cooldown-hours` | 1–168; failed or infeasible attempts are deferred, with at most three provider-repair attempts per job. Default `6`. |
 
 Health checks and attributed streaming failures can request repair. Playback gap/corruption
 reports enqueue background work; playback never waits for reconstruction. Until a patch is
@@ -58,15 +59,10 @@ downloading or extracting a whole release to disk. One repair owner runs at a ti
 health and playback requests; additional jobs wait without multiplying the memory budget.
 
 The budget includes NZB/PAR2 metadata, source windows, reconstruction buffers, and staged
-patches. Discovery also limits metadata candidates to 128, metadata scanning to 512 MiB,
-and unnamed magic probes to 64 candidates with at most 64 bytes per probe. Recovery scanning
-has a separate 512 MiB limit, including foreign packets. Source matching permits at most
-100,000 candidate/descriptor comparisons per job. Identity probing shares a 512 MiB work
-budget (article reads and bytes hashed) and 100,000-request limit across all candidates;
-recent article bytes are reused while proving adjacent slices. These limits do not restrict
-identity proofs to the first few slice positions. A recovery set must contain 1-32,768 input
-slices. An unsupported layout, ambiguous identity, exhausted limit, or insufficient parity
-produces a clear infeasible reason rather than guessed bytes.
+patches. Discovery, recovery scanning, source matching and identity probing also have fixed
+internal work limits (for example, about 537 MB of scanning per phase). A recovery set must
+contain 1–32,768 input slices. An unsupported layout, ambiguous identity, exhausted limit, or
+insufficient parity produces a clear infeasible reason rather than guessed bytes.
 
 ## RAR and multipart repair <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.0">since 1.4.0</a>
 
@@ -172,7 +168,7 @@ Limits:
   Urgent repair qualification is stored with the file and survives the restart.
 - Changes apply on the next repair attempt without a restart. A repair already waiting keeps its
   current deadline; lowering or disabling the hold does not shorten it.
-- The hold cannot retract a Arr removal that already started before a new read arrived.
+- The hold cannot retract an Arr removal that already started before a new read arrived.
 
 ## Degraded damage tolerance <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.2.0">since 1.2.0</a>
 
@@ -187,11 +183,11 @@ The same applies to files without a playback damage budget even while tolerance 
 To replace a release as soon as one article is confirmed missing or corrupt:
 
 1. Turn on **Enable Background Repairs**.
-2. Turn off **Degraded damage tolerance**.
+2. Turn off **Enable degraded damage tolerance**.
 3. Leave **Repair After Streaming Failures** at `0`.
 4. Configure a Library Directory and an enabled Arr instance for linked replacement.
 
-PAR2 reconstruction runs first when **PAR2 gap repair** is enabled and preferred; disable the
+PAR2 reconstruction runs first when **Enable PAR2 background repair** is on and preferred; disable the
 preference to go straight to Arr. A background PAR2 repair that cannot rebuild the damage also
 queues an urgent replacement. "Immediately" means the file qualifies for urgent repair at once;
 removal and replacement still wait for the next urgent health-queue slot, the repair schedule, and
@@ -249,7 +245,7 @@ legacy abort-on-first-miss behavior. A missing first segment is always fatal.
 
 Degraded verdicts compose with the rest of the repair pipeline:
 
-- **PAR2 first.** When PAR2 gap repair (`repair.par2-enabled`) is enabled and preferred,
+- **PAR2 first.** When PAR2 gap repair (`repair.par2-enabled`, off by default) is enabled and preferred,
   reconstruction is attempted with the full hole list before any verdict; success records a
   healthy, PAR2-repaired result and clears any recorded holes.
 - **Rechecks can escalate or recover.** Degraded files stay on the normal

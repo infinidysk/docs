@@ -32,11 +32,12 @@ Setting `STREAM_TRACE_EVENTS` still enables tracing from startup with no expiry,
 
 ## .NET crash dumps (opt-in)
 
-Minidumps are **off** by default (large; may contain article data). To capture on the next backend crash:
+Crash dumps are **off** by default. They can be large and may contain article data. To capture on the next backend crash:
 
 ```yaml
 environment:
   - DOTNET_DbgEnableMiniDump=1
+  # 2 = heap dump (larger, more useful); 1 = mini dump
   - DOTNET_DbgMiniDumpType=2
   - DOTNET_DbgMiniDumpName=/config/dump.%p
 ```

@@ -25,11 +25,11 @@ Responses still arrive in order; depth is the queue of outstanding asks.
 
 ## Three controls
 
-| Setting | Location | Default | Controls |
-|---------|----------|---------|----------|
-| `usenet.queue-pipelining.enabled` | Settings → Usenet | off | Queue first-segment fetch and provider benchmark batches |
-| `usenet.pipelined-body-requests` | Settings → Streaming | on | Enable WebDAV streaming BODY batches |
-| `usenet.streaming-body-batch-width` | Settings → Streaming | `4` | Maximum articles per streaming BODY batch (1–8) |
+| Setting | What it does |
+|---|---|
+| `usenet.queue-pipelining.enabled` | Queue first-segment fetch and provider benchmark batches. Location: Settings → Usenet. Default off. |
+| `usenet.pipelined-body-requests` | Enable WebDAV streaming BODY batches. Location: Settings → Streaming. Default on. |
+| `usenet.streaming-body-batch-width` | Maximum articles per streaming BODY batch (1–8). Location: Settings → Streaming. Default `4`. |
 
 Legacy keys `usenet.pipelining.enabled` and `usenet.pipelining.depth` remain honored as fallbacks (including via `NZBDAV_CONFIG__USENET__PIPELINING__*` env vars). Upgrades copy their SQLite values into the new queue keys; rename env vars to `NZBDAV_CONFIG__USENET__QUEUE_PIPELINING__*` when possible.
 
@@ -48,7 +48,7 @@ During WebDAV playback with batched BODY requests enabled:
 
 - Connections engaged per stream ≈ outstanding segment window ÷ batch width.
 - At stream construction, infinidysk sizes the segment task window and prefetch byte ceiling from the configured batch width and article buffer. Those ceilings stay fixed for the life of the stream; adaptive narrowing only shrinks future batch sizes, not the retained window.
-- Decoded bytes retained across all streams are capped host-wide by `usenet.in-flight-article-budget-mb` (25% of the detected managed-heap ceiling by default, clamped to 64–8192 MiB). One stream with a wide batch width can consume most of that budget and starve other concurrent viewers.
+- Decoded bytes retained across all streams are capped host-wide by `usenet.in-flight-article-budget-mb` (25% of the detected managed-heap ceiling by default, clamped to about 67 MB–8.6 GB). One stream with a wide batch width can consume most of that budget and starve other concurrent viewers.
 
 Provider behavior varies: some throttle per connection (wider batches can help), others per account (more connections / narrower batches). If Auto-tune reports queue pipelining is unsafe for a provider, treat wide streaming batch widths cautiously too — both use the same NNTP pipelining mechanism.
 

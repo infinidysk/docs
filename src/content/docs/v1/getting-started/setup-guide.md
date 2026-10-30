@@ -13,7 +13,7 @@ The guide is worth completing even on a long-running installation: it reviews
 best-practice configuration such as pairing Symlinks with rclone VFS read-ahead
 rather than Segment Cache, and stages only the settings you approve.
 
-The guide stages changes until **Review and apply**. Skip applies nothing, and a
+Nothing is saved until you click **Apply setup** on the **Review and apply** step. Skipping applies nothing, and a
 validation failure does not save a partial configuration. Settings controlled by
 `NZBDAV_CONFIG__...` remain read-only and name the environment variable to change.
 
@@ -60,7 +60,7 @@ reach it. `127.0.0.1:5572` is valid only when both processes share a network
 namespace. On a network that is not isolated and trusted, replace `--rc-no-auth`
 with `--rc-user` and `--rc-pass` and enter those credentials in the guide.
 
-See [Mounting WebDAV](/v1/guides/mounting-webdav/) for the complete Compose example.
+See [Mount WebDAV with rclone](/v1/guides/mounting-webdav/) for the complete Compose example.
 
 ## Content ingestion
 
@@ -86,9 +86,9 @@ container, usually the parent of Radarr and Sonarr root folders. It must not be
 the rclone mount or `completed-symlinks`. You may defer it: health checks and
 PAR2 repair still run, while linked-library replacement remains limited.
 
-## Review and completion
+## Review and apply
 
-Review lists current and proposed values without displaying secrets. It calls
+This step lists current and proposed values without displaying secrets. It calls
 out managed settings, strategy changes, deferred fields, and restart requirements.
 After applying, follow the shown next steps to restart if needed, test Arr download
 clients, or upload a small NZB.

@@ -5,16 +5,16 @@ Connection warming <a class="since" href="https://github.com/infinidysk/infinidy
 
 ## How it works
 
-Each pooled provider gets a **warm floor**: a target count of idle, ready-to-use connections. By default the floor is **2** (1 when **Max Connections** is 1) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>; releases before 1.5.0 derived roughly one sixth of Max Connections, clamped to 1–8. An explicit `usenet.warm-connections.floor` value is unchanged.
+Each pooled provider gets a **warm floor**: a target count of idle, ready-to-use connections. By default the floor is **2** (1 when the **Provider Connection Limit** is 1) <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>; releases before 1.5.0 derived roughly one sixth of the limit, clamped to 1–8. An explicit `usenet.warm-connections.floor` value is unchanged.
 
 ```mermaid
 flowchart TD
-  pool["Warm floor: idle authenticated NNTP connections"]
-  borrow["Playback / queue borrow"] -->|"no handshake wait"| pool
-  sweep["Sweeper runs every idle-timeout / 2"] --> ping["DATE ping keeps warm sockets fresh"]
-  ping -->|"stale socket"| refill["Dispose and refill floor"]
+  pool["Warm floor: idle NNTP connections"]
+  borrow["Playback / queue borrow"] -->|"no handshake"| pool
+  sweep["Sweeper: every idle-timeout / 2"] --> ping["DATE ping"]
+  ping -->|"stale socket"| refill["Dispose and refill"]
   refill --> pool
-  sweep --> reap["Idle connections above the floor are reaped"]
+  sweep --> reap["Reap idle above floor"]
 ```
 
 - A background sweeper runs every half of the [idle connection timeout](/v1/configuration/streaming/) (default: every 30 seconds). It refills the floor when sockets were lost and reaps idle connections **only above the floor** — warm connections are never closed just for being idle.
@@ -32,7 +32,7 @@ The **Connections** indicator in the top navigation shows pooled-provider totals
 
 - `5/50` — live connections across pooled providers versus their combined maximum.
 - `2 active · 3 warm` — connections currently transferring versus idle warm ones. The warm part only appears while at least one warm connection is standing by.
-- Hovering explains: *"Warm connections are pre-connected to your Usenet providers so playback can start faster."*
+- Hovering explains: "Warm connections are pre-connected to your Usenet providers so playback can start faster."
 
 Other states: a spinner with **Connecting** until the first update arrives, **Reconnecting** while the live UI connection recovers from a brief drop, and `—` / **No providers** when no Usenet provider is configured. The indicator is hidden on narrow screens. Backup-only providers are excluded from the totals.
 
@@ -40,17 +40,17 @@ Other states: a spinner with **Connecting** until the first update arrives, **Re
 
 ## Tuning
 
-| Setting | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Warm connections | `usenet.warm-connections.enabled` | on | Keep a small pool of pre-connected sockets per provider |
-| Warm floor | `usenet.warm-connections.floor` | `2` | Idle sockets kept ready per provider, capped at Max Connections. Before 1.5.0 the default derived one sixth of Max Connections, clamped to 1–8 |
-| Read-start warm-up <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | `usenet.read-start-warmup.enabled` | on | For a long buffered read, open missing pooled-provider connections in parallel as the first segment starts |
+| Setting | What it does |
+|---|---|
+| Warm connections<br/>`usenet.warm-connections.enabled` | Keep a small pool of pre-connected sockets per provider. Default on. |
+| Warm floor<br/>`usenet.warm-connections.floor` | Idle sockets kept ready per provider, capped at the Provider Connection Limit. Before 1.5.0 the default derived one sixth of the limit, clamped to 1–8. Default `2`. |
+| Read-start warm-up <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a><br/>`usenet.read-start-warmup.enabled` | For a long buffered read, open missing pooled-provider connections in parallel as the first segment starts. Default on. |
 
 There is no settings-UI toggle; set the keys as [headless environment variables](/v1/configuration/headless/) (`NZBDAV_CONFIG__USENET__WARM_CONNECTIONS__ENABLED` / `NZBDAV_CONFIG__USENET__WARM_CONNECTIONS__FLOOR`). Changes take effect on the next provider save or restart — connection pools are not rebuilt when these keys change alone.
 
 Read-start warm-up is enabled by default. Each newly opened WebDAV stream
 snapshots the value. Reads below
-8 MiB, reads needing fewer than two connection batches, backup-only providers,
+about 8.4 MB, reads needing fewer than two connection batches, backup-only providers,
 providers with an open circuit, and providers that are backing off after a failed
 connection open <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a> are skipped. The target is bounded by the
 stream's article window, download limit, provider connection limits, and any

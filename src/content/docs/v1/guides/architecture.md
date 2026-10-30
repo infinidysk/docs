@@ -37,12 +37,12 @@ flowchart TB
 
 ### Automation (Arr + media server) {#automation-arr-media-server}
 
-1. Radarr/Sonarr sends an NZB to infinidysk as a SABnzbd download client.
+1. Radarr or Sonarr sends an NZB to infinidysk as a SABnzbd download client.
 2. infinidysk mounts the release on WebDAV without downloading the full file.
-3. Import artifact:
-   - **Symlinks** — entries under `completed-symlinks`; rclone turns them into filesystem links into `.ids`.
-   - **STRM** — small `.strm` files with authenticated streaming URLs.
-4. Arr imports into the library; the media server reads through the link/URL → infinidysk → Usenet.
+3. It creates an import entry:
+   - **Symlinks**: entries under `/completed-symlinks`; rclone turns them into filesystem links into `/.ids`.
+   - **STRM**: small `.strm` files with authenticated streaming URLs.
+4. The Arr app imports into the library; the media server reads through the link or URL → infinidysk → Usenet.
 
 ### On-demand (Stremio)
 
@@ -51,8 +51,10 @@ There are two Stremio paths:
 **Direct Search Profile preset** <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
 1. infinidysk searches the profile's Newznab indexers and returns playable stream objects.
-2. AIOStreams or Stremio lists those streams. The dedicated infinidysk preset can report the final order back to `/failover_order`.
-3. Playback hits `/play/{token}.mkv`, which resolves/queues the NZB and redirects to `/view`.
+2. AIOStreams or Stremio lists those streams. The dedicated infinidysk preset can report the
+   final order back to `/adapters/addon/{profile-token}/failover_order`.
+3. Playback hits `/adapters/addon/{profile-token}/play/{play-token}.mkv`, which resolves and
+   queues the NZB, then redirects to `/view`.
 
 **AIOStreams-managed search**
 
@@ -62,17 +64,20 @@ There are two Stremio paths:
 
 ## Processes and ports
 
-| Process | Default | Role |
-|---------|---------|------|
-| Frontend | `:3000` | Admin UI, auth, proxy for WebDAV + `/api` + `/ws` |
-| Backend | `:8080` (internal) | WebDAV, queue, SAB API, SQLite under `CONFIG_PATH` |
+| Process | What it does |
+|---|---|
+| Frontend | Admin UI, auth, proxy for WebDAV, `/api`, and `/ws`. Default `:3000`. |
+| Backend | WebDAV, queue, SAB API. Default `:8080` (internal). |
 
-Backend services such as rclone should connect directly to WebDAV on port `8080`
-whenever the backend is reachable. The frontend WebDAV proxy is a fallback for
-clients without network access to the backend and adds avoidable streaming overhead.
+The main database is SQLite under `CONFIG_PATH` by default; set `DATABASE_PROVIDER=postgres`
+to use PostgreSQL instead.
 
-Persistent state lives under `/config` (DB, settings, blobs, backups).
+Backend services such as rclone should connect to WebDAV on port `8080`. The frontend
+WebDAV proxy is a fallback for clients that cannot reach the backend and adds streaming
+overhead.
+
+Persistent state lives under `/config` (database, settings, blobs, backups).
 
 ## Related
 
-[Import strategies](/v1/guides/import-strategies/) · [Features overview](/v1/features/) · [Environment variables](/v1/configuration/environment-variables/) · [Code boundaries](https://github.com/infinidysk/infinidysk/blob/main/docs/decisions/0001-code-boundaries.md)
+[Import strategies](/v1/guides/import-strategies/) · [Setup guide](/v1/getting-started/setup-guide/) · [Environment variables](/v1/configuration/environment-variables/) · [Code boundaries](https://github.com/infinidysk/infinidysk/blob/main/docs/decisions/0001-code-boundaries.md)

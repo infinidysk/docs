@@ -3,31 +3,23 @@ title: "Backups and upgrades"
 ---
 ## In-app backup and restore {#in-app-backup-restore}
 
-**Settings → Backup & Restore** dumps SQLite databases (`db.sqlite`, `warden.db`) as `.sql` under `{CONFIG_PATH}/backups/`. Metrics history (`metrics.sqlite`) is not included and is left unchanged by a restore.
-
-- Create on demand, schedule daily, set retention, preserve important snapshots.
-- Download as zip; upload a previous zip/`.sql`.
-- Restore stages import, creates a pre-restore safety backup, then restarts into maintenance to swap DBs.
+**Settings → Backup & Restore** dumps the main and Warden databases as `db.sql` and
+`warden.sql` under `{CONFIG_PATH}/backups/`. Contents, schedule, retention, and restore
+steps are covered in [Backup settings](/v1/configuration/backup/).
 
 :::caution[Blobs are not in the SQL dump]
 Mounted content depends on `{CONFIG_PATH}/blobs/`. Back up that directory separately if you need a full restore of WebDAV content.
 :::
 
-See [Backup settings](/v1/configuration/backup/).
-
 ## PostgreSQL main database
 
-When `DATABASE_PROVIDER=postgres`, the in-app backup includes only the local
-`warden.db`. Back up the main database with `pg_dump`; see
+When `DATABASE_PROVIDER=postgres`, back up the main database with `pg_dump`; see
 [PostgreSQL](/v1/operations/postgresql/).
 
-## Config volume
+## Before upgrading
 
-Also back up:
-
-- `/config` settings DB and session key
-- `blobs/` for NZB payloads still referenced by mounts
-- Optional NZB backup copies if enabled under SABnzbd settings
+Back up the whole `/config` volume, including `blobs/`, or at least create an in-app
+backup and copy `blobs/`.
 
 ## Upgrades
 
@@ -38,10 +30,10 @@ docker compose up -d
 
 Database migrations apply automatically on startup. **Back up `/config` before upgrading across versions that include schema migrations.** Irreversible migrations appear under Breaking Changes in the changelog; routine additive migrations are noted in the release announcement instead.
 
-Coming from nzbdav-dev `v0.6.4` or a community fork? See [Migration paths](/v1/getting-started/migration/).
+Coming from an older release or another fork? See [Migration paths](/v1/getting-started/migration/).
 
 Tags: `latest` (current stable), `lts` (trails `latest` by a few releases), `rc` (release candidate), and `dev` (unversioned tip snapshot), plus pinned version tags — see [Release channels and tags](/v1/getting-started/#release-channels-and-tags), [GitHub Releases](https://github.com/infinidysk/infinidysk/releases), and [Changelog](/v1/changelog/).
 
-## Watchtower / Arr updates {#watchtower-arr-updates}
+## Automatic container updates {#watchtower-arr-updates}
 
-If you auto-update containers, pin a known-good tag or use the in-app backup schedule before unsupervised upgrades.
+If a tool updates containers automatically, pin a known-good tag or keep the in-app backup schedule on before unsupervised upgrades.

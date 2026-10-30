@@ -4,15 +4,15 @@ title: "Import strategies"
 
 import { Tabs, TabItem } from "@astrojs/starlight/components";
 
-Choose how Radarr/Sonarr import completed jobs. Set this under **Settings → SABnzbd → Import Strategy**.
+Choose how Radarr and Sonarr import completed jobs. Set this under **Settings → SABnzbd → Import Strategy**.
 
 <Tabs>
 <TabItem label="Symlinks — Plex">
 
 Best when the media server needs real filesystem entries (classic Plex libraries).
 
-1. Set **Rclone Mount Directory** to the host path of the WebDAV mount (e.g. `/mnt/remote/nzbdav`).
-2. Run an [rclone sidecar](/v1/guides/mounting-webdav/) with `--links` so `*.rclonelink` files become symlinks into `.ids`.
+1. Set **Rclone Mount Directory** to the path where the WebDAV mount is visible inside the Arr containers (e.g. `/mnt/remote/nzbdav`). It must be the same absolute path in every Arr container.
+2. Run an [rclone sidecar](/v1/guides/mounting-webdav/) with `--links` so `*.rclonelink` files become symlinks into `/.ids`.
 3. Point Arr root folders at paths that see those symlinks.
 
 A bounded rclone VFS cache can smooth seeking without storing full media forever.
@@ -36,7 +36,7 @@ see [Media servers](/v1/guides/media-servers/#emby-jellyfin).
 
 ## Path consistency
 
-The completed path infinidysk reports must appear **at the same absolute path** inside Radarr/Sonarr containers. Map host volumes identically.
+The completed path infinidysk reports must appear **at the same absolute path** inside the Radarr and Sonarr containers. Map volumes identically.
 
 ## Switching strategies
 

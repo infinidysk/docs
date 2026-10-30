@@ -4,16 +4,16 @@ title: "Search profiles"
 Named profiles select which indexers to query and which output adapters to expose. Stored as `profiles.instances`
 (`NZBDAV_CONFIG__PROFILES__INSTANCES` — see [headless](/v1/configuration/headless/)).
 
-| Control | Effect | Default |
-|---------|--------|---------|
-| Name | Profile label | — |
-| Indexers | Leave all unchecked = every enabled indexer | all |
-| JSON Search API | Vendor-neutral JSON adapter | on if unset |
-| Newznab | For Prowlarr/Sonarr/Radarr | on if unset |
-| Addon | Manifest-based addon endpoint | on if unset |
-| Result ordering <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | Keep grabs/size/date order, or sort by resolution / resolution+source | Off |
-| Query fallback — Movies | Extra title searches when ID lookup is short | Off; threshold `3` |
-| Query fallback — TV | Off / Title+episode / Broad | Off; threshold `3` |
+| Setting | What it does |
+|---|---|
+| Name | Profile label. |
+| Indexers | Leave all unchecked to use every enabled indexer. Default all. |
+| Output adapters: JSON Search API | Vendor-neutral JSON adapter. Default on if unset. |
+| Output adapters: Newznab | For Prowlarr, Sonarr, and Radarr. Default on if unset. |
+| Output adapters: Addon | Manifest-based addon endpoint. Default on if unset. |
+| Result ordering <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a> | Off (keep grabs/size/date order), Resolution, or Resolution + source. Default Off. |
+| Query fallback: Movies | Off or Also search by title, when an ID lookup comes up short. Default Off; threshold `3`. |
+| Query fallback: TV | Off, Title + episode (precise), or Title + episode, then whole show (broad). Default Off; threshold `3`. |
 
 The Addon adapter is a Stremio manifest. Paste it into AIOStreams as the dedicated **infinidysk** preset when available, or as **Custom Addon** until that preset ships. See [Stremio](/v1/guides/stremio/).
 

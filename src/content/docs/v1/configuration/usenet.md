@@ -1,7 +1,7 @@
 ---
 title: "Usenet"
 ---
-Configure NNTP providers, connection budgets, cascade vs pooled routing, and queue-side NNTP pipelining.
+Configure NNTP providers, connection budgets, cascade or pooled routing, and queue-side NNTP pipelining.
 
 :::tip[Headless ENV]
 Each config key below maps to `NZBDAV_CONFIG__...` via the
@@ -13,24 +13,25 @@ Each config key below maps to `NZBDAV_CONFIG__...` via the
 
 Add one or more accounts. Each provider supports:
 
-| Control | What it does | Default / notes |
-|---------|--------------|-----------------|
-| Nickname | Friendly label instead of hostname | optional |
-| Storage group | Same label → skip siblings after a clean article miss or a yEnc validation rejection (rejections apply to the current request only and are not remembered across requests) | optional; only same upstream |
-| Host / Port | NNTP endpoint | port often `563` |
-| Username / Password | Credentials | prefer SSL |
-| Provider Connection Limit | Provider-wide ceiling for all pooled connections, including transfers, metadata, and warm sockets | do not exceed the account allowance |
-| Transfer Connections | Hard cap for concurrent `BODY` / `ARTICLE` work | blank = legacy shared pool |
-| Metadata Capacity | Read-only base-to-burst range calculated from the two limits | shown when Transfer Connections is set |
-| Pipeline depth | Per-provider override when pipelining on | blank = global `8` |
-| Type | Disabled / Pool Connections / Backup Only. A disabled provider is never contacted — no connections are opened or kept warm. A Backup Only provider is dialed only on demand when it must fill a missed article — no connections are kept warm | Pool |
-| Use SSL | TLS for NNTP | on |
-| Skip TLS certificate verification | Accept an invalid provider certificate | off |
-| Data Cap | Block-account limit; auto-pauses near ~95% | uncapped |
-| Already Used | Seed usage when migrating mid-block | empty |
-| Auto-tune | Speed test → recommend Transfer Connections + pipelining | never changes Provider Connection Limit |
+| Setting | What it does |
+|---|---|
+| Nickname | Shown in the UI instead of the hostname. Optional. |
+| Storage group | A definitive article miss (NNTP 430) on one provider skips the other providers with the same label for that request. A body whose yEnc header belongs to a different file is treated the same way, for that request only. Labels are free text you choose; give one only to providers known to share storage. Optional. |
+| Host / Port | NNTP endpoint. Port is often `563`. |
+| Username / Password | Credentials. Prefer SSL. |
+| Provider Connection Limit | Provider-wide ceiling for all pooled connections, including transfers, metadata, and warm sockets. Do not exceed the account allowance. |
+| Transfer Connections | Hard cap for concurrent `BODY` / `ARTICLE` work. Blank = legacy shared pool. |
+| Metadata Capacity | Read-only base-to-burst range calculated from the two limits. Shows "Legacy shared pool" while Transfer Connections is blank. |
+| Pipeline depth | Per-provider override when pipelining is on. Blank uses the global Queue depth (default `8`). |
+| Type | Disabled / Pool Connections / Backup Only. A disabled provider is never contacted and keeps no connections. A Backup Only provider is dialed only when it must fill a missed article and keeps no warm connections. Default Pool Connections. |
+| Use SSL | TLS for NNTP. Default on. |
+| Skip TLS verification | Accept an invalid provider certificate. Shown when Use SSL is on. Default off. |
+| Data Cap | Block-account limit; auto-pauses near 95%. Default uncapped. |
+| Already Used | Seed usage when migrating mid-block. Default empty. |
+| Auto-tune transfer connections | Speed test that recommends Transfer Connections and pipelining. Never changes Provider Connection Limit. |
 
-Persisted as `usenet.providers` JSON.
+Persisted as `usenet.providers` JSON. Without SSL, credentials cross the network
+in cleartext; turn it off only on trusted networks.
 
 ## Data-cap accounting <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>
 
@@ -44,10 +45,6 @@ traffic received after that uses exact accounting.
 
 Back up `/config` before upgrading; the metrics migration applies automatically
 at startup.
-
-:::caution[Cleartext]
-Disabling SSL stores/sends credentials in cleartext on the wire — only for trusted networks.
-:::
 
 ## Connection budgets <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
@@ -107,19 +104,19 @@ provider refuses again or the configured limit is reached.
 
 ## Invalid provider certificates <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
 
-Leave **Skip TLS certificate verification** disabled unless a trusted provider has
+Leave **Skip TLS verification** disabled unless a trusted provider has
 a certificate it cannot correct. It keeps the NNTP connection encrypted but
 accepts an untrusted, expired, or hostname-mismatched certificate. This permits
 a man-in-the-middle attacker to impersonate the provider and read credentials.
 
 ## Routing and pipelining
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Enable cascade routing | `usenet.cascade.enabled` | off | Prefer providers in drag order; off = shared pool. Thinly-spared primaries (≤25% free) yield to idler peers; a larger Provider Connection Limit alone does not outrank priority. |
-| Re-probe primary after miss | `usenet.cascade.retry-primary-on-miss` | on | After a clean 430/451 on the first batch attempt, try the primary once more before cascading (multi-node spool). Off = skip straight to backups. |
-| Enable queue pipelining | `usenet.queue-pipelining.enabled` | off | Batch first-segment BODY during queue imports/benchmarks |
-| Queue pipeline depth | `usenet.queue-pipelining.depth` | `8` | Requests in flight per connection (1–64) |
+| Setting | What it does |
+|---|---|
+| Cascade routing<br/>`usenet.cascade.enabled` | Prefer providers in drag order; off = shared pool. Thinly-spared primaries (≤25% free) yield to idler peers; a larger Provider Connection Limit alone does not outrank priority. Default off. |
+| Re-probe primary<br/>`usenet.cascade.retry-primary-on-miss` | After a clean 430/451 on the first batch attempt, try the primary once more before cascading (multi-node spool). Off = skip straight to backups. Only available with cascade routing on. Default on. |
+| Queue pipelining<br/>`usenet.queue-pipelining.enabled` | Batch first-segment BODY requests during queue imports and Auto-tune. Default off. |
+| Queue depth<br/>`usenet.queue-pipelining.depth` | Requests in flight per connection (1–64). Default `8`. |
 
 Legacy keys `usenet.pipelining.enabled` / `usenet.pipelining.depth` remain honored; env vars use `NZBDAV_CONFIG__USENET__QUEUE_PIPELINING__*` for the new names.
 
@@ -127,12 +124,13 @@ Run Auto-tune before enabling queue pipelining. WebDAV streaming batching is a *
 
 ## Global download cap <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>
 
-`usenet.bandwidth-limit-mbps` (Streaming settings) caps total live Usenet payload
-ingress from every provider, in megabits per second. Queue downloads and WebDAV
-streaming share the cap. Cache hits, LAN delivery, and the provider speed
-benchmark are not limited. Empty or `0` means unlimited; the value reloads
-without restart. 1 MB/s = 8 Mbit/s. The cap cannot make a latency-limited
-provider faster.
+**Global Usenet bandwidth limit (Mbit/s)** under **Settings → Streaming**
+(`usenet.bandwidth-limit-mbps`) caps total live Usenet payload ingress from
+every provider. Queue downloads and WebDAV streaming share the cap. Cache hits,
+LAN delivery, and the provider speed benchmark are not limited. Empty or `0`
+means unlimited; values above 100,000 Mbit/s are treated as 100,000. The value
+reloads without restart. 1 MB/s = 8 Mbit/s. The cap cannot make a
+latency-limited provider faster.
 
 See [NNTP pipelining](/v1/features/nntp-pipelining/) and [Multi-provider](/v1/features/multi-provider/).
 
@@ -144,12 +142,12 @@ periods. Warm sockets count against the provider's connection limit but never ho
 download permits. See [Connection warming](/v1/features/connection-warming/) for the
 mechanics and the header indicator.
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Warm connections | `usenet.warm-connections.enabled` | on | Keep pre-connected sockets ready per provider |
-| Warm floor | `usenet.warm-connections.floor` | `2` | Idle sockets kept ready per provider, capped at Max Connections. Before 1.5.0 the default derived one sixth of Max Connections, clamped to 1–8 |
+| Setting | What it does |
+|---|---|
+| Warm connections<br/>`usenet.warm-connections.enabled` | Keep pre-connected sockets ready per provider. Not in the UI; set with `NZBDAV_CONFIG__USENET__WARM_CONNECTIONS__ENABLED`. Default on. |
+| Warm floor<br/>`usenet.warm-connections.floor` | Idle sockets kept ready per provider, capped at the Provider Connection Limit. Before 1.5.0 the default was one sixth of the connection limit, clamped to 1–8. Not in the UI; set with `NZBDAV_CONFIG__USENET__WARM_CONNECTIONS__FLOOR`. Default `2`. |
 
-Changes take effect on the next provider save or restart — connection pools are not
+Changes take effect on the next provider save or restart; connection pools are not
 rebuilt when these keys change alone.
 
 ## Article-miss negative cache <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.9.0">since 0.9.0</a>
@@ -159,10 +157,10 @@ After a provider (or [storage group](/v1/features/multi-provider/)) reports a de
 re-probing the same provider for the same article until the TTL expires. Transient failures
 (timeouts, network, corrupt articles) are never cached.
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Miss-cache TTL (seconds) | `usenet.article-miss-cache-ttl-seconds` | `300` | How long a miss stays cached (clamped 30–86400) |
-| Miss-cache max entries | `usenet.article-miss-cache-max-entries` | `10000` | Cap before oldest entries are evicted (clamped 100–1000000) |
+| Setting | What it does |
+|---|---|
+| Miss TTL<br/>`usenet.article-miss-cache-ttl-seconds` | Seconds a miss stays cached (clamped 30–86400). Default `300`. |
+| Miss max<br/>`usenet.article-miss-cache-max-entries` | Cap before the oldest entries are evicted (clamped 100–1000000). Default `10000`. |
 
 The cache clears automatically when Usenet providers are reconfigured.
 
@@ -172,16 +170,15 @@ When a provider's circuit trips, that provider is skipped for a cooldown and tra
 the remaining providers. Each consecutive trip doubles the cooldown up to a ceiling. A
 successful article body resets it to the initial value.
 
-| Control | Config key | Default | Effect |
-|---------|------------|---------|--------|
-| Initial cooldown (seconds) | `usenet.circuit-breaker.initial-cooldown-seconds` | `60` | Cooldown applied on the first trip (clamped 5 to 300) |
-| Maximum cooldown (seconds) | `usenet.circuit-breaker.max-cooldown-seconds` | `300` | Ceiling the doubling stops at (clamped 5 to 3600) |
+| Setting | What it does |
+|---|---|
+| Initial cooldown (seconds)<br/>`usenet.circuit-breaker.initial-cooldown-seconds` | Cooldown applied on the first trip (clamped 5 to 300). Not in the UI; set with `NZBDAV_CONFIG__USENET__CIRCUIT_BREAKER__INITIAL_COOLDOWN_SECONDS`. Default `60`. |
+| Maximum cooldown (seconds)<br/>`usenet.circuit-breaker.max-cooldown-seconds` | Ceiling the doubling stops at (clamped 5 to 3600). Not in the UI; set with `NZBDAV_CONFIG__USENET__CIRCUIT_BREAKER__MAX_COOLDOWN_SECONDS`. Default `300`. |
 
 Lower the initial cooldown when a single pool provider carries the traffic and the backups are
 metered blocks. A brief wobble then spends fewer backup bytes before the primary is re-probed.
 A maximum below the initial value is raised to it. The connection pools read both values when
-they are built, so a change applies on the next restart or provider save. Neither has a
-Settings control. Set them through config or the environment.
+they are built, so a change applies on the next restart or provider save.
 
 Once the cooldown lapses, one request is admitted as a half-open probe. If that request is
 abandoned before it returns an outcome, the probe slot stays claimed for up to 60 seconds

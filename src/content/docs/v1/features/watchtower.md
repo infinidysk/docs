@@ -1,9 +1,9 @@
 ---
 title: "Watchtower"
 ---
-Watchtower keeps titles on your lists **ready**: each is pre-resolved to a healthy release and re-verified over time — the same ranking and health checks as Watchdog, run ahead of demand.
+Watchtower keeps titles on your lists **ready**: each is pre-resolved to a healthy release and re-verified over time, ahead of demand. By default it picks the same release Watchdog would (**Match the watchdog's pick**); **Largest healthy release** is the alternative.
 
-**Pointer-only.** It stores segment maps and shortlists (kilobytes), not video. Nothing downloads until playback is requested.
+**Pointer-only.** Resolving fetches candidate NZBs, verifies them, and keeps the winner's NZB plus a shortlist of backups. It does not download the video; nothing streams until playback is requested.
 
 ## Loops
 
@@ -14,9 +14,9 @@ flowchart LR
   Keep -->|dead| Resolve
 ```
 
-1. **Sync** — enumerate enabled sources into a deduped wanted set.
-2. **Resolve** — search, filter by size/grabs, STAT-verify, keep shortlist; bounded by daily budget and warm-set cap.
-3. **Keep-fresh** — re-STAT winners without grabbing; promote backups or re-resolve.
+1. **Sync**: enumerate enabled sources into a deduplicated wanted set.
+2. **Resolve**: search, filter by size and grabs, fetch candidate NZBs, STAT-verify, and keep a shortlist. Bounded by the warm-set cap and by the daily resolve budget, unless **Auto throughput** is enabled (then indexer limits set the pace).
+3. **Keep-fresh**: re-STAT winners without grabbing; promote backups or re-resolve.
 
 ## Sources
 
@@ -27,7 +27,7 @@ flowchart LR
 
 ## Safety
 
-Reuses indexer hit trackers and rate limiters. Off until enabled; conservative defaults. Configure under [Watchtower settings](/v1/configuration/watchtower/).
+Reuses indexer hit trackers and rate limiters. Off until enabled, with conservative defaults. Configure under [Watchtower settings](/v1/configuration/watchtower/).
 
 ## Status notes
 

@@ -3,20 +3,22 @@ title: "WebDAV filesystem"
 ---
 infinidysk exposes NZB contents as a browsable tree over WebDAV and the **Explorer** UI.
 
-Typical top-level paths:
+The WebDAV tree has four roots:
 
 | Path | Role |
 |------|------|
 | `/content` | Mounted releases by category |
-| `/nzbs` | NZB-oriented views |
-| `/view/...` | Streaming/download URLs used by players and STRM |
-| `completed-symlinks` | Symlink import artifacts (via rclone `--links`) |
-| `.ids` | Stable id-based paths for symlink targets |
+| `/nzbs` | Queued NZBs |
+| `/completed-symlinks` | Symlink import entries (rclone `--links` turns them into symlinks) |
+| `/.ids` | Stable ID-based paths that symlinks point to |
 
-Content streams from Usenet on read — files are not fully downloaded to disk first. Blobs under `{CONFIG_PATH}/blobs/` store NZB metadata needed to remount.
+`/view/{path}` is not a WebDAV directory. It is a separate HTTP route that serves a file
+from the tree for players, STRM files, and download links.
 
-Configure credentials and filesystem behavior under [WebDAV settings](/v1/configuration/webdav/),
-and playback behavior under [Streaming settings](/v1/configuration/streaming/).
+Content streams from Usenet on read; files are not downloaded to disk first. Blobs under
+`{CONFIG_PATH}/blobs/` store the NZB metadata needed to serve mounted files.
+
+Credentials and read-only behavior: [WebDAV settings](/v1/configuration/webdav/).
 Mount with [rclone](/v1/guides/mounting-webdav/) for filesystem clients.
 
 ## Explorer administration <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.5.0">since 1.5.0</a>
@@ -86,13 +88,11 @@ Read-only frontend accounts can browse, play, download, and export but cannot re
 preview removal, or remove. Disabled action tooltips explain the restriction. Mobile layouts
 retain every filter and action through toolbar wrapping and horizontal table scrolling.
 
-No new settings or setup-wizard steps are required. Existing Library Directory, Arr instances,
-Repairs, and WebDAV settings govern these actions. This feature introduces no database
-migration, data conversion, or feature-specific backup requirement.
+Existing Library Directory, Arr instance, Repairs, and WebDAV settings govern these actions.
 
 ## Deleting from Files <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.1.0">since 1.1.0</a>
 
-From **Explorer**, you can delete individual files or entire release folders under `/content/{category}/{release}/…`. Removal requires successful impact previews before confirmation. The dialog shows file, folder, byte, and linked-history totals.
+From **Explorer**, you can delete individual files or entire release folders under `/content/{category}/{release}/…`. Removal requires a completed impact preview before confirmation. The dialog shows file, folder, byte, and linked-history totals.
 
 Selecting a directory includes its current collapsed, hidden, and filtered-out descendants.
 Overlapping parent/child selections are reduced to their top-level targets. Counts are advisory
@@ -104,6 +104,6 @@ file appearing at the same path cannot be removed using a stale selection.
 Protected roots and category folders, matching active downloads, and **Enforce Read-Only**
 continue to prevent removal.
 
-Deletion is limited to mounted content under `/content`. Use the **Queue** page to remove NZBs from `/nzbs`, and the **History** page to clear `completed-symlinks` entries. Internal paths such as `/.ids` cannot be deleted from Files.
+Deletion is limited to mounted content under `/content`. Use the **Queue** page to remove NZBs from `/nzbs`, and the **History** page to clear `/completed-symlinks` entries. Internal paths such as `/.ids` cannot be deleted from Files.
 
 When the last file referencing a history entry is removed, the history row is pruned automatically so external SAB clients do not keep pointing at deleted mounts.

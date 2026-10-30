@@ -1,86 +1,40 @@
 ---
 title: "First run"
+description: "Create the admin account, then use the setup guide or the manual Settings steps."
 ---
-Open `http://your-server:3000` after the container is healthy.
+Open `http://your-server:3000` once the container is healthy.
 
-After the first administrator login on a new installation, infinidysk opens the
-guided **[Setup Guide](/v1/getting-started/setup-guide/)**
-<span class="since">since 1.3.0</span>.
-It configures import strategy, the recommended cache layer, rclone or STRM paths,
-content ingestion, scheduled backups, and Library Directory. You may skip it and
-use the manual Settings sequence below; **Setup Guide** remains available in the
-main navigation. Existing installations open on **Overview** after upgrading and
-can launch the guide there when wanted.
+## Create the admin account
 
-:::tip[Headless ConfigItems vs first-run account]
-You can pre-seed Usenet, WebDAV, Arr, and other **Settings** values with
-[`NZBDAV_CONFIG__...`](/v1/configuration/headless/) before the first UI visit.
-The **admin username/password** for the web UI is still created here (or via your
-existing account) — that bootstrap is **not** part of the ENV overlay. If you lose
-those credentials later, set `RESET_ADMIN_PASSWORD=true`, restart once, re-onboard,
-then remove the variable — see [Troubleshooting → Locked out of the web UI](/v1/guides/troubleshooting/#locked-out-of-the-web-ui).
-Warden sources and database restore actions are also separate domains.
-:::
+Set the username and password for the web UI. Behind HTTPS, harden session cookies with `SECURE_COOKIES=true`.
 
-## 1. Create the admin account
+The admin account is not part of the [`NZBDAV_CONFIG__...`](/v1/configuration/headless/) variables; those only pre-seed Settings. If you lose the password, see [Locked out of the web UI](/v1/guides/troubleshooting/#locked-out-of-the-web-ui).
 
-Set username and password for the web UI. Session cookies can be hardened later with `SECURE_COOKIES=true` behind HTTPS.
+## Run the setup guide
 
-## 2. Usenet (`Settings` → `Usenet`) {#2-usenet-settings-usenet}
+On a new install, infinidysk opens the [setup guide](/v1/getting-started/setup-guide/) <span class="since">since 1.3.0</span> after the first sign-in. It covers import strategy, cache, rclone or STRM paths, Arr apps, backups and the library directory. You can skip it and open it later from the main navigation.
 
-| Setting | Guidance |
-|---------|----------|
-| Host / Port | Provider NNTP endpoint (often `563` with SSL) |
-| Username / Password | Provider credentials |
-| Provider Connection Limit | At or below your account allowance |
-| Transfer Connections | Leave blank for legacy scheduling, or use Auto-tune to set it |
-| Type | **Pool Connections** for primary accounts |
-| Use SSL | On for remote providers |
-| Storage group | Optional — same label for resellers that share upstream storage |
+## Or configure by hand
 
-Click **Test** / **Auto-tune** when available. See [Usenet settings](/v1/configuration/usenet/). Skip this step when providers are already supplied via [headless ENV](/v1/configuration/headless/).
+Skip steps for settings you already supply through headless variables.
 
-## 3. WebDAV (`Settings` → `WebDAV`) {#3-webdav-settings-webdav}
+1. **Settings → Usenet**: add a provider with its host, port (usually `563` with SSL), credentials and a **Provider Connection Limit** at or below your account allowance. Use **Test**. See [Usenet settings](/v1/configuration/usenet/).
+2. **Settings → WebDAV**: set the WebDAV user and password. rclone and most players need them. See [WebDAV settings](/v1/configuration/webdav/).
+3. **Settings → SABnzbd**: pick the import strategy and copy the **API Key** for your Arr apps.
+   - **Symlinks** (Plex): set **Rclone Mount Directory**, for example `/mnt/remote/nzbdav`, and run the [rclone sidecar](/v1/guides/mounting-webdav/).
+   - **STRM** (Emby, Jellyfin): set **Completed Downloads Dir** and a **Base URL** the media server can reach.
+4. **Settings → Streaming**: the defaults are a safe start. Tune them only if playback stalls. See [Streaming settings](/v1/configuration/streaming/).
 
-| Setting | Guidance |
-|---------|----------|
-| WebDAV User | Dedicated username (default `admin`) |
-| WebDAV Password | Required for rclone, AIOStreams, and many players |
-| Enforce Read-Only | Leave on unless you need deletes from clients |
+## Smoke test
 
-See [WebDAV settings](/v1/configuration/webdav/).
+1. Upload a small `.nzb` on the **Queue** page.
+2. Wait until it reaches history and shows under Explore → `content`.
+3. Open a video file to confirm it streams.
 
-## 4. Streaming (`Settings` → `Streaming`) {#4-streaming-settings-streaming}
-
-The defaults are a safe starting point. If playback is slow or stalls, tune
-connection allocation, timeouts, buffering, and the segment cache here. See
-[Streaming settings](/v1/configuration/streaming/).
-
-## 5. Import strategy (`Settings` → `SABnzbd`) {#5-import-strategy-settings-sabnzbd}
-
-| Strategy | Best for | What to set |
-|----------|----------|-------------|
-| **Symlinks — Plex** | Plex / real filesystem entries | **Rclone Mount Directory** (e.g. `/mnt/remote/nzbdav`) + [rclone sidecar](/v1/guides/mounting-webdav/) |
-| **STRM Files — Emby/Jellyfin** | Emby/Jellyfin `.strm` playback | **Completed Downloads Dir** + **Base URL** reachable by the media server |
-
-Copy the **API Key** from this page — Arr download clients need it.
-
-Queue concurrency and admission limits are under
-[Settings → Queue](/v1/configuration/queue/).
-
-## 6. Smoke test
-
-1. Upload a small `.nzb` on the **Queue** page (or send one from an indexer).
-2. Wait until it reaches history / mounts under Explore → `content`.
-3. Open or download a video file to confirm streaming.
-
-:::tip[Active Reads]
-Overview **Active Reads** lists any WebDAV byte fetch. Sustained bandwidth with nobody watching often means rclone VFS thrash or media-server analysis.
-:::
+Overview **Active Reads** lists every WebDAV byte fetch. Sustained traffic with nobody watching usually means rclone cache churn or media-server analysis.
 
 ## Next
 
-- [Connect Radarr/Sonarr](/v1/getting-started/connect-arr/)
+- [Connect Arr instances](/v1/getting-started/connect-arr/)
 - [Import strategies](/v1/guides/import-strategies/)
-- [Configuration reference](/v1/configuration/)
-- [Headless environment configuration](/v1/configuration/headless/)
+- [Settings overview](/v1/configuration/)

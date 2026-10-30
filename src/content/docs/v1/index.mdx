@@ -3,7 +3,7 @@ title: infinidysk 1.x
 description: Docs for infinidysk 1.x, the stable C# release. Install, configure and run the WebDAV server, SABnzbd-compatible API and rclone mount.
 ---
 
-import { CardGrid, LinkButton, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Aside, CardGrid, LinkButton, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
 
 <div class="badges">
 
@@ -14,7 +14,11 @@ import { CardGrid, LinkButton, LinkCard, Tabs, TabItem } from '@astrojs/starligh
 
 </div>
 
-infinidysk is a **WebDAV server** that mounts NZB documents as a browsable virtual filesystem. Content streams on demand from your Usenet provider. A **SABnzbd-compatible API** lets Sonarr, Radarr and other Arr instances use it as a drop-in download client, so you can build an effectively infinite media library without storing full files on disk.
+infinidysk is a **WebDAV server** that mounts NZB documents as a browsable virtual filesystem. Content streams on demand from your Usenet provider. A **SABnzbd-compatible API** lets Sonarr and Radarr use it as a download client, so you can build a large media library without storing full files on disk.
+
+<Aside type="note" title="Stable, bug fixes only">
+1.x is the stable release. It gets bug fixes only; new features go into 2.x, which is in beta. See [What's new in 2.x](/v2/whats-new/).
+</Aside>
 
 ```mermaid
 flowchart LR
@@ -27,17 +31,11 @@ flowchart LR
 ## Why infinidysk
 
 <CardGrid>
-	<LinkCard title="Virtual filesystem" description="Browse NZB contents instantly over WebDAV. No full download before you open a file." href="/v1/features/webdav-filesystem/" />
+	<LinkCard title="Virtual filesystem" description="Browse NZB contents over WebDAV. No full download before you open a file." href="/v1/features/webdav-filesystem/" />
 	<LinkCard title="Stream and seek" description="Jump anywhere in a video. Optional NNTP pipelining for higher throughput and faster seeks." href="/v1/features/streaming-seeking/" />
 	<LinkCard title="Arr compatible" description="SABnzbd API for Sonarr and Radarr, with symlink or STRM import strategies." href="/v1/use-cases/infinite-library-arr/" />
-	<LinkCard title="Multi-provider" description="Cascade routing, circuit breakers, data caps and automatic failover across providers." href="/v1/features/multi-provider/" />
+	<LinkCard title="Multi-provider" description="Cascade routing, circuit breakers, data caps and failover across providers." href="/v1/features/multi-provider/" />
 </CardGrid>
-
-## How infinidysk compares
-
-Choosing between streaming WebDAV tools and classic download clients depends on your media server, disk budget, and how much operations work you want.
-
-<LinkCard title="Compare alternatives" description="infinidysk vs AltMount vs classic SABnzbd/NZBGet: feature table and audience guidance." href="/v1/guides/compare/" />
 
 ## Quick start
 
@@ -72,10 +70,9 @@ services:
 </TabItem>
 <TabItem label="DUMB stack">
 
-infinidysk is a supported core module in [Debrid Unlimited Media Bridge (DUMB)](https://dumbarr.com/). Enable infinidysk during DUMB onboarding (or set Arr `core_service` to include `nzbdav`) for guided Usenet WebDAV and download-client wiring.
+infinidysk is a supported core module in [Debrid Unlimited Media Bridge (DUMB)](https://dumbarr.com/). Enable infinidysk during DUMB onboarding for guided WebDAV and download-client wiring. Use DUMB's docs for its paths and ports.
 
 <LinkButton href="https://dumbarr.com/services/core/nzbdav/" variant="secondary">infinidysk on dumbarr.com</LinkButton>
-<LinkButton href="/v1/getting-started/#setup-and-hosting-options" variant="minimal">Hosting options</LinkButton>
 
 </TabItem>
 </Tabs>
@@ -86,17 +83,17 @@ Then open `http://localhost:3000` (self-hosted) or your DUMB service URL, create
 Port `3000` is plain HTTP. Put infinidysk behind HTTPS for remote access. WebDAV uses Basic auth, so TLS matters. Prefer binding `127.0.0.1:3000:3000` when a reverse proxy runs on the host.
 :::
 
-<LinkButton href="/v1/getting-started/docker/">Full Docker guide</LinkButton>
-<LinkButton href="/v1/getting-started/migration/" variant="secondary">Migrate from another build</LinkButton>
-<LinkButton href="/v1/getting-started/first-run/" variant="minimal">First-run checklist</LinkButton>
+<LinkButton href="/v1/getting-started/docker/">Run with Docker</LinkButton>
+<LinkButton href="/v1/getting-started/first-run/" variant="secondary">First run</LinkButton>
+<LinkButton href="/v1/getting-started/migration/" variant="minimal">Migrate from nzbdav</LinkButton>
 
 ## Documentation
 
 <CardGrid>
-	<LinkCard title="Getting started" description="Install with Docker, complete first-run setup, connect Radarr and Sonarr." href="/v1/getting-started/" />
-	<LinkCard title="Guides" description="Architecture, import strategies, rclone mounts, media servers, Stremio, troubleshooting." href="/v1/guides/architecture/" />
-	<LinkCard title="Configuration" description="What every Settings control does, plus the headless NZBDAV_CONFIG__ schema." href="/v1/configuration/" />
-	<LinkCard title="Use cases" description="Infinite library with Arrs, streaming-only setups, multi-provider failover." href="/v1/use-cases/" />
+	<LinkCard title="Install" description="Requirements, release channels, Docker, first run and connecting Sonarr and Radarr." href="/v1/getting-started/" />
+	<LinkCard title="Upgrade" description="Back up, upgrade between 1.x releases, or migrate from nzbdav or AltMount." href="/v1/guides/backups-upgrades/" />
+	<LinkCard title="Settings" description="What each Settings tab does, plus the headless NZBDAV_CONFIG__ schema." href="/v1/configuration/" />
+	<LinkCard title="Help" description="Common problems and fixes, logs and diagnostics." href="/v1/guides/troubleshooting/" />
 </CardGrid>
 
 ## Community

@@ -1,5 +1,5 @@
 ---
-title: "Health and repairs"
+title: "Health checks and repairs"
 ---
 ## Attention summary <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.4.3">since 1.4.3</a>
 
@@ -24,17 +24,12 @@ Arr search; it does not remove or blocklist the current file or guarantee a repl
 
 ## Background repairs
 
-**Settings → Repairs** monitors mounted media, reconstructs missing segments from PAR2 parity, and
-can trigger Arr replacements for unhealthy linked library items.
-
-**Enable Background Repairs** is on by default <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>. Turn it off to stop
-background health checks, PAR2 work, and limited damage-tolerance handling. To automatically
-replace linked library items, also configure:
-
-- **Library Directory** visible inside the container — the organized library root (parent of Arr root folders), never the rclone mount or `/completed-symlinks`
-- At least one configured [Radarr/Sonarr instance](/v1/configuration/arrs/)
-
-Tune concurrency, health-check depth, aging <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v0.8.0">since 0.8.0</a>, and streaming-failure thresholds — [Repairs settings](/v1/configuration/repairs/).
+**Settings → Health & Repairs** controls background health checks, PAR2 gap repair, and Arr
+replacements for unhealthy linked library items. **Enable Background Repairs** is on by default
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.3.0">since 1.3.0</a>;
+PAR2 gap repair is off by default. Arr replacement also needs a Library Directory and at least one
+Arr instance. Every setting, default and prerequisite is listed in
+[Health & repairs settings](/v1/configuration/repairs/); this page covers what happens at runtime.
 
 For streaming-triggered failures, **Repair After Streaming Failures** can require consecutive
 failures before infinidysk starts a repair or asks Arr to find a replacement. A successful full-file
@@ -85,7 +80,7 @@ how many segments are checked, not how often checks occur.
 
 ## Health-check retention
 
-Health result rows prune by age (**Maintenance** retention or `DATABASE_HEALTHCHECK_RETENTION_DAYS`). Reset counters from Maintenance when needed.
+Health result rows are pruned by age; see [Retention and cleanup](/v1/operations/retention-cleanup/). Reset counters from **Settings → Maintenance** when needed.
 
 ## PAR2 storage and diagnostics
 
@@ -96,7 +91,7 @@ provider, and patched articles satisfy STAT health checks without querying that 
 The store does not invent NNTP HEAD or Date metadata.
 
 The patch store is separate from the ordinary segment cache. Its least-recently-used body
-capacity defaults to 4 GiB. A successful repair publication retains the entire new batch
+capacity defaults to 4 GB (**Patch store cap (GB)**). A successful repair publication retains the entire new batch
 and evicts older entries if necessary. Staging temporary files and already-open evicted
 bodies can temporarily consume additional disk space beyond the cataloged-body limit.
 Every visible patch is a complete validated entry; publication is not a filesystem batch
