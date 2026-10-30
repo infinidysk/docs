@@ -7,13 +7,32 @@ const { id, entry } = Astro.locals.starlightRoute;
 const version = { v1: '1.x', v2: '2.x' }[id.split('/')[0]];
 // Changelog pages are generated from a remote file, so they have no Markdown copy.
 const showActions = !id.startsWith('v1/changelog');
+// Pre-selects this page's version in search once per page load; the reader can clear it.
+const preselect = `(() => {
+	const version = document.currentScript.dataset.version;
+	const dialog = document.querySelector('site-search dialog');
+	if (!dialog) return;
+	new MutationObserver((_, observer) => {
+		const box = dialog.querySelector('#version-' + CSS.escape(version));
+		if (!box) return;
+		observer.disconnect();
+		if (!box.checked) box.click();
+	}).observe(dialog, { childList: true, subtree: true });
+})();`;
 ---
 
-<h1 id="_top">
+<h1 id="_top" data-pagefind-filter={version ? `version:${version}` : undefined}>
 	{entry.data.title}
 	{version && <Badge text={version} variant={version === '2.x' ? 'caution' : 'note'} class="version-badge" />}
 </h1>
-{showActions && <PageActions />}
+{
+	showActions && (
+		<div class="page-actions-fallback">
+			<PageActions />
+		</div>
+	)
+}
+{version && <script is:inline data-version={version} set:html={preselect} />}
 
 <style>
 	h1 {
@@ -26,5 +45,19 @@ const showActions = !id.startsWith('v1/changelog');
 	h1 :global(.version-badge) {
 		vertical-align: middle;
 		margin-inline-start: 0.5rem;
+	}
+	.page-actions-fallback {
+		margin-top: 1rem;
+	}
+	@media (min-width: 50rem) {
+		/* The sidebar topic already says which version this is. */
+		h1 :global(.version-badge) {
+			display: none;
+		}
+	}
+	@media (min-width: 72rem) {
+		.page-actions-fallback {
+			display: none;
+		}
 	}
 </style>

@@ -128,6 +128,16 @@
 	box-shadow: none;
 }
 
+/* One accent for every card icon instead of Starlight's rotating colours. */
+.card {
+	--sl-card-border: var(--sl-color-accent);
+	--sl-card-bg: var(--sl-color-accent-low);
+}
+
+.sl-badge {
+	font-family: var(--sl-font);
+}
+
 .sl-link-card:hover {
 	background: var(--sl-color-gray-6);
 }
@@ -170,6 +180,16 @@
 
 .hero {
 	padding-block: clamp(2rem, calc(1rem + 6vmin), 4.5rem) 0.5rem;
+}
+
+/* Left-aligned at every width, so the hero lines up with the content below it. */
+.hero .copy {
+	align-items: flex-start;
+	text-align: start;
+}
+
+.hero .actions {
+	justify-content: flex-start;
 }
 
 @media (min-width: 50rem) {
@@ -387,17 +407,22 @@
 	break-inside: avoid;
 }
 
-.home table {
+.version-diff {
 	display: table;
 	width: 100%;
 }
 
-.home table :is(th, td):first-child {
+.version-diff :is(th, td):first-child {
 	width: 50%;
 }
 
-.home .no {
+.version-diff .missing {
 	color: var(--sl-color-gray-3);
+}
+
+/* Keep long keys and paths from widening tables on phones. */
+.sl-markdown-content td code {
+	overflow-wrap: anywhere;
 }
 
 .perf {

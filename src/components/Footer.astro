@@ -1,0 +1,35 @@
+---
+import DefaultFooter from '@astrojs/starlight/components/Footer.astro';
+import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
+import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro';
+
+// Splash pages have no sidebar, so on mobile the header hides these with nowhere else to find them.
+const splash = Astro.locals.starlightRoute.entry.data.template === 'splash';
+---
+
+<DefaultFooter />
+{
+	splash && (
+		<div class="splash-footer">
+			<SocialIcons />
+			<ThemeSelect />
+		</div>
+	)
+}
+
+<style>
+	.splash-footer {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+		margin-top: 2rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--sl-color-hairline);
+	}
+	@media (min-width: 50rem) {
+		.splash-footer {
+			display: none;
+		}
+	}
+</style>
