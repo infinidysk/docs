@@ -15,11 +15,13 @@
 /getting-started/* /v1/getting-started/:splat 301
 /guides /v1/guides/ 301
 /guides/* /v1/guides/:splat 301
-/features /v1/features/ 301
+/features/ /v1/guides/architecture/ 301
+/features /v1/guides/architecture/ 301
 /features/* /v1/features/:splat 301
 /configuration /v1/configuration/ 301
 /configuration/* /v1/configuration/:splat 301
-/use-cases /v1/use-cases/ 301
+/use-cases/ /v1/use-cases/infinite-library-arr/ 301
+/use-cases /v1/use-cases/infinite-library-arr/ 301
 /use-cases/* /v1/use-cases/:splat 301
 /operations /v1/operations/ 301
 /operations/* /v1/operations/:splat 301
@@ -27,3 +29,9 @@
 /community/* /v1/community/:splat 301
 /v1/community/changelog/ /v1/changelog/ 301
 /v1/community/changelog /v1/changelog/ 301
+/v1/guides/compare/ /v1/ 301
+/v1/guides/compare /v1/ 301
+/v1/features/ /v1/guides/architecture/ 301
+/v1/features /v1/guides/architecture/ 301
+/v1/use-cases/ /v1/use-cases/infinite-library-arr/ 301
+/v1/use-cases /v1/use-cases/infinite-library-arr/ 301
