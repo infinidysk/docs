@@ -1,8 +1,10 @@
 ---
 title: infinidysk (formerly NzbDAV) — stream Usenet media over WebDAV and FUSE
-description: infinidysk, formerly NzbDAV, mounts NZB files as a virtual filesystem and streams media directly from Usenet, with a SABnzbd-compatible API for Sonarr and Radarr.
+description: infinidysk, formerly NzbDAV, mounts NZB files as a virtual filesystem and streams media directly from Usenet, with a SABnzbd-compatible API for Sonarr and Radarr. 2.x is rewritten in Rust.
 template: splash
 editUrl: false
+banner:
+  content: infinidysk 2.x, rewritten in Rust, is in beta. <a href="/v2/">Read the 2.x docs</a>
 head:
   - tag: script
     attrs:
@@ -39,7 +41,7 @@ import HowItWorks from '../../components/HowItWorks.astro';
 			<span class="version-number">2.x</span>
 			<Badge text="Beta" variant="caution" />
 		</span>
-		<span class="version-body">The Rust rewrite. Built-in FUSE mount, lower CPU and memory use, and a one-step upgrade from 1.x.</span>
+		<span class="version-body">Rewritten in Rust. Starts in half a second, uses under a third of the CPU per GB streamed and mounts over FUSE itself. One-step upgrade from 1.x.</span>
 		<code class="version-image">ghcr.io/infinidysk/infinidysk-next</code>
 		<span class="version-cta">Read the 2.x docs <Icon name="right-arrow" /></span>
 	</a>
@@ -53,7 +55,9 @@ Your Arr instances add infinidysk as a SABnzbd download client, but it never dow
 
 <HowItWorks />
 
-## What changes in 2.x
+## Rewritten in Rust
+
+2.x is the same product rebuilt from scratch in Rust: one native binary with the web UI built in, no .NET runtime and no garbage collector. [Why Rust](/v2/whats-new/#why-rust) explains what that changes.
 
 Both versions speak the same SABnzbd API and serve the same WebDAV paths, so Arrs and media servers see no difference. Both have:
 

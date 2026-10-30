@@ -14,6 +14,15 @@ Both versions speak the same SABnzbd API and serve the same WebDAV paths, so Arr
 
 The [upgrade](/v2/upgrade/) report lists every 1.x setting it could not carry over. Rclone RC notifications and cache flags are dropped; the built-in mount does not need them.
 
+## Why Rust
+
+1.x is written in C# and runs on .NET. 2.x is written in Rust. For a server that spends its time moving bytes from Usenet to a player, that shows in a few places:
+
+- **One native binary.** The server, the web UI and the FUSE mount ship as one compiled program. There is no runtime to load and no code to warm up, so 2.x starts in under half a second.
+- **No garbage collector.** Rust frees memory as soon as it goes out of use, and nothing pauses to collect garbage. Idle memory stays near 70 MB.
+- **Less CPU per byte.** Streaming 1 GB costs under a third of the CPU time it does on 1.x.
+- **Memory safe.** The compiler rules out use-after-free bugs and data races. The only unsafe code in infinidysk itself is the binding to the SIMD yEnc decoder.
+
 ## Performance
 
 <Performance />

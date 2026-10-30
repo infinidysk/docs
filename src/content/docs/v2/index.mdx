@@ -1,11 +1,11 @@
 ---
-title: infinidysk 2.x
+title: infinidysk 2.x, rewritten in Rust
 description: The Rust rewrite of infinidysk (formerly NzbDAV). In beta, with a built-in FUSE mount, lower CPU and memory use, and a one-step upgrade from 1.x.
 ---
 
 import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-infinidysk 2.x is a from-scratch rewrite of infinidysk (formerly NzbDAV) in Rust. It keeps what Sonarr, Radarr and your media server talk to (the SABnzbd API and the WebDAV paths) and replaces everything behind it.
+infinidysk 2.x is infinidysk (formerly NzbDAV) rewritten from scratch in Rust. It keeps what Sonarr, Radarr and your media server talk to (the SABnzbd API and the WebDAV paths) and replaces everything behind it with one native binary.
 
 <Aside type="caution" title="Beta">
 2.x is in beta. Expect some bugs, and keep your 1.x install and its config until you are happy. 1.x stays supported with bug fixes while 2.x matures.
@@ -27,8 +27,8 @@ infinidysk 2.x is a from-scratch rewrite of infinidysk (formerly NzbDAV) in Rust
 	<Card title="One port">
 		The UI, the SABnzbd API and WebDAV all share port 3000.
 	</Card>
-	<Card title="Lighter">
-		Starts in under half a second and uses about a third of the CPU per GB streamed.
+	<Card title="Written in Rust">
+		No runtime and no garbage collector. Starts in under half a second and uses under a third of the CPU per GB streamed. See [why Rust](/v2/whats-new/#why-rust).
 	</Card>
 	<Card title="Provider catalog">
 		Pick your provider from a catalog. Hostname, port and backbone come from the profile.

@@ -202,7 +202,7 @@
 	letter-spacing: -0.03em;
 }
 
-.home > :is(p, ul) {
+.home > :is(p, ul):not(.not-content) {
 	max-width: 68ch;
 }
 
@@ -485,6 +485,31 @@
 /* Keep long keys and paths from widening tables on phones. */
 .sl-markdown-content td code {
 	overflow-wrap: anywhere;
+}
+
+.perf-stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+	gap: 1rem;
+	margin-block: 1.25rem;
+	padding: 0;
+	list-style: none;
+}
+
+.perf-stats li {
+	padding: 1rem 1.25rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: 0.5rem;
+	color: var(--sl-color-gray-2);
+	font-size: var(--sl-text-sm);
+}
+
+.perf-stats strong {
+	display: block;
+	color: var(--sl-color-accent-high);
+	font-size: var(--sl-text-3xl);
+	font-variant-numeric: tabular-nums;
+	line-height: 1.1;
 }
 
 .perf {

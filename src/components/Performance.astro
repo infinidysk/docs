@@ -1,6 +1,7 @@
 ---
 // Benchmark results, shown on the homepage and on What's new in 2.x.
 // Bars: best pass, worst pass (as a share of the slowest pass for that metric), label.
+// Headline ratios are conservative: slowest 2.x pass against fastest 1.x pass.
 const metrics = [
 	{ label: 'Startup', v1: ['100%', '100%', '6.2 s'], v2: ['6.5%', '8.1%', '0.4–0.5 s'] },
 	{ label: 'CPU time per GB streamed', v1: ['99.2%', '100%', '13.2–13.3 s'], v2: ['27.8%', '30.8%', '3.7–4.1 s'] },
@@ -9,7 +10,13 @@ const metrics = [
 ];
 ---
 
-<p>Lower is better. Bars show the range across three passes.</p>
+<ul class="not-content perf-stats">
+	<li><strong>12×</strong> faster startup</li>
+	<li><strong>3×</strong> less CPU per GB streamed</li>
+	<li><strong>2×</strong> less memory at idle</li>
+</ul>
+
+<p>1.x is C# on .NET; 2.x is Rust. Lower is better. Bars show the range across three passes.</p>
 
 <div class="not-content perf">
 	{
