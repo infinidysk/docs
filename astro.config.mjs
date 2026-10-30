@@ -177,7 +177,7 @@ function v1Sidebar() {
 			label: 'Upgrade and migrate',
 			items: [
 				{ label: 'Backups and upgrades', slug: 'v1/guides/backups-upgrades' },
-				{ label: 'Migrate from NzbDAV', slug: 'v1/getting-started/migration' },
+				{ label: 'Migrate from nzbdav-dev', slug: 'v1/getting-started/migration' },
 				{ label: 'Migrate from AltMount', slug: 'v1/guides/altmount-migration' },
 			],
 		},
