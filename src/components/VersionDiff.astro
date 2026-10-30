@@ -1,0 +1,60 @@
+---
+// 1.x/2.x feature comparison, shown on the homepage and on What's new in 2.x.
+type Row = { feature: string; href?: string; v1: string; v2: string };
+const both = (feature: string): Row => ({ feature, v1: 'Yes', v2: 'Yes' });
+const groups: { title: string; rows: Row[] }[] = [
+	{
+		title: 'In both',
+		rows: [
+			'SABnzbd API for Arrs',
+			'WebDAV',
+			'Symlink and STRM imports',
+			'Health checks and Arr replacement',
+			'Multiple providers with priority levels',
+			'Download speed limit',
+			'Disk segment cache',
+			'SQLite and PostgreSQL',
+			'Prometheus metrics',
+		].map(both),
+	},
+	{
+		title: 'New or changed in 2.x',
+		rows: [
+			{ feature: 'Mount', v1: 'rclone sidecar', v2: 'Built-in FUSE' },
+			{ feature: 'Provider catalog with backbones', v1: 'No', v2: 'Yes' },
+		],
+	},
+	{
+		title: 'Only in 1.x',
+		rows: [
+			{ feature: 'PAR2 repair', href: '/v1/operations/health-repairs/', v1: 'Yes', v2: 'Not yet' },
+			{ feature: 'Connection cap across all providers', href: '/v1/configuration/usenet/', v1: 'Yes', v2: 'Not yet' },
+			{ feature: 'Stremio and addon routes', href: '/v1/guides/stremio/', v1: 'Yes', v2: 'Not yet' },
+			{ feature: 'Search, indexers and Prowlarr', href: '/v1/features/indexer-search/', v1: 'Yes', v2: 'Not yet' },
+			{ feature: 'Backup and restore', href: '/v1/configuration/backup/', v1: 'Yes', v2: 'Not yet' },
+			{ feature: 'Watchtower, Preflight and Warden', href: '/v1/features/warden-watchdog-preflight/', v1: 'Yes', v2: 'Not planned' },
+		],
+	},
+];
+const missing = (value: string) => value === 'No' || value.startsWith('Not');
+---
+
+<table class="version-diff">
+	<thead>
+		<tr><th>Feature</th><th>1.x</th><th>2.x</th></tr>
+	</thead>
+	{
+		groups.map(({ title, rows }) => (
+			<tbody>
+				<tr><th colspan="3" scope="colgroup">{title}</th></tr>
+				{rows.map(({ feature, href, v1, v2 }) => (
+					<tr>
+						<td>{href ? <a href={href}>{feature}</a> : feature}</td>
+						<td class:list={{ missing: missing(v1) }}>{v1}</td>
+						<td class:list={{ missing: missing(v2) }}>{v2}</td>
+					</tr>
+				))}
+			</tbody>
+		))
+	}
+</table>

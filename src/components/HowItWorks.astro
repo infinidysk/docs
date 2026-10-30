@@ -1,0 +1,52 @@
+---
+import type { ComponentProps } from 'astro/types';
+import Flow from './Flow.astro';
+
+interface Props {
+	steps?: ComponentProps<typeof Flow>['steps'];
+}
+
+const defaultSteps: ComponentProps<typeof Flow>['steps'] = [
+	{
+		title: 'When Sonarr or Radarr grabs a release',
+		nodes: [
+			['Sonarr, Radarr', 'Send the NZB over the SABnzbd API'],
+			['infinidysk', 'Reads the NZB and a few headers per file'],
+			['Mount', 'The files appear, without a full download'],
+			['Library', 'The Arr imports a symlink or STRM file'],
+		],
+	},
+	{
+		title: 'When you press play',
+		nodes: [
+			['Plex, Jellyfin', 'Read a byte range over WebDAV or FUSE'],
+			['infinidysk', 'Finds the articles that hold that range'],
+			['Usenet providers', 'Send only those articles, several at once'],
+		],
+	},
+];
+const { steps = defaultSteps } = Astro.props;
+
+// One file as the articles it was posted in: the start was watched, then a seek to the middle.
+const cells = Array.from({ length: 40 }, (_, i) =>
+	i < 5 || (i >= 22 && i < 24) ? 'read' : i >= 24 && i < 28 ? 'ahead' : 'idle',
+);
+---
+
+<Flow steps={steps}>
+	<figure class="how-strip">
+		<div class="how-cells" aria-hidden="true" style={{ '--seek': `${(22 / cells.length) * 100}%` }}>
+			{cells.map((state) => <span class={`how-cell is-${state}`} />)}
+			<span class="how-playhead">Seek</span>
+		</div>
+		<ul class="how-legend">
+			<li><span class="how-cell is-read" />Read</li>
+			<li><span class="how-cell is-ahead" />Fetched ahead</li>
+			<li><span class="how-cell is-idle" />Still on Usenet</li>
+		</ul>
+		<figcaption>
+			One file, split into the articles it was posted in. After a seek, infinidysk fetches the articles at the new
+			position and a few ahead. Everything else stays on Usenet until something reads it.
+		</figcaption>
+	</figure>
+</Flow>

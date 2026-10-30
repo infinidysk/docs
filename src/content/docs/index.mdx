@@ -1,0 +1,89 @@
+---
+title: infinidysk (formerly NzbDAV) — stream Usenet media over WebDAV and FUSE
+description: infinidysk, formerly NzbDAV, mounts NZB files as a virtual filesystem and streams media directly from Usenet, with a SABnzbd-compatible API for Sonarr and Radarr. 2.x is rewritten in Rust.
+template: splash
+editUrl: false
+banner:
+  content: infinidysk 2.x, rewritten in Rust, is in alpha. <a href="/v2/">Read the 2.x docs</a>
+head:
+  - tag: script
+    attrs:
+      type: application/ld+json
+    content: >-
+      {"@context":"https://schema.org","@graph":[
+      {"@type":"WebSite","@id":"https://www.infinidysk.com/#website","name":"infinidysk","alternateName":["NzbDAV","The NzbDAV SuperFork"],"url":"https://www.infinidysk.com/"},
+      {"@type":"SoftwareApplication","name":"infinidysk","alternateName":["NzbDAV","The NzbDAV SuperFork"],"description":"Mounts NZB files as a virtual filesystem and streams media directly from Usenet, with a SABnzbd-compatible API for Sonarr and Radarr.","applicationCategory":"MultimediaApplication","operatingSystem":"Linux","url":"https://www.infinidysk.com/","sameAs":["https://github.com/infinidysk/infinidysk"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+      ]}
+hero:
+  title: Your media library, streamed from Usenet
+  tagline: More in your library. Less on your disks. infini<span class="wordmark-accent">dysk</span>, formerly NzbDAV, works with Sonarr, Radarr and your media server, streaming content on demand instead of storing full downloads.
+---
+
+import { LinkButton, Icon, Badge } from '@astrojs/starlight/components';
+import VersionDiff from '../../components/VersionDiff.astro';
+import Performance from '../../components/Performance.astro';
+import HowItWorks from '../../components/HowItWorks.astro';
+
+<div class="home">
+
+<nav class="not-content version-picker" aria-label="Documentation versions">
+	<a class="version" href="/v1/">
+		<span class="version-head">
+			<span class="version-number">1.x</span>
+			<Badge text="Stable" variant="success" />
+		</span>
+		<span class="version-body">Written in C#. Mounts through an rclone sidecar and has every feature, including Stremio, search and backups.</span>
+		<code class="version-image">ghcr.io/infinidysk/infinidysk</code>
+		<span class="version-cta">Read the 1.x docs <Icon name="right-arrow" /></span>
+	</a>
+	<p class="version-from">Coming from nzbdav-dev/nzbdav 0.6.4? <a href="/v1/getting-started/migration/">Start here</a></p>
+	<a class="version" href="/v2/">
+		<span class="version-head">
+			<span class="version-number">2.x</span>
+			<Badge text="Alpha" variant="caution" />
+		</span>
+		<span class="version-body">Rewritten in Rust. Starts in half a second, uses under a third of the CPU per GB streamed and mounts over FUSE itself. One-step upgrade from 1.x.</span>
+		<code class="version-image">ghcr.io/infinidysk/infinidysk-next</code>
+		<span class="version-cta">Read the 2.x docs <Icon name="right-arrow" /></span>
+	</a>
+</nav>
+
+<p class="version-hint">New install? Pick 1.x for a stable setup, or 2.x to try the alpha. Already running infinidysk? Match the image name in your compose file. Still on <code>ghcr.io/nzbdav/nzbdav</code>? That is 1.x under its old name; <a href="/v1/community/renaming-to-infinidysk/">switch the image</a> and keep everything else.</p>
+
+## How it works
+
+Your Arr instances add infinidysk as a SABnzbd download client, but it never downloads the release. Work happens at two moments:
+
+<HowItWorks />
+
+## Rewritten in Rust
+
+2.x is the same product rebuilt from scratch in Rust: one native binary with the web UI built in, no .NET runtime and no garbage collector. [Why Rust](/v2/whats-new/#why-rust) explains what that changes.
+
+Both versions speak the same SABnzbd API and serve the same WebDAV paths, so Arrs and media servers see no difference.
+
+<VersionDiff />
+
+### Performance
+
+<Performance />
+
+## Community and support
+
+Chat on Discord and follow releases. After joining, use the channel and role selector to enable release notifications.
+
+<div class="not-content button-row">
+	<LinkButton href="https://discord.gg/DAya7W6QMa" icon="discord" iconPlacement="start">Join Discord</LinkButton>
+	<LinkButton href="https://github.com/infinidysk/infinidysk/releases" icon="github" iconPlacement="start" variant="secondary">1.x releases</LinkButton>
+	<LinkButton href="https://github.com/orgs/infinidysk/packages/container/package/infinidysk-next" icon="github" iconPlacement="start" variant="secondary">2.x images</LinkButton>
+</div>
+
+infinidysk is free. 1.x is open source; the 2.x source code becomes available once 2.x reaches beta. If infinidysk is useful to you, you can support its development.
+
+<div class="not-content button-row">
+	<LinkButton href="https://github.com/sponsors/hoivikaj" icon="heart" iconPlacement="start" variant="secondary">GitHub Sponsors</LinkButton>
+	<LinkButton href="https://www.patreon.com/hoivikaj" icon="patreon" iconPlacement="start" variant="secondary">Patreon</LinkButton>
+	<LinkButton href="https://buymeacoffee.com/hoivikaj" icon="external" iconPlacement="start" variant="secondary">Buy Me a Coffee</LinkButton>
+</div>
+
+</div>

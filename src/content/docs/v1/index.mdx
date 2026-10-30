@@ -1,0 +1,130 @@
+---
+title: infinidysk 1.x
+description: Docs for infinidysk 1.x (formerly NzbDAV), the stable C# release. Install, configure and run the WebDAV server, SABnzbd-compatible API and rclone mount.
+---
+
+import { Aside, CardGrid, LinkButton, LinkCard, Tabs, TabItem } from '@astrojs/starlight/components';
+import { Image } from 'astro:assets';
+import overview from '../../../assets/overview.png';
+import HowItWorks from '../../../components/HowItWorks.astro';
+
+<div class="badges">
+
+[![Latest release](https://img.shields.io/github/v/release/infinidysk/infinidysk)](https://github.com/infinidysk/infinidysk/releases)
+[![Docker](https://img.shields.io/badge/ghcr.io-infinidysk%2Finfinidysk-0194f7?logo=docker&logoColor=white)](https://github.com/infinidysk/infinidysk/pkgs/container/infinidysk)
+[![CI](https://img.shields.io/github/actions/workflow/status/infinidysk/infinidysk/ci.yml?branch=main&label=CI)](https://github.com/infinidysk/infinidysk/actions)
+[![License](https://img.shields.io/github/license/infinidysk/infinidysk)](https://github.com/infinidysk/infinidysk/blob/main/LICENSE)
+
+</div>
+
+infinidysk (formerly [NzbDAV](/v1/community/renaming-to-infinidysk/)) is a **WebDAV server** that mounts NZB documents as a browsable virtual filesystem. Content streams on demand from your Usenet provider. A **SABnzbd-compatible API** lets Sonarr and Radarr use it as a download client, so you can build a large media library without storing full files on disk.
+
+<Image src={overview} alt="infinidysk 1.x overview dashboard showing throughput, provider activity and active streams" class="screenshot" loading="eager" />
+
+<Aside type="note" title="Stable, bug fixes only">
+1.x is the stable release. It gets bug fixes only; new features go into 2.x, which is in alpha. See [What's new in 2.x](/v2/whats-new/).
+</Aside>
+
+## How it works
+
+Your Arr instances add infinidysk as a SABnzbd download client, but it never downloads the release. Work happens at two moments:
+
+<HowItWorks
+	steps={[
+		{
+			title: 'When Sonarr or Radarr grabs a release',
+			nodes: [
+				['Sonarr, Radarr', 'Send the NZB over the SABnzbd API'],
+				['infinidysk', 'Reads the NZB and the first article of each file'],
+				['WebDAV', 'The files appear, without a full download'],
+				['Library', 'The Arr imports a symlink or STRM file'],
+			],
+		},
+		{
+			title: 'When you press play',
+			nodes: [
+				['Plex, Jellyfin, Emby', 'Read a byte range through rclone or a STRM URL'],
+				['infinidysk', 'Finds the articles that hold that range'],
+				['Usenet providers', 'Send only those articles, several at once'],
+			],
+		},
+	]}
+/>
+
+## Why infinidysk
+
+<CardGrid>
+	<LinkCard title="Virtual filesystem" description="Browse NZB contents over WebDAV. No full download before you open a file." href="/v1/features/webdav-filesystem/" />
+	<LinkCard title="Stream and seek" description="Jump anywhere in a video. Optional NNTP pipelining for higher throughput and faster seeks." href="/v1/features/streaming-seeking/" />
+	<LinkCard title="Arr compatible" description="SABnzbd API for Sonarr and Radarr, with symlink or STRM import strategies." href="/v1/use-cases/infinite-library-arr/" />
+	<LinkCard title="Multi-provider" description="Cascade routing, circuit breakers, data caps and failover across providers." href="/v1/features/multi-provider/" />
+</CardGrid>
+
+## Quick start
+
+<Tabs>
+<TabItem label="Docker run">
+
+```bash
+docker run --rm -it -p 3000:3000 ghcr.io/infinidysk/infinidysk:latest
+```
+
+Ephemeral trial: settings are discarded when the container exits.
+
+</TabItem>
+<TabItem label="Docker Compose">
+
+```yaml
+services:
+  nzbdav:
+    image: ghcr.io/infinidysk/infinidysk:latest
+    container_name: nzbdav
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      PUID: "1000"
+      PGID: "1000"
+      TZ: Etc/UTC
+    volumes:
+      - ./config:/config
+```
+
+</TabItem>
+<TabItem label="DUMB stack">
+
+infinidysk is a supported core module in [Debrid Unlimited Media Bridge (DUMB)](https://dumbarr.com/). Enable infinidysk during DUMB onboarding for guided WebDAV and download-client wiring. Use DUMB's docs for its paths and ports.
+
+<LinkButton href="https://dumbarr.com/services/core/nzbdav/" variant="secondary">infinidysk on dumbarr.com</LinkButton>
+
+</TabItem>
+</Tabs>
+
+Then open `http://localhost:3000` (self-hosted) or your DUMB service URL, create your admin account if needed, and add a Usenet provider under Settings.
+
+:::caution[Expose carefully]
+Port `3000` is plain HTTP. Put infinidysk behind HTTPS for remote access. WebDAV uses Basic auth, so TLS matters. Prefer binding `127.0.0.1:3000:3000` when a reverse proxy runs on the host.
+:::
+
+<LinkButton href="/v1/getting-started/docker/">Run with Docker</LinkButton>
+<LinkButton href="/v1/getting-started/first-run/" variant="secondary">First run</LinkButton>
+<LinkButton href="/v1/getting-started/migration/" variant="minimal">Migrate from nzbdav-dev</LinkButton>
+
+## Documentation
+
+<CardGrid>
+	<LinkCard title="Install" description="Requirements, release channels, Docker, first run and connecting Sonarr and Radarr." href="/v1/getting-started/" />
+	<LinkCard title="Upgrade" description="Back up, upgrade between 1.x releases, or migrate from nzbdav-dev/nzbdav or AltMount." href="/v1/guides/backups-upgrades/" />
+	<LinkCard title="Settings" description="What each Settings tab does, plus the headless NZBDAV_CONFIG__ schema." href="/v1/configuration/" />
+	<LinkCard title="Help" description="Common problems and fixes, logs and diagnostics." href="/v1/guides/troubleshooting/" />
+</CardGrid>
+
+## Community
+
+Chat on Discord, track releases on GitHub, and file issues when you need a durable bug report.
+
+After joining Discord, use the channel and role selector to enable **infinidysk - SuperFork** for release notifications and development channels.
+
+<LinkButton href="https://discord.gg/DAya7W6QMa" icon="discord" iconPlacement="start">Join Discord</LinkButton>
+<LinkButton href="https://github.com/infinidysk/infinidysk" variant="secondary">Repository</LinkButton>
+<LinkButton href="https://github.com/infinidysk/infinidysk/releases" variant="minimal">Releases</LinkButton>

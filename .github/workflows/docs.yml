@@ -23,18 +23,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Set up Python
-        uses: actions/setup-python@v7.0.0
+      - name: Set up Node
+        uses: actions/setup-node@v7.1.0
         with:
-          python-version: "3.x"
-          cache: pip
-          cache-dependency-path: docs-requirements.txt
+          node-version: 24
+          cache: npm
 
       - name: Install documentation dependencies
-        run: pip install -r docs-requirements.txt
+        run: npm ci
 
       - name: Build documentation
-        run: zensical build --clean --strict
+        run: npm run build
 
       - name: Upload site artifact
         if: ((github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main') || github.event.pull_request.head.repo.full_name == github.repository

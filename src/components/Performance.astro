@@ -1,0 +1,48 @@
+---
+// Benchmark results, shown on the homepage and on What's new in 2.x.
+// Bars: best pass, worst pass (as a share of the slowest pass for that metric), label.
+// Headline ratios are conservative: slowest 2.x pass against fastest 1.x pass.
+const metrics = [
+	{ label: 'Startup', v1: ['100%', '100%', '6.2 s'], v2: ['6.5%', '8.1%', '0.4–0.5 s'] },
+	{ label: 'CPU time per GB streamed', v1: ['99.2%', '100%', '13.2–13.3 s'], v2: ['27.8%', '30.8%', '3.7–4.1 s'] },
+	{ label: 'Memory at idle', v1: ['54.6%', '100%', '165–302 MB'], v2: ['22.5%', '23.2%', '68–70 MB'] },
+	{ label: 'Memory per stream', v1: ['83.7%', '100%', '1.28–1.53 GB'], v2: ['74.5%', '82.4%', '1.14–1.26 GB'] },
+];
+---
+
+<ul class="not-content perf-stats">
+	<li><strong>12×</strong> faster startup</li>
+	<li><strong>3×</strong> less CPU per GB streamed</li>
+	<li><strong>2×</strong> less memory at idle</li>
+</ul>
+
+<p>1.x is C# on .NET; 2.x is Rust. Lower is better. Bars show the range across three passes.</p>
+
+<div class="not-content perf">
+	{
+		metrics.map(({ label, v1, v2 }) => (
+			<div class="perf-metric">
+				<p class="perf-label">{label}</p>
+				{[['1.x', v1], ['2.x', v2]].map(([version, [min, max, value]]) => (
+					<div class:list={['perf-row', { 'is-next': version === '2.x' }]}>
+						<span class="perf-version">{version}</span>
+						<span class="perf-track" aria-hidden="true">
+							<span class="perf-bar" style={{ '--min': min, '--max': max }} />
+						</span>
+						<span class="perf-value">{value}</span>
+					</div>
+				))}
+			</div>
+		))
+	}
+</div>
+
+<p>
+	Sequential throughput is on par within run-to-run variance: 103–111 MB/s on 1.x, 92–103 MB/s on 2.x. Neither version
+	rebuffered in five plays at a 3.1 MB/s playback rate.
+</p>
+
+<p class="perf-method">
+	Measured on 27 October 2026 with 1.6.3 and 2.0.0-alpha.8 in Docker on one Apple M4 Pro host, one commercial provider
+	with 20 connections, five posts with a median size of 10.7 GB, three passes.
+</p>

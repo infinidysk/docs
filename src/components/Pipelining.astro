@@ -1,0 +1,45 @@
+---
+// Time units: an ask takes 1, the provider's round trip 4, sending one article 3.
+const rows = [
+	{
+		label: 'Off',
+		detail: 'One ask at a time',
+		segments: [1, 2, 3].flatMap((n) => [['ask', 1], ['wait', 4], ['article', 3, n]] as const),
+	},
+	{
+		label: 'On, depth 3',
+		detail: 'Three asks in flight',
+		segments: [['ask', 1], ['ask', 1], ['ask', 1], ['wait', 2], ['article', 3, 1], ['article', 3, 2], ['article', 3, 3]] as const,
+	},
+];
+const kind = { ask: 'is-ahead', wait: 'is-idle', article: 'is-read' };
+---
+
+<figure class="not-content how-strip pipe">
+	{
+		rows.map(({ label, detail, segments }) => (
+			<div class="pipe-row">
+				<p class="pipe-label">
+					<strong>{label}</strong>
+					<span>{detail}</span>
+				</p>
+				<div class="pipe-track" aria-hidden="true">
+					{segments.map(([type, span, n]) => (
+						<span class={`how-cell pipe-seg ${kind[type]}`} style={{ 'grid-column': `span ${span}` }}>
+							{n}
+						</span>
+					))}
+				</div>
+			</div>
+		))
+	}
+	<ul class="how-legend">
+		<li><span class="how-cell is-ahead" />Ask sent</li>
+		<li><span class="how-cell is-idle" />Waiting on the provider</li>
+		<li><span class="how-cell is-read" />Article arriving</li>
+	</ul>
+	<figcaption>
+		Three articles from one connection. Without pipelining the connection waits for the provider once per article;
+		with it, the waits overlap and the three articles arrive back to back, in order.
+	</figcaption>
+</figure>

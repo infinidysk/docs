@@ -1,0 +1,24 @@
+---
+import DefaultTableOfContents from '@astrojs/starlight/components/TableOfContents.astro';
+import PageActions from '../../node_modules/starlight-page-actions/components/PageActions.astro';
+
+// Changelog pages are generated from a remote file, so they have no Markdown copy.
+const showActions = !Astro.locals.starlightRoute.id.startsWith('v1/changelog');
+---
+
+<DefaultTableOfContents />
+{
+	showActions && (
+		<div class="page-actions-toc">
+			<PageActions variant="table-of-contents" />
+		</div>
+	)
+}
+
+<style>
+	@media (max-width: 71.999rem) {
+		.page-actions-toc {
+			display: none;
+		}
+	}
+</style>
