@@ -22,4 +22,4 @@ Stop 2.x and start 1.x on the original `./config`. Anything imported or added wh
 
 ## What does not carry over
 
-Settings for features 2.x does not have yet are listed in the import report; see [What's new in 2.x](/v2/whats-new/#differences). The rclone settings (RC notifications, cache flags) are dropped; the built-in mount does not need them.
+Settings for features 2.x does not have yet are listed in the import report; see [What's new in 2.x](/v2/whats-new/#feature-comparison). The rclone settings (RC notifications, cache flags) are dropped; the built-in mount does not need them.

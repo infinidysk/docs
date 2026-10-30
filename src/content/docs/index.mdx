@@ -59,21 +59,7 @@ Your Arr instances add infinidysk as a SABnzbd download client, but it never dow
 
 2.x is the same product rebuilt from scratch in Rust: one native binary with the web UI built in, no .NET runtime and no garbage collector. [Why Rust](/v2/whats-new/#why-rust) explains what that changes.
 
-Both versions speak the same SABnzbd API and serve the same WebDAV paths, so Arrs and media servers see no difference. Both have:
-
-<ul class="shared">
-	<li>SABnzbd API for Arrs</li>
-	<li>WebDAV</li>
-	<li>Symlink and STRM imports</li>
-	<li>Health checks and Arr replacement</li>
-	<li>Multiple providers with priority levels</li>
-	<li>Download speed limit</li>
-	<li>Disk segment cache</li>
-	<li>SQLite and PostgreSQL</li>
-	<li>Prometheus metrics</li>
-</ul>
-
-What differs:
+Both versions speak the same SABnzbd API and serve the same WebDAV paths, so Arrs and media servers see no difference.
 
 <VersionDiff />
 

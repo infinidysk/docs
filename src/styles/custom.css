@@ -459,19 +459,17 @@
 	font-size: var(--sl-text-sm);
 }
 
-.shared {
-	columns: 15rem 3;
-	column-gap: 2rem;
-}
-
-.home .shared li {
-	margin-top: 0;
-	break-inside: avoid;
-}
-
 .version-diff {
 	display: table;
 	width: 100%;
+}
+
+.version-diff tbody th {
+	padding-top: 1.25rem;
+	border-bottom: 1px solid var(--sl-color-gray-5);
+	background: none;
+	color: var(--sl-color-white);
+	text-align: start;
 }
 
 .version-diff :is(th, td):first-child {
