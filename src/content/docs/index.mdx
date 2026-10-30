@@ -4,7 +4,7 @@ description: infinidysk, formerly NzbDAV, mounts NZB files as a virtual filesyst
 template: splash
 editUrl: false
 banner:
-  content: infinidysk 2.x, rewritten in Rust, is in beta. <a href="/v2/">Read the 2.x docs</a>
+  content: infinidysk 2.x, rewritten in Rust, is in alpha. <a href="/v2/">Read the 2.x docs</a>
 head:
   - tag: script
     attrs:
@@ -39,7 +39,7 @@ import HowItWorks from '../../components/HowItWorks.astro';
 	<a class="version" href="/v2/">
 		<span class="version-head">
 			<span class="version-number">2.x</span>
-			<Badge text="Beta" variant="caution" />
+			<Badge text="Alpha" variant="caution" />
 		</span>
 		<span class="version-body">Rewritten in Rust. Starts in half a second, uses under a third of the CPU per GB streamed and mounts over FUSE itself. One-step upgrade from 1.x.</span>
 		<code class="version-image">ghcr.io/infinidysk/infinidysk-next</code>
@@ -47,7 +47,7 @@ import HowItWorks from '../../components/HowItWorks.astro';
 	</a>
 </nav>
 
-<p class="version-hint">New install? Pick 1.x for a stable setup, or 2.x to try the beta. Already running infinidysk? Match the image name in your compose file. Still on <code>ghcr.io/nzbdav/nzbdav</code>? That is 1.x under its old name; <a href="/v1/community/renaming-to-infinidysk/">switch the image</a> and keep everything else.</p>
+<p class="version-hint">New install? Pick 1.x for a stable setup, or 2.x to try the alpha. Already running infinidysk? Match the image name in your compose file. Still on <code>ghcr.io/nzbdav/nzbdav</code>? That is 1.x under its old name; <a href="/v1/community/renaming-to-infinidysk/">switch the image</a> and keep everything else.</p>
 
 ## How it works
 
@@ -77,7 +77,7 @@ Chat on Discord and follow releases. After joining, use the channel and role sel
 	<LinkButton href="https://github.com/orgs/infinidysk/packages/container/package/infinidysk-next" icon="github" iconPlacement="start" variant="secondary">2.x images</LinkButton>
 </div>
 
-infinidysk is free and open source. If it is useful to you, you can support its development.
+infinidysk is free. 1.x is open source; the 2.x source code becomes available once 2.x reaches beta. If infinidysk is useful to you, you can support its development.
 
 <div class="not-content button-row">
 	<LinkButton href="https://github.com/sponsors/hoivikaj" icon="heart" iconPlacement="start" variant="secondary">GitHub Sponsors</LinkButton>

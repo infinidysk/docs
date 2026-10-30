@@ -3,7 +3,7 @@ title: Reporting a bug
 description: What to include when you report a problem with infinidysk 2.x.
 ---
 
-Report beta problems on [Discord](https://discord.gg/DAya7W6QMa). Include:
+Report alpha problems on [Discord](https://discord.gg/DAya7W6QMa). Include:
 
 - the image tag you run, and for `edge` the matching `sha-` tag;
 - a [support pack](/v2/operate/logs-traces/#support-pack) from the System page, or the log from `/config/logs/infinidysk.log`;

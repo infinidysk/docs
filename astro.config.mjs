@@ -139,7 +139,7 @@ export default defineConfig({
 							id: 'v2',
 							label: 'Version 2.x',
 							link: '/v2/',
-							badge: { text: 'Beta', variant: 'caution' },
+							badge: { text: 'Alpha', variant: 'caution' },
 							items: v2Sidebar,
 						},
 					],

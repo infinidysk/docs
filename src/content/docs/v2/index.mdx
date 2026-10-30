@@ -1,14 +1,14 @@
 ---
 title: infinidysk 2.x, rewritten in Rust
-description: The Rust rewrite of infinidysk (formerly NzbDAV). In beta, with a built-in FUSE mount, lower CPU and memory use, and a one-step upgrade from 1.x.
+description: The Rust rewrite of infinidysk (formerly NzbDAV). In alpha, with a built-in FUSE mount, lower CPU and memory use, and a one-step upgrade from 1.x.
 ---
 
 import { Aside, Card, CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 infinidysk 2.x is infinidysk (formerly NzbDAV) rewritten from scratch in Rust. It keeps what Sonarr, Radarr and your media server talk to (the SABnzbd API and the WebDAV paths) and replaces everything behind it with one native binary.
 
-<Aside type="caution" title="Beta">
-2.x is in beta. Expect some bugs, and keep your 1.x install and its config until you are happy. 1.x stays supported with bug fixes while 2.x matures.
+<Aside type="caution" title="Alpha">
+2.x is in alpha. Expect bugs, and keep your 1.x install and its config until you are happy. 1.x stays supported with bug fixes while 2.x matures. The 2.x source code becomes available once 2.x reaches beta.
 </Aside>
 
 ## Start here
@@ -43,8 +43,8 @@ Some 1.x features are not in 2.x yet. [What's new in 2.x](/v2/whats-new/) lists 
 
 | Tag | What it is |
 |-----|------------|
-| `edge` | The latest 2.x build, updated with every change. The docs use this tag during the beta. |
-| `v2.0.0-beta.N` | One beta release. |
+| `edge` | The latest 2.x build, updated with every change. The docs use this tag during the alpha. |
+| `v2.0.0-alpha.N` | One alpha release. |
 | `sha-<commit>` | One exact build, for reproducing a bug. |
 
-There is no `latest` tag on purpose, so nothing upgrades onto the beta by accident. When 2.0 ships it moves to the main `infinidysk` image and this one stops updating.
+There is no `latest` tag on purpose, so nothing upgrades onto a pre-release by accident. When 2.0 ships it moves to the main `infinidysk` image and this one stops updating.
