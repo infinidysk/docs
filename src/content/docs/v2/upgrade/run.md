@@ -7,7 +7,7 @@ Do the steps in [Before you upgrade](/v2/upgrade/) first, and [Move off rclone](
 
 ## Steps
 
-1. Start 2.x with `./config-2.0:/config` and `TZ` set to the zone 1.x ran in (see the [compose file](/v2/install/docker/#compose-file)). The import runs on first start; the UI shows progress and the full report.
+1. Start 2.x with `./config-2.0:/config` and `TZ` set to the zone 1.x ran in (see the [compose file](/v2/install/docker/#compose-file)). The import runs on first start; the UI shows progress and the full report. Until it is done the container shows `starting`; see [Health check](/v2/install/docker/#health-check).
 2. Sign in with your 1.x admin login.
 3. If the container name or port changed, update the SABnzbd download client in each Arr. 1.x served on port 8080; 2.x uses 3000. The API key stays the same.
 4. If 1.x used rclone, run the [checks after the first start](/v2/upgrade/rclone/#check-after-the-first-start).

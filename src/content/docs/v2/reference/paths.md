@@ -5,7 +5,7 @@ description: The port, container paths and mount directories of infinidysk 2.x.
 
 ## Port
 
-Port 3000 serves everything: the UI, the SABnzbd API, WebDAV, `.strm` playback links (`/view/…`) and, when turned on, Prometheus metrics (`/metrics`). Change the address with `INFINIDYSK_LISTEN`.
+Port 3000 serves everything: the UI, the SABnzbd API, WebDAV, `.strm` playback links (`/view/…`), the [health check](/v2/install/docker/#health-check) (`/healthz`) and, when turned on, Prometheus metrics (`/metrics`). Change the address with `INFINIDYSK_LISTEN`.
 
 ## Container paths
 
