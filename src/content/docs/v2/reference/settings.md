@@ -18,7 +18,7 @@ These are read once at startup and are not settings.
 
 | Variable | What it does |
 |----------|--------------|
-| `INFINIDYSK_LISTEN` | Address for the UI, the SABnzbd API and WebDAV. Default `0.0.0.0:3000`. |
+| `INFINIDYSK_LISTEN` | Address for the UI, the SABnzbd API and WebDAV. The health check asks the same address. Default `0.0.0.0:3000`. |
 | `INFINIDYSK_DATABASE_URL` | Database. Default `sqlite:/config/infinidysk.sqlite`; use `postgres://…` for PostgreSQL. |
 | `PUID` / `PGID` | Owner shown on files in the mount. Default `1000`. |
 | `TZ` | Time zone for the maintenance window and file dates. Default UTC. |

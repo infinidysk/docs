@@ -12,7 +12,12 @@ services:
   plex:
     volumes:
       - /mnt:/mnt:rslave
+    depends_on:
+      infinidysk:
+        condition: service_healthy
 ```
+
+`depends_on` is optional. It starts the media server only after the mount is up; see [Health check](/v2/install/docker/#wait-for-the-mount).
 
 Use the same path in every container. Library symlinks point to absolute paths under the mount (`/mnt/infinidysk/.ids/…` by default), so a container that sees the mount somewhere else cannot follow them.
 
