@@ -54,6 +54,19 @@ a WebDAV read that would have failed with `404 Not Found` returns `503 Service U
 `Retry-After` instead, and a gap in the middle of a file is filled for that read only. Neither case
 schedules a repair or records the segment as missing.
 
+### Replacing files without original grab history
+
+When a damaged file matches an exact Arr library file and a stored or uniquely recovered
+download ID, but Arr no longer has its original grab record, infinidysk removes the damaged
+file and requests a replacement search without blocklisting. Health history states that
+blocklisting was skipped; the regrab record does not claim the release was blocklisted.
+
+The recent-read hold, repair schedule and replacement-loop limits still apply. Arr can
+select the same release again when it has not been blocklisted. Uncertain ownership,
+ambiguous import history and unproven legacy download IDs remain deferred. If the file
+changes during the history lookup, infinidysk leaves the replacement alone. If removal
+succeeds but the search cannot be confirmed, the result remains **Action needed**.
+
 ### When files are rechecked
 
 After a successful health check, infinidysk schedules the next routine check after an
