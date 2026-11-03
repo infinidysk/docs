@@ -15,6 +15,6 @@ Historical stack announcement notes: [0.7.x coordinated release](/v1/community/h
 
 ## License
 
-[MIT](https://github.com/infinidysk/infinidysk/blob/main/LICENSE).
+[MIT](https://github.com/infinidysk/infinidysk/blob/v1/LICENSE).
 
 infinidysk is intended for legally obtained or public domain content only.

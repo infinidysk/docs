@@ -32,7 +32,7 @@ Database migrations apply automatically on startup. **Back up `/config` before u
 
 Coming from an older release or another fork? See [Migration paths](/v1/getting-started/migration/).
 
-Tags: `latest` (current stable), `lts` (trails `latest` by a few releases), `rc` (release candidate), and `dev` (unversioned tip snapshot), plus pinned version tags — see [Release channels and tags](/v1/getting-started/#release-channels-and-tags), [GitHub Releases](https://github.com/infinidysk/infinidysk/releases), and [Changelog](/v1/changelog/).
+Tags: `latest` (current stable), `lts` (trails `latest` by a few releases), `rc` (release candidate), and `dev` (unversioned tip snapshot), plus pinned version tags — see [Release channels and tags](/v1/getting-started/#release-channels-and-tags), [GitHub Releases](https://github.com/infinidysk/infinidysk/releases?q=tag%3Av1), and [Changelog](/v1/changelog/).
 
 ## Automatic container updates {#watchtower-arr-updates}
 

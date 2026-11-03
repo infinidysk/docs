@@ -23,7 +23,7 @@ The .NET SDK, CMake, Ninja, npm install, and Git submodules are not required.
 ## Install
 
 Download the archive for your system from the
-[latest GitHub release](https://github.com/infinidysk/infinidysk/releases/latest):
+[newest 1.x release](https://github.com/infinidysk/infinidysk/releases?q=tag%3Av1):
 
 - `infinidysk-v<version>-linux-x64.tar.gz`
 - `infinidysk-v<version>-linux-arm64.tar.gz`
