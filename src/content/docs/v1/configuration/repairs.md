@@ -147,17 +147,23 @@ health checks.
 
 ### Recent-read hold <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v1.6.3">since 1.6.3</a> {#recent-read-hold}
 
-**Defer Removal After Reads** (`repair.read-hold-minutes`, default `15`, range `0`–`1440`) keeps a
-file available while it is being played. Before any automatic removal or replacement, infinidysk
-checks when the file was last read through WebDAV or the in-app player. If that read is more recent
-than the hold, the removal waits and the file is shown as **Action needed** until the hold expires.
-Each new read renews the deadline. Every path that points at the same library file (for example
-`/content` and `/.ids` aliases) shares one hold.
+**Defer Removal After Reads** (`repair.read-hold-minutes`, default `15`, range `0`–`1440`)
+retains a recently read file when the need for replacement is still uncertain. Reads through
+`/content`, `/.ids` and other paths resolving the same file share that timestamp.
 
-- PAR2 reconstruction still runs first; the hold only delays removal and replacement.
-- Urgent repairs keep their urgent status while held and resume as urgent once the hold expires.
-- The same hold protects removals found by routine background health checks.
-- Set `0` to restore removal in the next repair slot, as in earlier releases.
+When damage is confirmed and the file still needs replacement after PAR2 recovery, a recent
+completed or failed read no longer delays replacement. Transient provider errors and open
+circuits do not establish permanent damage. Repair windows and replacement-loop limits still apply.
+
+An actual WebDAV or in-app GET request protects its file until the request closes, including
+requests stalled without progress. Overlapping readers must all finish before removal can
+proceed. A file held for an active reader stays urgent and becomes eligible shortly after the
+last reader closes; the full recent-read timer is not restarted for confirmed damage.
+
+- PAR2 reconstruction still runs first; these holds only delay removal and replacement.
+- Unconfirmed urgent repairs retain their priority while the recent-read hold runs.
+- The same active-reader protection applies to routine health checks.
+- Set `0` to disable the recent-read timer; active GET requests remain protected.
 - Set it with `NZBDAV_CONFIG__REPAIR__READ_HOLD_MINUTES` for headless installs.
 
 Limits:

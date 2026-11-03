@@ -61,7 +61,9 @@ download ID, but Arr no longer has its original grab record, infinidysk removes 
 file and requests a replacement search without blocklisting. Health history states that
 blocklisting was skipped; the regrab record does not claim the release was blocklisted.
 
-The recent-read hold, repair schedule and replacement-loop limits still apply. Arr can
+Active-reader protection, the repair schedule and replacement-loop limits still apply.
+Confirmed damage requiring replacement can bypass the recent-read timer after the last active
+read closes; see [Recent-read hold](/v1/configuration/repairs/#recent-read-hold). Arr can
 select the same release again when it has not been blocklisted. Uncertain ownership,
 ambiguous import history and unproven legacy download IDs remain deferred. If the file
 changes during the history lookup, infinidysk leaves the replacement alone. If removal
