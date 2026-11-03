@@ -60,7 +60,8 @@ const v2Sidebar = [
 	{
 		label: 'Reference',
 		items: [
-			{ label: 'Settings and environment variables', slug: 'v2/reference/settings' },
+			{ label: 'Settings', slug: 'v2/reference/settings' },
+			{ label: 'Environment variables', slug: 'v2/reference/environment' },
 			{ label: 'Ports, paths and mount layout', slug: 'v2/reference/paths' },
 		],
 	},

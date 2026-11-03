@@ -1,6 +1,6 @@
 ---
-title: Settings and environment variables
-description: How infinidysk 2.x stores settings, how to force one with an environment variable, and the startup variables.
+title: Settings
+description: How infinidysk 2.x stores settings, and the settings you are most likely to change.
 ---
 
 Settings live in the database and are edited in the UI. Any setting can also be forced with an environment variable named `INFINIDYSK__<SECTION>__<KEY>`, for example:
@@ -10,21 +10,7 @@ environment:
   INFINIDYSK__MOUNT__DIR: /mnt/remote/infinidysk
 ```
 
-Forced values show in the UI but are not written back to the database.
-
-## Startup variables
-
-These are read once at startup and are not settings.
-
-| Variable | What it does |
-|----------|--------------|
-| `INFINIDYSK_LISTEN` | Address for the UI, the SABnzbd API and WebDAV. The health check asks the same address. Default `0.0.0.0:3000`. |
-| `INFINIDYSK_DATABASE_URL` | Database. Default `sqlite:/config/infinidysk.sqlite`; use `postgres://…` for PostgreSQL. |
-| `PUID` / `PGID` | Owner shown on files in the mount. Default `1000`. |
-| `TZ` | Time zone for the maintenance window and file dates. Default UTC. |
-| `INFINIDYSK_LOG_DIR` | Where log files are written. Default `/config/logs`. |
-| `RUST_LOG` | Log filter. Default `info`. See [Logs and traces](/v2/operate/logs-traces/). |
-| `INFINIDYSK_FFPROBE` | ffprobe binary for media analysis. Default `ffprobe`; the image includes it, and without it analysis is off. |
+Forced values show in the UI but are not written back to the database. [Environment variables](/v2/reference/environment/) lists every setting, its variable name and the startup variables.
 
 ## Useful settings
 
