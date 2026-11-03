@@ -9,7 +9,8 @@ import starlightPageActions from 'starlight-page-actions';
 import starlightSidebarTopics from 'starlight-sidebar-topics';
 
 const site = 'https://www.infinidysk.com';
-const socialCard = `${site}/assets/social/social-card.png`;
+// Bump ?v= when the card changes; Discord caches preview images by URL.
+const socialCard = `${site}/assets/social/social-card.png?v=2`;
 const discord = 'https://discord.gg/DAya7W6QMa';
 
 const v2Sidebar = [
