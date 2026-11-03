@@ -5,6 +5,8 @@ title: "Contributing"
 Running infinidysk from a cloned repository is how the project is developed, but it is **not a supported deployment method** — releases are tested as the published [Docker image](/v1/getting-started/docker/) and [prebuilt Linux archives](/v1/getting-started/prebuilt-archives/). You are still welcome to run from source; it is not a path releases are tested against. See [Release channels and tags](/v1/getting-started/#release-channels-and-tags) for the supported channels.
 :::
 
+1.x lives on the [`v1` branch](https://github.com/infinidysk/infinidysk/tree/v1); `main` is 2.x. Base 1.x bug-fix PRs on `v1`.
+
 ## Shared environment
 
 Frontend and backend must share:
@@ -60,25 +62,25 @@ dotnet test \
 
 The backend checks also run the quality-ratchet scripts and
 `dotnet format whitespace --verify-no-changes`; see
-[CONTRIBUTING.md](https://github.com/infinidysk/infinidysk/blob/main/CONTRIBUTING.md)
+[CONTRIBUTING.md](https://github.com/infinidysk/infinidysk/blob/v1/CONTRIBUTING.md)
 for the exact commands.
 
-Branch protection on `main` should require **`CI / Required quality gate`**
+Branch protection on `v1` should require **`v1 CI / Required quality gate`**
 (plus Documentation build and the three CodeQL language jobs). That aggregate
 check covers frontend lint/typecheck/build/tests, backend format/build/tests,
 PostgreSQL migrations, native yEnc jobs, quality ratchets, HTTP contracts, and the Docker
 runtime smoke when image inputs change.
 
 Full details, local commands, and ratchet/allowlist rules:
-repository [CONTRIBUTING.md](https://github.com/infinidysk/infinidysk/blob/main/CONTRIBUTING.md)
-and [AGENTS.md](https://github.com/infinidysk/infinidysk/blob/main/AGENTS.md).
+repository [CONTRIBUTING.md](https://github.com/infinidysk/infinidysk/blob/v1/CONTRIBUTING.md)
+and [AGENTS.md](https://github.com/infinidysk/infinidysk/blob/v1/AGENTS.md).
 
 ## Performance regression gates
 
 Pull request CI compares **deterministic** fields from the streaming, SAB API
 and NNTP whole-path reports (`transportRequests`, `transportBytes`, SAB
 `rowsReturned` / `totalCount` / `dbCommands`) against
-[`backend.Benchmarks/Baselines/`](https://github.com/infinidysk/infinidysk/blob/main/backend.Benchmarks/Baselines).
+[`backend.Benchmarks/Baselines/`](https://github.com/infinidysk/infinidysk/tree/v1/backend.Benchmarks/Baselines).
 Timing never blocks a PR.
 
 If that gate fails because you **intentionally** changed transport or query
@@ -105,10 +107,4 @@ python3 scripts/check-performance-baseline.py \
   --candidates /tmp/nntp-whole-path.json \
   --write-baseline $BASE/nntp-whole-path-baseline.json
 ```
-
-Nightly [Performance](https://github.com/infinidysk/infinidysk/actions/workflows/performance.yml)
-runs check latency / throughput / CPU against floored 3× envelopes. To refresh
-those envelopes: **Actions → Performance → Run workflow → rebaseline**. The
-workflow opens a PR and does not merge it. PRs created with `GITHUB_TOKEN` do
-not trigger CI — close/reopen (or push) to run checks.
 

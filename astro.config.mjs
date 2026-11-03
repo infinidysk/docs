@@ -137,7 +137,7 @@ export default defineConfig({
 							id: 'v2',
 							label: 'Version 2.x',
 							link: '/v2/',
-							badge: { text: 'Alpha', variant: 'caution' },
+							badge: { text: 'Beta', variant: 'caution' },
 							items: v2Sidebar,
 						},
 					],
@@ -275,11 +275,11 @@ function v1Sidebar() {
 				{ label: 'Contributing', slug: 'v1/community/contributing' },
 				{
 					label: 'Code boundaries',
-					link: 'https://github.com/infinidysk/infinidysk/blob/main/docs/decisions/0001-code-boundaries.md',
+					link: 'https://github.com/infinidysk/infinidysk/blob/v1/docs/decisions/0001-code-boundaries.md',
 				},
 				{
 					label: 'DI topology',
-					link: 'https://github.com/infinidysk/infinidysk/blob/main/docs/decisions/0002-di-topology.md',
+					link: 'https://github.com/infinidysk/infinidysk/blob/v1/docs/decisions/0002-di-topology.md',
 				},
 				...makeChangelogsSidebarLinks([{ type: 'all', base: 'v1/changelog', label: 'Changelog' }]),
 				{ label: '0.7 stack announcement', slug: 'v1/community/history/release-0.7' },
