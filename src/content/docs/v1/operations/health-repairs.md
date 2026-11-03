@@ -56,6 +56,10 @@ schedules a repair or records the segment as missing.
 
 ### Replacing files without original grab history
 
+For older or migrated library files, infinidysk first tries to recover the original download
+identity from Arr history matching the current file ID and organized path. This lets recovery
+use the original grab record instead of guessing from a migration identifier.
+
 When a damaged file matches an exact Arr library file and a stored or uniquely recovered
 download ID, but Arr no longer has its original grab record, infinidysk removes the damaged
 file and requests a replacement search without blocklisting. Health history states that
