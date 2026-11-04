@@ -3,7 +3,7 @@ title: Before you upgrade
 description: Check that you can upgrade from 1.x to infinidysk 2.x, copy your config and run a dry run.
 ---
 
-The upgrade reads your 1.x config, including one from the old `ghcr.io/nzbdav/nzbdav` image, and imports it into a new database: providers, Arr instances, categories, the SAB API key, WebDAV and admin logins, the mount directory, the library and its item ids, history and the queue.
+The upgrade reads your 1.x config, including one from the old `ghcr.io/nzbdav/nzbdav` image, and imports it into a new database: providers, Arr instances, categories, the SAB API key, WebDAV and admin logins, single sign-on, the mount directory, the library and its item ids, history and the queue.
 
 Your 1.x files are opened read-only and never changed. Still, work on a copy.
 
@@ -33,3 +33,13 @@ Your 1.x files are opened read-only and never changed. Still, work on a copy.
 3. Note the time zone 1.x ran in. 2.x needs the same `TZ`: 1.x stored local times, so a different zone shifts every file date, and media servers may then re-read your whole library.
 
 Next, if 1.x used an rclone sidecar, [move off rclone](/v2/upgrade/rclone/). Otherwise go straight to [Run the upgrade](/v2/upgrade/run/).
+
+## Single sign-on
+
+If 1.x had `OIDC_ISSUER`, `OIDC_CLIENT_ID` and `OIDC_CLIENT_SECRET` set on the container, the upgrade carries them over with `OIDC_REDIRECT_URI`, `OIDC_SCOPES` and `OIDC_USERNAME_CLAIM`. The upgrade reads them from the 2.x container's environment, so keep them on the 2.x service for its first start, and pass them to the dry run too (`docker run --env-file …`). With only some of the three set, SSO stays off, as in 1.x.
+
+After the upgrade the settings live in the database under Settings > System > Access > Single sign-on; 2.x no longer reads the `OIDC_*` variables, so you can remove them. See [Single sign-on](/v2/operate/sso/).
+
+- **`OIDC_ADMIN_CLAIM` is not carried over.** Every SSO user is an admin in 2.x, so users 1.x showed as read-only can change settings. The report adds a note when it was set. Limit who may use the client at your identity provider.
+- **No admin account.** A 1.x install that signed in only through SSO upgrades without one. The report shows `admin: none; sign in with SSO`, and you sign in with SSO.
+- **Invalid settings.** If 2.x rejects the 1.x SSO settings, for example an `http://` issuer on another host, they are left out and the report says why; sign in with your password and set SSO up again. Without an admin account the import stops instead, so nobody can create one. Fix the `OIDC_*` variables, or remove them to create a password account, and start again.

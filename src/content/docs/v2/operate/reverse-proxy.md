@@ -32,4 +32,6 @@ Send `X-Forwarded-Proto: https` from the proxy so the sign-in cookie is marked s
 
 Choose when the UI asks for a password under Settings > System > Access > Sign-in: always, except on the local network, or never. Use **Always** when infinidysk is reachable from the internet.
 
+To sign in through an identity provider instead, see [Single sign-on](/v2/operate/sso/). SSO builds its redirect URI from the public URL.
+
 WebDAV has its own login; see [WebDAV](/v2/operate/webdav/).

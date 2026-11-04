@@ -98,6 +98,15 @@ Each table lists the setting path, its default and what it takes.
 | `auth.mode` | `required` | `required`, `local` (clients on private addresses skip sign-in) or `disabled`. |
 | `auth.api_key` | generated | Text. `X-Api-Key` for scripts calling the admin API. Separate from the SAB key. |
 | `auth.session_key` | generated | Text. Signs UI session cookies. Changing it signs everyone out. |
+| `auth.local_login` | `true` | `true` or `false`. `false` allows only SSO; it can be turned off in the UI only after an SSO sign-in has worked. Set `true` to get back in when the identity provider is down. |
+| `auth.oidc.issuer` | empty | Text. Issuer URL exactly as the provider publishes it. Empty turns SSO off. |
+| `auth.oidc.client_id` | empty | Text. |
+| `auth.oidc.client_secret` | empty | Text. |
+| `auth.oidc.redirect_uri` | empty | Text. Empty means the public URL, else the address the browser used, plus `/auth/oidc/callback`. |
+| `auth.oidc.scopes` | `openid profile email` | Space-separated. `openid` is always sent. |
+| `auth.oidc.username_claim` | `preferred_username` | ID-token claim shown as the username. |
+
+See [Single sign-on](/v2/operate/sso/) for the `auth.oidc` and `auth.local_login` settings.
 
 The admin account itself is created in the UI and has no variable.
 
