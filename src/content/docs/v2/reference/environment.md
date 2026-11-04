@@ -17,7 +17,7 @@ There are two kinds of variables:
 | Variable | Default | What it does |
 |----------|---------|--------------|
 | `INFINIDYSK_LISTEN` | `0.0.0.0:3000` | Address for the UI, the SABnzbd API and WebDAV. The health check asks the same address. |
-| `INFINIDYSK_DATABASE_URL` | `sqlite:/config/infinidysk.sqlite` | Database. Use `postgres://…` for PostgreSQL. |
+| `INFINIDYSK_DATABASE_URL` | `sqlite:/config/infinidysk.sqlite` | Database. Use `postgres://…` for PostgreSQL. Wins over `/config/database.toml` and turns off the move under Settings > System > Database; see [Move to PostgreSQL](/v2/operate/postgresql/#use-infinidysk_database_url-instead). |
 | `PUID` / `PGID` | `1000` | Owner shown on files in the mount. |
 | `TZ` | UTC | Time zone for the maintenance window and file dates. |
 | `RUST_LOG` | `info` | Log filter. See [Logs and traces](/v2/operate/logs-traces/). |

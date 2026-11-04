@@ -15,6 +15,14 @@ Still stuck? Ask in `#infinidysk-development` on [Discord](https://discord.gg/DA
 
 2.x imports only when it finds a SQLite 1.x database at `/config/db.sqlite`. Without one (a wrong config bind, or 1.x on PostgreSQL, which the importer does not read yet) it starts as a new install. Run [`import-report`](/v2/upgrade/#steps) against the same directory: it says `no C# database` in that case. Stop 2.x, fix the bind, and start again on a fresh copy of the 1.x config.
 
+## infinidysk will not start: database.toml is missing
+
+The log says `This install moved to PostgreSQL, but /config/database.toml is missing`. infinidysk refuses to start as an empty install. Restore `database.toml` from your backup to stay on PostgreSQL, or [go back to SQLite](/v2/operate/postgresql/#go-back-to-sqlite).
+
+## The switch to PostgreSQL failed
+
+infinidysk started on SQLite again and Settings > System > Database shows the reason. Nothing is lost; it copies again and you can switch once the page shows **In sync**. See [When something goes wrong](/v2/operate/postgresql/#when-something-goes-wrong).
+
 ## Library symlinks do not resolve after the upgrade
 
 The 2.x mount must sit at exactly the path rclone mounted. See [Move off rclone](/v2/upgrade/rclone/).

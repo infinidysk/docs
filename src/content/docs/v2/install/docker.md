@@ -48,7 +48,7 @@ Create the admin account before you expose port 3000 to an untrusted network. Un
 
 - **Port 3000** serves the UI, the SABnzbd API and WebDAV.
 - **The library** is mounted at `/mnt/infinidysk` by default. Change it under Settings > Platform > Mount, or with `INFINIDYSK__MOUNT__DIR`.
-- **The database** is `/config/infinidysk.sqlite`. Set `INFINIDYSK_DATABASE_URL` to a `postgres://…` URL to use PostgreSQL instead.
+- **The database** is `/config/infinidysk.sqlite`. To use PostgreSQL instead, see [Move to PostgreSQL](/v2/operate/postgresql/).
 - **Logs** go to `/config/logs/infinidysk.log` and the System page.
 
 The full list is in [Ports, paths and mount layout](/v2/reference/paths/).
