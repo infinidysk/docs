@@ -61,7 +61,7 @@ After the switch, the page shows **PostgreSQL** and the database it uses (`user@
 
 ### Cancel
 
-**Cancel** stops the move before the switch. infinidysk empties the PostgreSQL database again and keeps running on SQLite. If it cannot reach the server to empty it, the log says so; empty the database yourself before you use it again.
+**Cancel** stops the move before the switch. infinidysk empties the PostgreSQL database again and keeps running on SQLite. If it cannot reach the server to empty it, a notice says so; empty the database yourself before you use it again.
 
 ### When something goes wrong
 
