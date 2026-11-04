@@ -52,6 +52,7 @@ const v2Sidebar = [
 		items: [
 			{ label: 'Library folders', slug: 'v2/operate/library-folders' },
 			{ label: 'Maintenance', slug: 'v2/operate/maintenance' },
+                     { label: 'Move to PostgreSQL', slug: 'v2/operate/postgresql' },
 			{ label: 'Logs and traces', slug: 'v2/operate/logs-traces' },
 			{ label: 'Reverse proxy', slug: 'v2/operate/reverse-proxy' },
 			{ label: 'WebDAV', slug: 'v2/operate/webdav' },

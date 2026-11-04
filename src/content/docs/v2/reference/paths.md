@@ -11,7 +11,10 @@ Port 3000 serves everything: the UI, the SABnzbd API, WebDAV, `.strm` playback l
 
 | Path | What it is |
 |------|------------|
-| `/config/infinidysk.sqlite` | The database, unless `INFINIDYSK_DATABASE_URL` points elsewhere. |
+| `/config/infinidysk.sqlite` | The database, unless it moved to [PostgreSQL](/v2/operate/postgresql/) or `INFINIDYSK_DATABASE_URL` points elsewhere. |
+| `/config/database.toml` | The PostgreSQL URL after a [move to PostgreSQL](/v2/operate/postgresql/). Holds the database password. |
+| `/config/infinidysk.sqlite.pre-postgres` | The SQLite database as it was at the move to PostgreSQL. Rename it back to [return to SQLite](/v2/operate/postgresql/#go-back-to-sqlite). |
+| `/config/metrics.sqlite` | The metrics store. Stays SQLite, also with PostgreSQL. |
 | `/config/logs/` | Log files. See [Logs and traces](/v2/operate/logs-traces/). |
 | `/mnt/infinidysk` | The mount, by default. Set under Settings > Platform > Mount. |
 
