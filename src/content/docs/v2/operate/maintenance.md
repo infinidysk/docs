@@ -1,6 +1,6 @@
 ---
 title: Maintenance
-description: The daily maintenance window in 2.x and the jobs that remove unlinked files, remove dead links and compact the database.
+description: The daily maintenance window in 2.x and the jobs that remove unlinked files, remove dead links, compact the database and back it up.
 ---
 
 Maintenance jobs are housekeeping tasks. Each one can run by hand, as a dry run, or once in every daily maintenance window. They live under Settings > System > Maintenance.
@@ -35,3 +35,7 @@ When more than 5% of the links would go, it removes nothing and waits for review
 ## Compact database
 
 Gives unused space in the SQLite files back to the disk. Always scheduled; skipped on PostgreSQL. In the window it runs only when at least 25% and 100 MB can be reclaimed, and never while imports run.
+
+## Back up database
+
+Writes a checked copy of the SQLite database to the backup folder and keeps the newest ones. Off by default; skipped on PostgreSQL. See [Backups and restore](/v2/operate/backups/).
