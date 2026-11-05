@@ -26,6 +26,8 @@ Forced values show in the UI but are not written back to the database. [Environm
 | Keep unused NZBs<br/>`queue.nzb_retention_days` | Settings > Automation > Imports. Days an unused NZB is kept, default 30. |
 | Public URL<br/>`network.public_url` | Settings > System > Network. The address Arrs and media servers use; see [Reverse proxy](/v2/operate/reverse-proxy/#public-url). |
 | Trusted proxies<br/>`network.trusted_proxies` | Settings > System > Network. Proxies whose `X-Forwarded-For` header is trusted. |
+| Single sign-on<br/>`auth.oidc` | Settings > System > Access > Single sign-on. Sign in to the UI through an OIDC provider; see [Single sign-on](/v2/operate/sso/). |
+| Password sign-in<br/>`auth.local_login` | Settings > System > Access > Single sign-on. Turn off to allow only SSO. |
 | Prometheus metrics<br/>`metrics.prometheus` | Settings > System > Access. Serves `/metrics` behind the admin API key. |
 
 Health settings are listed in [Health checks and repair](/v2/how-it-works/health/#settings).

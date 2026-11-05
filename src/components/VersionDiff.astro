@@ -16,6 +16,7 @@ const groups: { title: string; rows: Row[] }[] = [
 			'SQLite and PostgreSQL',
 			'Prometheus metrics',
 			'Backup and restore',
+			'Single sign-on (OIDC)',
 		].map(both),
 	},
 	{
@@ -32,6 +33,7 @@ const groups: { title: string; rows: Row[] }[] = [
 			{ feature: 'Connection cap across all providers', href: '/v1/configuration/usenet/', v1: 'Yes', v2: 'Not yet' },
 			{ feature: 'Stremio and addon routes', href: '/v1/guides/stremio/', v1: 'Yes', v2: 'Not yet' },
 			{ feature: 'Search, indexers and Prowlarr', href: '/v1/features/indexer-search/', v1: 'Yes', v2: 'Not yet' },
+			{ feature: 'Read-only role for SSO users', href: '/v1/configuration/oidc/', v1: 'Yes', v2: 'No' },
 			{ feature: 'Watchtower, Preflight and Warden', href: '/v1/features/warden-watchdog-preflight/', v1: 'Yes', v2: 'Not planned' },
 		],
 	},

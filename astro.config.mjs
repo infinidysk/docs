@@ -56,6 +56,7 @@ const v2Sidebar = [
                      { label: 'Move to PostgreSQL', slug: 'v2/operate/postgresql' },
 			{ label: 'Logs and traces', slug: 'v2/operate/logs-traces' },
 			{ label: 'Reverse proxy', slug: 'v2/operate/reverse-proxy' },
+			{ label: 'Single sign-on (SSO)', slug: 'v2/operate/sso' },
 			{ label: 'WebDAV', slug: 'v2/operate/webdav' },
 		],
 	},
