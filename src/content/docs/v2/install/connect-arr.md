@@ -20,7 +20,7 @@ The Arr imports from the mount, so it must see the mount at the same path infini
 
 ## Add the Arr to infinidysk
 
-Add each Arr under Settings > Automation > Arr instances with its URL and API key. Each instance has a type (Sonarr, Radarr, Lidarr, Readarr, Whisparr or Sportarr); there is one list for all of them.
+Add each Arr under Settings > Automation > Arr instances with its URL and API key. Each instance has a type (Sonarr, Radarr, Lidarr, Chaptarr, Whisparr or Sportarr); there is one list for all of them.
 
 infinidysk then finds out which categories each Arr owns by reading its download clients. You do not map categories by hand. The instance shows what was found.
 
@@ -34,3 +34,15 @@ With an Arr connected, 2.x:
 Queue clearing is on by default. To handle stuck entries yourself, turn off **Clear stuck imports** under Settings > Automation > Imports > Arr queue.
 
 If your Arrs reach infinidysk through a reverse proxy, set the public URL; see [Reverse proxy](/v2/operate/reverse-proxy/).
+
+## Chaptarr
+
+Chaptarr's SABnzbd client has two category fields: one for audiobooks and one for ebooks. Give each its own category, for example `audiobooks` and `books`, and add both under Settings > Automation > Download client > Categories first. infinidysk then knows which kind of book each download holds, so a broken audiobook is only replaced by an audiobook. If both fields name the same category, that category holds both kinds.
+
+Chaptarr categories always hand off as [symlinks](/v2/install/import-strategy/), so Chaptarr and your media server must see the mount.
+
+:::caution[Readarr is no longer supported]
+Readarr is abandoned upstream, so 2.x supports Chaptarr instead. Newer 2.x releases do not start while a Readarr instance is configured. Before you update, remove it under Settings > Automation > Arr instances (or from [`INFINIDYSK__ARR_INSTANCES`](/v2/reference/environment/#arr-instances-arr_instances-arr)), then add Chaptarr after the update. If you already updated, start the previous version to remove it, or set `INFINIDYSK__ARR_INSTANCES` to a list without it.
+
+The [upgrade from 1.x](/v2/upgrade/) does not carry Readarr instances over.
+:::

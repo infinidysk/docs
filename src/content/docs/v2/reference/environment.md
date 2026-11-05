@@ -187,7 +187,7 @@ The admin account itself is created in the UI and has no variable.
 |-------|---------|--------|
 | `id` | new at every start | A UUID. Set a fixed one. |
 | `name` | required | Text, not empty. |
-| `profile` | required | `sonarr`, `radarr`, `lidarr`, `readarr`, `whisparr` or `sportarr`. |
+| `profile` | required | `sonarr`, `radarr`, `lidarr`, `chaptarr`, `whisparr` or `sportarr`. |
 | `url` | required | `http://` or `https://` address. |
 | `api_key` | required | Text. |
 | `enabled` | `true` | `true` or `false`. |
