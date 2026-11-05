@@ -27,6 +27,7 @@ There are two kinds of variables:
 | `INFINIDYSK_TRACE_MINUTES` | `0` | Traces every file opened in the first this many minutes after start. For bug reports. |
 | `INFINIDYSK_EXPERIMENTS` | empty | Comma list of [experiments](#experiments) to switch on, on top of the `experiments` setting. |
 | `SQLITE_TMPDIR` / `TMPDIR` | `/var/tmp` | Where SQLite writes its temporary copy when the database is compacted. Needs free space the size of the database. |
+| `DATABASE_PROVIDER` / `DATABASE_CONNECTION_STRING` | unset | Only for the [upgrade from 1.x on PostgreSQL](/v2/upgrade/postgresql/): set them as 1.x had them. The import reads the 1.x database with them; remove them once it is done. Also honors the `PG…` variables 1.x's driver read, such as `PGPASSWORD` and `PGPASSFILE`. |
 
 ## Setting variables
 

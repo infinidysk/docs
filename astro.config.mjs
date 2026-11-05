@@ -35,8 +35,7 @@ const v2Sidebar = [
 		label: 'Upgrade from 1.x',
 		items: [
 			{ label: 'Before you upgrade', slug: 'v2/upgrade' },
-			{ label: 'Move off rclone', slug: 'v2/upgrade/rclone' },
-			{ label: 'Run the upgrade', slug: 'v2/upgrade/run' },
+			{ label: 'Move off rclone', slug: 'v2/upgrade/rclone' },					{ label: '1.x on PostgreSQL', slug: 'v2/upgrade/postgresql' },			{ label: 'Run the upgrade', slug: 'v2/upgrade/run' },
 		],
 	},
 	{

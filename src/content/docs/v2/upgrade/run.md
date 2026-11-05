@@ -3,7 +3,7 @@ title: Run the upgrade
 description: Start infinidysk 2.x on a copy of your 1.x config, point your Arrs at it, and roll back if needed.
 ---
 
-Do the steps in [Before you upgrade](/v2/upgrade/) first, and [Move off rclone](/v2/upgrade/rclone/) if 1.x used an rclone sidecar.
+Do the steps in [Before you upgrade](/v2/upgrade/) first, and [Move off rclone](/v2/upgrade/rclone/) if 1.x used an rclone sidecar. If 1.x kept its data in PostgreSQL, read [Upgrade from 1.x on PostgreSQL](/v2/upgrade/postgresql/) too.
 
 ## Steps
 
@@ -18,7 +18,7 @@ Do not run 1.x and 2.x at the same time. Both would use your provider connection
 
 ## Roll back
 
-Stop 2.x and start 1.x on the original `./config`. Anything imported or added while on 2.x is not carried back.
+Stop 2.x and start 1.x on the original `./config`. Anything imported or added while on 2.x is not carried back. A 1.x PostgreSQL database is never changed by the upgrade, so 1.x picks up where it stopped.
 
 ## What does not carry over
 

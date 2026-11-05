@@ -7,9 +7,12 @@ The upgrade reads your 1.x config, including one from the old `ghcr.io/nzbdav/nz
 
 Your 1.x files are opened read-only and never changed. Still, work on a copy.
 
+:::note[1.x on PostgreSQL]
+The upgrade imports 1.x installs on PostgreSQL too. 2.x reads the 1.x database and imports it into SQLite; you can move to PostgreSQL afterwards. See [Upgrade from 1.x on PostgreSQL](/v2/upgrade/postgresql/) for what it needs. There is no dry run for these installs, so skip step 2 below.
+:::
+
 :::caution[Who should not upgrade yet]
 - **DUMB users.** 2.x does not ship binaries packaged for DUMB yet. Stay on 1.x for now.
-- **1.x on PostgreSQL.** The importer only reads a SQLite 1.x database (`db.sqlite`). Without one, 2.x starts as a new, empty install instead of importing, and `import-report` says `no C# database`.
 - **1.x older than v1.3.0.** Update 1.x and start it once first.
 - **`nzbdav-dev/nzbdav` 0.6.4.** [Migrate to the latest 1.x](/v1/getting-started/migration/) and start it once first.
 - **You need a 1.x feature 2.x does not have yet.** See [What's new in 2.x](/v2/whats-new/#feature-comparison).

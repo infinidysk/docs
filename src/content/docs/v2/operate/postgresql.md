@@ -5,6 +5,8 @@ description: Copy the infinidysk 2.x database from SQLite to PostgreSQL from the
 
 infinidysk starts on SQLite, in `/config/infinidysk.sqlite`. You can move it to a PostgreSQL server from Settings > System > Database. infinidysk copies everything while it keeps running, keeps the copy in sync, and switches when you choose.
 
+Upgraded from 1.x on PostgreSQL? The upgrade imported into SQLite; this page moves it to PostgreSQL. Use a new, empty database, not the 1.x one. See [Upgrade from 1.x on PostgreSQL](/v2/upgrade/postgresql/).
+
 :::caution
 Back up `/config` before you switch.
 :::
