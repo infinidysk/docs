@@ -13,7 +13,11 @@ Still stuck? Ask in `#infinidysk-development` on [Discord](https://discord.gg/DA
 
 ## 2.x started empty after the upgrade
 
-2.x imports only when it finds a SQLite 1.x database at `/config/db.sqlite`. Without one (a wrong config bind, or 1.x on PostgreSQL, which the importer does not read yet) it starts as a new install. Run [`import-report`](/v2/upgrade/#steps) against the same directory: it says `no C# database` in that case. Stop 2.x, fix the bind, and start again on a fresh copy of the 1.x config.
+2.x imports when it finds a 1.x database: `/config/db.sqlite`, or a PostgreSQL database named by `DATABASE_PROVIDER` and `DATABASE_CONNECTION_STRING` (or by `/config/db-contract.json`). Without either, usually because of a wrong config bind, it starts as a new install. Run [`import-report`](/v2/upgrade/#steps) against the same directory: it says `no C# database` in that case. Stop 2.x, fix the bind, and start again on a fresh copy of the 1.x config. For 1.x on PostgreSQL, see [Upgrade from 1.x on PostgreSQL](/v2/upgrade/postgresql/).
+
+## The upgrade stops while copying 1.x PostgreSQL data
+
+The upgrade screen shows the reason, and 2.x copies again on the next start. See [If the copy fails](/v2/upgrade/postgresql/#if-the-copy-fails).
 
 ## infinidysk will not start: database.toml is missing
 
