@@ -35,6 +35,12 @@ Queue clearing is on by default. To handle stuck entries yourself, turn off **Cl
 
 If your Arrs reach infinidysk through a reverse proxy, set the public URL; see [Reverse proxy](/v2/operate/reverse-proxy/).
 
+## Lidarr
+
+Lidarr categories always hand off as [symlinks](/v2/install/import-strategy/), so Lidarr and your media server must see the mount.
+
+Files on the mount are read-only, so Lidarr cannot write tags into them. In Lidarr, set **Write Metadata to Audio Files** to **Never** under Settings > Metadata. While it is on, the Arr instance in infinidysk shows a warning. infinidysk only reads this setting; it never changes it.
+
 ## Chaptarr
 
 Chaptarr's SABnzbd client has two category fields: one for audiobooks and one for ebooks. Give each its own category, for example `audiobooks` and `books`, and add both under Settings > Automation > Download client > Categories first. infinidysk then knows which kind of book each download holds, so a broken audiobook is only replaced by an audiobook. If both fields name the same category, that category holds both kinds.
