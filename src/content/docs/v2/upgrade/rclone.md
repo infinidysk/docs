@@ -48,4 +48,4 @@ Set your [library folders](/v2/operate/library-folders/) first, then change **Di
 
 ## Without FUSE
 
-If the container cannot get `/dev/fuse`, 2.x logs a warning and runs WebDAV only. You can keep rclone in that case; see [WebDAV](/v2/operate/webdav/#without-fuse).
+If the container cannot get `/dev/fuse`, 2.x logs a warning and runs WebDAV only. You can keep rclone in that case: turn off the built-in FUSE mount so 2.x leaves the rclone mount alone. See [WebDAV](/v2/operate/webdav/#without-fuse).

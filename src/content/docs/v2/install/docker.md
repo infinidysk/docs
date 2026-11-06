@@ -55,7 +55,7 @@ The full list is in [Ports, paths and mount layout](/v2/reference/paths/).
 
 ## FUSE in Docker
 
-- `/dev/fuse`, `SYS_ADMIN` and `apparmor:unconfined` let the container mount. Without `/dev/fuse`, 2.x logs a warning and serves [WebDAV](/v2/operate/webdav/) only.
+- `/dev/fuse`, `SYS_ADMIN` and `apparmor:unconfined` let the container mount. Without `/dev/fuse`, 2.x logs a warning and serves [WebDAV](/v2/operate/webdav/) only. WebDAV-only setups can [turn the mount off](/v2/operate/webdav/#without-fuse) and drop these.
 - `:rshared` on the parent directory makes the mount visible on the host and in other containers. They bind it with `:rslave`; see [Connect your media server](/v2/install/media-servers/).
 - The `/sys/devices/virtual/bdi` volume lets the preset under Settings > Platform > Performance set the kernel's readahead. Docker mounts `/sys` read-only, so without it readahead stays at the kernel's 128 KB.
 
@@ -68,7 +68,7 @@ Healthy means all of these hold:
 - The server answers on its port.
 - The database answers.
 - The import worker runs.
-- The mount is mounted and answers. Without `/dev/fuse` the mount is not checked.
+- The mount is mounted and answers. Without `/dev/fuse`, or with the built-in mount turned off, the mount is not checked.
 
 A normal start turns healthy within seconds. The first start after an [upgrade from 1.x](/v2/upgrade/run/) stays `starting` until the import is done. If the import takes longer than the 10-minute start period, the container shows `unhealthy` until it ends.
 
@@ -110,4 +110,4 @@ The check runs `infinidysk healthcheck`, which asks `GET /healthz` on the addres
 {"status":"healthy","checks":{"database":"pass","mount":"pass","queue":"pass"}}
 ```
 
-Each check is `pass`, `fail`, `pending` (not ready yet) or `off` (does not apply, for example `mount` without `/dev/fuse`). During the first start after an upgrade, the body has one `import` check instead. The reason a check fails is in the [log](/v2/operate/logs-traces/), not in the answer.
+Each check is `pass`, `fail`, `pending` (not ready yet) or `off` (does not apply, for example `mount` without `/dev/fuse` or with the built-in mount turned off). During the first start after an upgrade, the body has one `import` check instead. The reason a check fails is in the [log](/v2/operate/logs-traces/), not in the answer.

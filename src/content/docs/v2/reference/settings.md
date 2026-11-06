@@ -17,6 +17,7 @@ Forced values show in the UI but are not written back to the database. [Environm
 | Setting | What it does |
 |---------|--------------|
 | Mount directory<br/>`mount.dir` | Settings > Platform > Mount. `/mnt/infinidysk` by default. Read at startup. |
+| Built-in FUSE mount<br/>`mount.fuse` | Settings > Platform > Mount. On by default. Turn it off if you only use WebDAV. Read at startup. |
 | Disable file timestamps<br/>`mount.epoch_times` | Settings > Platform > Mount. For libraries moved off an rclone mount that used `--no-modtime`; see [Move off rclone](/v2/upgrade/rclone/). |
 | Performance preset<br/>`performance.preset` | Settings > Platform > Performance. Read-ahead, memory cache and optional disk cache. |
 | Download speed limit<br/>`network.download_limit_mb_per_s` | Settings > Platform > Performance. One cap on the combined download speed from all providers, in MB/s. Serving files to players is not limited. |

@@ -124,6 +124,7 @@ The admin account itself is created in the UI and has no variable.
 | Setting | Default | Values |
 |---------|---------|--------|
 | `mount.dir` | `/mnt/infinidysk` | Absolute path. Where the library is mounted, as the Arrs see it. |
+| `mount.fuse` | `true` | `false` turns off the built-in FUSE mount, for WebDAV-only setups. Read at startup. See [WebDAV](/v2/operate/webdav/#without-fuse). |
 | `mount.epoch_times` | `false` | `true` shows 1970 dates on media files, like an rclone mount with `--no-modtime`. See [Move off rclone](/v2/upgrade/rclone/). |
 
 ### Performance (`performance`)
