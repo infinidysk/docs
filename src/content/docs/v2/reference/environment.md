@@ -17,12 +17,13 @@ There are two kinds of variables:
 | Variable | Default | What it does |
 |----------|---------|--------------|
 | `INFINIDYSK_LISTEN` | `0.0.0.0:3000` | Address for the UI, the SABnzbd API and WebDAV. The health check asks the same address. |
-| `INFINIDYSK_DATABASE_URL` | `sqlite:/config/infinidysk.sqlite` | Database. Use `postgres://…` for PostgreSQL. Wins over `/config/database.toml` and turns off the move under Settings > System > Database; see [Move to PostgreSQL](/v2/operate/postgresql/#use-infinidysk_database_url-instead). |
+| `INFINIDYSK_CONFIG_DIR` | `/config` | The folder infinidysk keeps its files in: the SQLite database, `database.toml`, metrics, logs, backups, the disk cache, and the 1.x install to import. Must be an absolute path; infinidysk creates it when missing. For installs outside Docker; in the container, leave it unset and bind `/config`. See [Container paths](/v2/reference/paths/#container-paths). |
+| `INFINIDYSK_DATABASE_URL` | `sqlite:<config folder>/infinidysk.sqlite` | Database. Use `postgres://…` for PostgreSQL. Wins over `database.toml` in the config folder and turns off the move under Settings > System > Database; see [Move to PostgreSQL](/v2/operate/postgresql/#use-infinidysk_database_url-instead). |
 | `PUID` / `PGID` | `1000` | Owner shown on files in the mount. |
 | `TZ` | UTC | Time zone for the maintenance window and file dates. |
 | `RUST_LOG` | `info` | Log filter. See [Logs and traces](/v2/operate/logs-traces/). |
-| `INFINIDYSK_LOG_DIR` | `logs` beside the SQLite database, else `/config/logs` | Where log files are written. |
-| `INFINIDYSK_METRICS_PATH` | `metrics.sqlite` beside the SQLite database, else `/config/metrics.sqlite` | The metrics store. Always its own SQLite file, also with PostgreSQL. |
+| `INFINIDYSK_LOG_DIR` | `logs` in `INFINIDYSK_CONFIG_DIR` when set, else beside the SQLite database, else `/config/logs` | Where log files are written. |
+| `INFINIDYSK_METRICS_PATH` | `metrics.sqlite` in `INFINIDYSK_CONFIG_DIR` when set, else beside the SQLite database, else `/config/metrics.sqlite` | The metrics store. Always its own SQLite file, also with PostgreSQL. |
 | `INFINIDYSK_FFPROBE` | `ffprobe` | ffprobe binary for media analysis. The image includes it. Without it, analysis is off. |
 | `INFINIDYSK_TRACE_MINUTES` | `0` | Traces every file opened in the first this many minutes after start. For bug reports. |
 | `INFINIDYSK_EXPERIMENTS` | empty | Comma list of [experiments](#experiments) to switch on, on top of the `experiments` setting. |
@@ -139,7 +140,7 @@ The admin account itself is created in the UI and has no variable.
 | `performance.memory_cache_enabled` | `true` | `true` or `false`. |
 | `performance.memory_cache_mb` | from preset | 16–65536. |
 | `performance.disk_cache_enabled` | `false` | `true` or `false`. |
-| `performance.disk_cache_dir` | `/config/cache` | Absolute path outside the mount. |
+| `performance.disk_cache_dir` | `cache` in the config folder (`/config/cache`) | Absolute path outside the mount. |
 | `performance.disk_cache_gb` | `25` | 1–100000. |
 | `performance.disk_cache_max_age_hours` | `168` | 1–8760. |
 | `performance.fuse_max_readahead_kb` | from preset | 128–65536. |

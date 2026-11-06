@@ -9,6 +9,8 @@ Port 3000 serves everything: the UI, the SABnzbd API, WebDAV, `.strm` playback l
 
 ## Container paths
 
+`/config` is the config folder. Outside Docker, set [`INFINIDYSK_CONFIG_DIR`](/v2/reference/environment/#startup-variables) to keep these files in another folder; the `/config` paths below then start with that folder instead.
+
 | Path | What it is |
 |------|------------|
 | `/config/infinidysk.sqlite` | The database, unless it moved to [PostgreSQL](/v2/operate/postgresql/) or `INFINIDYSK_DATABASE_URL` points elsewhere. |
@@ -19,6 +21,7 @@ Port 3000 serves everything: the UI, the SABnzbd API, WebDAV, `.strm` playback l
 | `/config/backups/` | [Database backups](/v2/operate/backups/), unless you set another backup folder. Holds secrets. |
 | `/config/infinidysk.sqlite.before-restore` | The database a [restore](/v2/operate/backups/#undo-a-restore) replaced, kept for undo. |
 | `/config/logs/` | Log files. See [Logs and traces](/v2/operate/logs-traces/). |
+| `/config/cache/` | The disk cache, when turned on, unless you set another folder under Settings > Platform > Performance. |
 | `/mnt/infinidysk` | The mount, by default. Set under Settings > Platform > Mount. |
 
 ## Mount layout
