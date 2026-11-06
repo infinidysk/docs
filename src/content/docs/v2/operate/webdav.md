@@ -18,3 +18,5 @@ Playback links in `.strm` files use `/view/…` with a signed token or the **Dow
 ## Without FUSE
 
 If the container cannot get `/dev/fuse`, 2.x logs a warning and serves WebDAV only. Mount it with rclone pointed at `http://infinidysk:3000/`. 2.x does not send rclone refresh notifications, so keep `--dir-cache-time` short.
+
+If you do not use the built-in mount, turn off **Built-in FUSE mount** under Settings > Platform > Mount, or set `INFINIDYSK__MOUNT__FUSE: "false"`, and restart. 2.x then skips the mount and its warnings, and leaves anything mounted at the mount directory alone, such as an rclone mount. Keep **Directory** set to where that mount is, as the Arrs see it, so symlinks still point at it.

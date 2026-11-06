@@ -7,7 +7,7 @@ Still stuck? Ask in `#infinidysk-development` on [Discord](https://discord.gg/DA
 
 ## The mount is empty or missing
 
-- Check the log for a warning about `/dev/fuse`. Without it 2.x serves WebDAV only. Add the device, `SYS_ADMIN` and `apparmor:unconfined` as in the [compose file](/v2/install/docker/#compose-file).
+- Check the log for a warning about `/dev/fuse`. Without it 2.x serves WebDAV only. Add the device, `SYS_ADMIN` and `apparmor:unconfined` as in the [compose file](/v2/install/docker/#compose-file). If you only use WebDAV, [turn the built-in mount off](/v2/operate/webdav/#without-fuse) instead.
 - The mount shows on the host and in other containers only when the parent directory is bound with `:rshared` here and `:rslave` in the readers. See [Share the mount](/v2/install/media-servers/#share-the-mount).
 - After a crash, readers see "Transport endpoint is not connected" until infinidysk starts again.
 
