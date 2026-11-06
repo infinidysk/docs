@@ -25,6 +25,7 @@ const v2Sidebar = [
 		label: 'New install',
 		items: [
 			{ label: 'Run with Docker', slug: 'v2/install/docker' },
+			{ label: 'Run from a Linux archive', slug: 'v2/install/linux-archive' },
 			{ label: 'Providers', slug: 'v2/install/providers' },
 			{ label: 'Connect Arr instances', slug: 'v2/install/connect-arr' },
 			{ label: 'Connect your media server', slug: 'v2/install/media-servers' },
