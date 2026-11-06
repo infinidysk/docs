@@ -11,6 +11,10 @@ Still stuck? Ask in `#infinidysk-development` on [Discord](https://discord.gg/DA
 - The mount shows on the host and in other containers only when the parent directory is bound with `:rshared` here and `:rslave` in the readers. See [Share the mount](/v2/install/media-servers/#share-the-mount).
 - After a crash, readers see "Transport endpoint is not connected" until infinidysk starts again.
 
+## Warning: FUSE readahead stays at the kernel default
+
+The container cannot write the kernel's readahead setting, so the mount keeps the kernel's 128 KB. Playback still works. Add `/sys/devices/virtual/bdi:/sys/devices/virtual/bdi:rw` to the volumes as in the [compose file](/v2/install/docker/#compose-file). [Readahead volume](/v2/install/docker/#readahead-volume) explains why.
+
 ## 2.x started empty after the upgrade
 
 2.x imports when it finds a 1.x database: `/config/db.sqlite`, or a PostgreSQL database named by `DATABASE_PROVIDER` and `DATABASE_CONNECTION_STRING` (or by `/config/db-contract.json`). Without either, usually because of a wrong config bind, it starts as a new install. Run [`import-report`](/v2/upgrade/#steps) against the same directory: it says `no C# database` in that case. Stop 2.x, fix the bind, and start again on a fresh copy of the 1.x config. For 1.x on PostgreSQL, see [Upgrade from 1.x on PostgreSQL](/v2/upgrade/postgresql/).

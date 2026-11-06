@@ -57,7 +57,21 @@ The full list is in [Ports, paths and mount layout](/v2/reference/paths/).
 
 - `/dev/fuse`, `SYS_ADMIN` and `apparmor:unconfined` let the container mount. Without `/dev/fuse`, 2.x logs a warning and serves [WebDAV](/v2/operate/webdav/) only. WebDAV-only setups can [turn the mount off](/v2/operate/webdav/#without-fuse) and drop these.
 - `:rshared` on the parent directory makes the mount visible on the host and in other containers. They bind it with `:rslave`; see [Connect your media server](/v2/install/media-servers/).
-- The `/sys/devices/virtual/bdi` volume lets the preset under Settings > Platform > Performance set the kernel's readahead. Docker mounts `/sys` read-only, so without it readahead stays at the kernel's 128 KB.
+- The `/sys/devices/virtual/bdi` volume lets infinidysk raise the kernel's readahead for the mount. It is optional; see [Readahead volume](#readahead-volume).
+
+### Readahead volume
+
+The mount works without this volume. It only makes sequential reads faster.
+
+- The kernel limits how far ahead it reads on a FUSE mount with a per-mount setting, `read_ahead_kb`. The default is 128 KB, and infinidysk cannot ask for more at mount time.
+- The only way to change it is to write to `/sys/class/bdi/<device>/read_ahead_kb`, which points into `/sys/devices/virtual/bdi`.
+- Docker mounts `/sys` read-only, so that write fails. Binding `/sys/devices/virtual/bdi` with `:rw` makes only that directory writable; the rest of `/sys` stays read-only.
+
+With 128 KB, a player reading a file from start to end sends many small reads to infinidysk. A larger window means fewer, larger reads, and more of the file is on its way before the player asks for it. That gives smoother playback, mostly on high-bitrate files.
+
+The value comes from the preset under Settings > Platform > Performance, or from `performance.fuse_max_readahead_kb` (see [Environment variables](/v2/reference/environment/)).
+
+Without the volume, infinidysk keeps the kernel's 128 KB and logs one warning at start: `FUSE readahead stays at the kernel default`.
 
 ## Health check
 
