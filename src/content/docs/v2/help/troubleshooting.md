@@ -13,7 +13,13 @@ Still stuck? Ask in `#infinidysk-development` on [Discord](https://discord.gg/DA
 
 ## Warning: FUSE readahead stays at the kernel default
 
-The container cannot write the kernel's readahead setting, so the mount keeps the kernel's 128 KB. Playback still works. Add `/sys/devices/virtual/bdi:/sys/devices/virtual/bdi:rw` to the volumes as in the [compose file](/v2/install/docker/#compose-file). [Readahead volume](/v2/install/docker/#readahead-volume) explains why.
+This section also covers `FUSE readahead could not be set from this process` and `FUSE background limits could not all be set from this process`. These warnings describe infinidysk's own tuning attempts, not a failed mount. Without tuning, smaller kernel limits can reduce read throughput.
+
+With rootful Docker, add `/sys/devices/virtual/bdi:/sys/devices/virtual/bdi:rw` for readahead, as in the [compose file](/v2/install/docker/#compose-file). Background tuning needs accessible, writable fusectl connection files; the container uses `SYS_ADMIN` to attempt a fusectl mount when necessary.
+
+With rootless Docker, container root and `SYS_ADMIN` do not grant host-root permissions. A `:rw` bind does not make host-root-owned sysfs files writable by the container. Do not add it solely to silence this warning. The fusectl connection files may also be unavailable in the container. A host administrator can manage these limits from a context that can access and write the live kernel objects: BDI `read_ahead_kb` and the matching fusectl connection's `max_background` and `congestion_threshold`. Recheck the connection and values after each remount.
+
+`FUSE kernel limits` reports a one-time reading after the app's tuning attempts. It may precede a host service's update. infinidysk does not reread these limits or monitor that service, so confirm external tuning from the live kernel values and the service's own status. A startup warning does not prove external tuning failed. [Readahead volume](/v2/install/docker/#readahead-volume) explains the rootful bind mount.
 
 ## 2.x started empty after the upgrade
 

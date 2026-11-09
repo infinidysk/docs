@@ -65,13 +65,15 @@ The mount works without this volume. It only makes sequential reads faster.
 
 - The kernel limits how far ahead it reads on a FUSE mount with a per-mount setting, `read_ahead_kb`. The default is 128 KB, and infinidysk cannot ask for more at mount time.
 - The only way to change it is to write to `/sys/class/bdi/<device>/read_ahead_kb`, which points into `/sys/devices/virtual/bdi`.
-- Docker mounts `/sys` read-only, so that write fails. Binding `/sys/devices/virtual/bdi` with `:rw` makes only that directory writable; the rest of `/sys` stays read-only.
+- Docker mounts `/sys` read-only, so that write fails. With rootful Docker, binding `/sys/devices/virtual/bdi` with `:rw` makes only that directory writable; the rest of `/sys` stays read-only.
 
 With 128 KB, a player reading a file from start to end sends many small reads to infinidysk. A larger window means fewer, larger reads, and more of the file is on its way before the player asks for it. That gives smoother playback, mostly on high-bitrate files.
 
 The value comes from the preset under Settings > Platform > Performance, or from `performance.fuse_max_readahead_kb` (see [Environment variables](/v2/reference/environment/)).
 
-Without the volume, infinidysk keeps the kernel's 128 KB and logs one warning at start: `FUSE readahead stays at the kernel default`.
+If infinidysk cannot write the readahead setting, it logs `FUSE readahead could not be set from this process` (older versions say `FUSE readahead stays at the kernel default`). The mount still works, but this warning does not establish whether an external service tunes it later.
+
+The bind-mount advice above assumes rootful Docker. Rootless Docker may lack access to host-owned tuning files and fusectl even with `SYS_ADMIN`. See [FUSE tuning warnings](/v2/help/troubleshooting/#warning-fuse-readahead-stays-at-the-kernel-default) for rootless limitations and external tuning.
 
 ## Health check
 
