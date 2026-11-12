@@ -24,6 +24,7 @@ Forced values show in the UI but are not written back to the database. [Environm
 | Import strategy<br/>`imports.strategy` | Settings > Automation > Library. `symlinks` or `strm`; see [Choose an import strategy](/v2/install/import-strategy/). |
 | Library folders<br/>`imports.library_dirs` | Settings > Automation > Library. See [Library folders](/v2/operate/library-folders/). |
 | Imports at once<br/>`queue.concurrency` | Settings > Automation > Imports. 1–10, default 2. |
+| Import sample size<br/>`health.import_check_percent` | Settings > Automation > Imports. Articles checked before an import completes, 5–100%, default 5. Independent of the health sample. At 100%, the import also performs the first health check. |
 | Keep unused NZBs<br/>`queue.nzb_retention_days` | Settings > Automation > Imports. Days an unused NZB is kept, default 30. |
 | Public URL<br/>`network.public_url` | Settings > System > Network. The address Arrs and media servers use; see [Reverse proxy](/v2/operate/reverse-proxy/#public-url). |
 | Trusted proxies<br/>`network.trusted_proxies` | Settings > System > Network. Proxies whose `X-Forwarded-For` header is trusted. |
