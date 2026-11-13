@@ -48,8 +48,12 @@ Under Settings > Automation > Health monitoring:
 | Setting | What it does |
 |---------|--------------|
 | **Routine checks** | Run routine checks. Playback failures are still recorded when off. On by default. |
-| **Sample size** | Share of articles each check asks about, 5–100%. Also used by imports. 5% by default. |
+| **Health sample size** | `health.check_percent`: articles checked by scheduled checks, re-checks and playback reports, 5–100%. 5% by default. |
 | **Analyze media automatically** | Read each good media file once with ffprobe and show its codecs in the Explorer. Never changes health. On by default. |
 | **Replace broken files automatically** | Ask the Arr for a replacement. Off marks the file "action needed" instead. On by default. |
 | **Broken files not imported by an Arr** | Delete them (the default), or mark them "action needed". |
 | **Keep files with small gaps** | Allow playback over small gaps. Off treats any confirmed miss as missing. On by default. |
+
+The separate **Import sample size** control is under Settings > Automation > Imports; see [Settings](/v2/reference/settings/).
+
+Set `INFINIDYSK__HEALTH__IMPORT_CHECK_PERCENT=100` to check every article during import while keeping `INFINIDYSK__HEALTH__CHECK_PERCENT=5` for later checks. Omitting the import setting uses its default of 5; `null` is not accepted. Saved changes apply to subsequent import attempts; an attempt already running keeps its starting value. Full availability checks do not download and verify the entire file.

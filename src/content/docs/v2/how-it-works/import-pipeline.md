@@ -15,4 +15,4 @@ A confirmed missing article in a media file, a fake payload, or no media the own
 
 Compressed archives cannot be streamed. Only stored (uncompressed) archive members play.
 
-The sample size is the **Sample size** health setting; see [Health checks and repair](/v2/how-it-works/health/#settings). How a completed job reaches the Arr depends on the [import strategy](/v2/install/import-strategy/).
+The sample size is **Import sample size** under Settings > Automation > Imports; see [Settings](/v2/reference/settings/). At 100%, the import also performs the first health check before publishing its files. How a completed job reaches the Arr depends on the [import strategy](/v2/install/import-strategy/).

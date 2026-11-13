@@ -222,7 +222,8 @@ See [Health checks and repair](/v2/how-it-works/health/#settings) for what each 
 | Setting | Default | Values |
 |---------|---------|--------|
 | `health.enabled` | `true` | `true` or `false`. |
-| `health.check_percent` | `5` | 5–100. Share of segments each check probes. |
+| `health.check_percent` | `5` | 5–100. Share of segments each health check probes. |
+| `health.import_check_percent` | `5` | 5–100. Share of segments an import probes. |
 | `health.auto_repair` | `true` | `true` or `false`. |
 | `health.degraded_tolerance` | `true` | `true` or `false`. |
 | `health.unowned_action` | `delete` | `delete` or `action_needed`. |
