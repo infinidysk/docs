@@ -127,7 +127,7 @@ infinidysk calls the RC server of an rclone mount of the WebDAV root; rclone nev
 | Setting | Default | Values |
 |---------|---------|--------|
 | `rclone_rc.enabled` | `false` | `true` asks rclone to forget changed directory listings. |
-| `rclone_rc.url` | empty | Base URL of the RC server (the `--rc-addr` of the mount), with any path prefix: `https://`, or `http://` on loopback. No credentials, query or fragment. Required when on. |
+| `rclone_rc.url` | empty | Base URL of the RC server (the `--rc-addr` of the mount), with any path prefix: `https://`, or `http://` on loopback. No credentials, query or fragment. Required when on. An env URL on another server than the saved one stops startup while a password is saved; set `rclone_rc.password` in env too. |
 | `rclone_rc.fs` | empty | The mount's VFS name from `rclone rc vfs/list`, such as `infinidysk:`. Empty when rclone serves one mount. |
 | `rclone_rc.user` | empty | The `--rc-user` of the mount. Set with the password, or neither. |
 | `rclone_rc.password` | empty | The `--rc-pass` of the mount. Never generated. |
