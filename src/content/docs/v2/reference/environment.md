@@ -120,6 +120,18 @@ The admin account itself is created in the UI and has no variable.
 | `webdav.password` | generated | Text. |
 | `webdav.download_key` | generated | Text. The `downloadKey` that `/view` links must carry. |
 
+### Remote rclone mount (`rclone_rc`)
+
+infinidysk calls the RC server of an rclone mount of the WebDAV root; rclone never calls infinidysk. All read at startup. See [Tell rclone about changes](/v2/operate/webdav/#tell-rclone-about-changes).
+
+| Setting | Default | Values |
+|---------|---------|--------|
+| `rclone_rc.enabled` | `false` | `true` asks rclone to forget changed directory listings. |
+| `rclone_rc.url` | empty | Base URL of the RC server (the `--rc-addr` of the mount), with any path prefix: `https://`, or `http://` on loopback. No credentials, query or fragment. Required when on. |
+| `rclone_rc.fs` | empty | The mount's VFS name from `rclone rc vfs/list`, such as `infinidysk:`. Empty when rclone serves one mount. |
+| `rclone_rc.user` | empty | The `--rc-user` of the mount. Set with the password, or neither. |
+| `rclone_rc.password` | empty | The `--rc-pass` of the mount. Never generated. |
+
 ### Mount (`mount`)
 
 | Setting | Default | Values |
