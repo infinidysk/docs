@@ -23,6 +23,8 @@ If you do not use the built-in mount, turn off **Built-in FUSE mount** under Set
 
 ### Tell rclone about changes
 
+Added in 2.0.0-beta.11.
+
 2.x can tell the rclone mount which folders changed, so new downloads and removed files show before rclone's directory cache expires. Before it tells an Arr that a download finished, it asks rclone to forget the listings that changed, so the Arr finds the files at once.
 
 This is off by default. It works for one rclone mount of the WebDAV **root** (`http://infinidysk:3000/`), not of a subfolder.
