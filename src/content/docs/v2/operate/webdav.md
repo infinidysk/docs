@@ -23,7 +23,7 @@ If you do not use the built-in mount, turn off **Built-in FUSE mount** under Set
 
 ### Tell rclone about changes
 
-Added in 2.0.0-beta.11.
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v2.0.0-beta.11">since 2.0.0-beta.11</a>
 
 2.x can tell the rclone mount which folders changed, so new downloads and removed files show before rclone's directory cache expires. Before it tells an Arr that a download finished, it asks rclone to forget the listings that changed, so the Arr finds the files at once.
 
