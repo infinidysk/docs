@@ -45,7 +45,9 @@ Health work runs in this order: playback rechecks, due repairs and hidden-file f
 
 ## PAR2 repair
 
-Added in 2.0.0-beta.11. This is an experiment and is off by default. Turn on **Repair original articles with PAR2** under Settings > Experiments (`par2-repair`), save and restart. Back up `/config` first.
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v2.0.0-beta.11">since 2.0.0-beta.11</a>
+
+This is an experiment and is off by default. Turn on **Repair original articles with PAR2** under Settings > Experiments (`par2-repair`), save and restart. Back up `/config` first.
 
 Arr replacement comes first. PAR2 repair rebuilds missing articles from the release's PAR2 recovery data:
 
