@@ -17,7 +17,9 @@ const groups: { title: string; rows: Row[] }[] = [
 			'Prometheus metrics',
 			'Backup and restore',
 			'Single sign-on (OIDC)',
-		].map(both),
+		]
+			.map(both)
+			.concat([{ feature: 'PAR2 repair', href: '/v2/how-it-works/health/#par2-repair', v1: 'Yes', v2: 'Experiment' }]),
 	},
 	{
 		title: 'New or changed in 2.x',
@@ -29,7 +31,6 @@ const groups: { title: string; rows: Row[] }[] = [
 	{
 		title: 'Only in 1.x',
 		rows: [
-			{ feature: 'PAR2 repair', href: '/v1/operations/health-repairs/', v1: 'Yes', v2: 'Not yet' },
 			{ feature: 'Addon routes', href: '/v1/features/indexer-search/#profiles-and-adapters', v1: 'Yes', v2: 'Not yet' },
 			{ feature: 'Search, indexers and Prowlarr', href: '/v1/features/indexer-search/', v1: 'Yes', v2: 'Not planned' },
 			{ feature: 'Watchtower, Preflight and Warden', href: '/v1/features/warden-watchdog-preflight/', v1: 'Yes', v2: 'Not planned' },

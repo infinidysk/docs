@@ -39,7 +39,38 @@ The rejected release is remembered for 14 days, so the Arr cannot import the sam
 
 A broken file no Arr imported (unowned) is deleted by default. Installs upgraded from 1.x mark it "action needed" instead.
 
-PAR2 reconstruction is not in 2.x yet.
+## Order of work
+
+Health work runs in this order: playback rechecks, due repairs and hidden-file follow-ups, unchecked files, rechecks you start, then routine checks. A large backlog of new files does not delay repairs. The schedule on the Health page shows work due now in the same order, then later work by due time.
+
+## PAR2 repair
+
+<a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v2.0.0-beta.11">since 2.0.0-beta.11</a>
+
+This is an experiment and is off by default. Turn on **Repair original articles with PAR2** under Settings > Experiments (`par2-repair`), save and restart. Back up `/config` first.
+
+Arr replacement comes first. PAR2 repair rebuilds missing articles from the release's PAR2 recovery data:
+
+- when a broken file has no Arr, or its Arr has used up its replacement attempts;
+- for a file a health check finds degraded, before it fails, when **Replace broken files automatically** is on.
+
+In the Explorer, file details offer **Check availability** and **Repair with PAR2**. A check sends small availability requests for every article and spot-checks a few bodies; it does not download the file or verify every byte. A repair needs the original NZB. The Health page lists pending work and the latest 20 results, and can cancel a job.
+
+Rebuilt articles are verified and saved in the config folder. Library paths do not change, and playback reads the repaired bytes. Saved repairs are part of backup, restore and cleanup. Playback keeps priority over repair work.
+
+The limits are fixed:
+
+| Limit | Value |
+|-------|-------|
+| Attempts per file | 3, six hours apart |
+| Time per attempt | 1 hour |
+| Source data read per attempt | 100 GB |
+| Release set size | 16 GB |
+| Working memory | 256 MB |
+| Availability requests while idle | 64 at a time |
+| Saved repairs | 4 GB; the least recently read are removed first |
+
+There is no library-wide PAR2 scan. Scheduled health checks find the files to repair.
 
 ## Settings
 

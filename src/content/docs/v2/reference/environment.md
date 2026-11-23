@@ -269,6 +269,8 @@ Current experiments, which may be removed or become defaults in any release:
 |------|--------------|
 | `win-floor` | Files posted in articles of 2.1 MB or more may keep two articles per connection in flight. |
 | `weight-large` | Articles of 2.1 MB or more count as a full connection's pipeline. |
+| `par2-repair` | Repairs damaged files with their PAR2 recovery data when Arr replacement cannot, and checks degraded files before they fail. See [PAR2 repair](/v2/how-it-works/health/#par2-repair). Back up `/config` first. <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v2.0.0-beta.11">since 2.0.0-beta.11</a> |
+| `idle-memory-trim` | Linux only. Returns unused memory to the OS after two minutes without playback or other work. Keeps the segment cache; the next playback may start slightly slower. <a class="since" href="https://github.com/infinidysk/infinidysk/releases/tag/v2.0.0-beta.11">since 2.0.0-beta.11</a> |
 
 ## Compose example
 
