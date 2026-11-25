@@ -668,3 +668,127 @@
 .home .button-row + p {
 	margin-top: 2rem;
 }
+
+/* Which path goes where: one colour per folder role. */
+.is-source {
+	--role: var(--sl-color-accent);
+	--role-low: var(--sl-color-accent-low);
+}
+
+.is-handoff {
+	--role: var(--sl-color-orange);
+	--role-low: var(--sl-color-orange-low);
+}
+
+.is-library {
+	--role: var(--sl-color-purple);
+	--role-low: var(--sl-color-purple-low);
+}
+
+.is-never {
+	--role: var(--sl-color-red);
+	--role-low: var(--sl-color-red-low);
+}
+
+.path-role {
+	display: inline-block;
+	padding: 0.0625rem 0.5rem;
+	border: 1px solid var(--role);
+	border-radius: 999px;
+	background: var(--role-low);
+	color: var(--sl-color-white);
+	font-size: var(--sl-text-xs);
+	font-weight: 600;
+	line-height: 1.5;
+	white-space: nowrap;
+}
+
+.path-roles {
+	display: grid;
+	gap: 1rem;
+	margin: 1.5rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+@media (min-width: 50rem) {
+	.path-roles {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.path-roles-card {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 0.5rem;
+	padding: 1rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-top: 3px solid var(--role);
+	border-radius: var(--radius-lg);
+	background: var(--sl-color-gray-6);
+}
+
+.path-roles-card code {
+	color: var(--sl-color-white);
+	font-size: var(--sl-text-sm);
+	overflow-wrap: anywhere;
+}
+
+.path-roles-card p {
+	margin: 0;
+	color: var(--sl-color-gray-2);
+	font-size: var(--sl-text-sm);
+}
+
+.path-roles-card .path-roles-where {
+	margin-top: auto;
+	padding-top: 0.5rem;
+	border-top: 1px solid var(--sl-color-gray-5);
+	color: var(--sl-color-gray-3);
+}
+
+.path-map {
+	margin: 1.5rem 0 0;
+	padding: 0.75rem 1rem;
+	border: 1px solid var(--sl-color-gray-5);
+	border-radius: var(--radius-lg);
+	background: var(--sl-color-gray-6);
+}
+
+.path-map ul {
+	display: grid;
+	gap: 0.375rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.path-map-row {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.25rem 0.625rem;
+	padding: 0.25rem 0 0.25rem calc(var(--depth) * 1.25rem + 0.625rem);
+	border-left: 3px solid var(--role, transparent);
+}
+
+.path-map-row code {
+	padding: 0;
+	background: none;
+	color: var(--sl-color-white);
+	font-size: var(--sl-text-sm);
+	font-weight: 600;
+}
+
+.path-map-note {
+	flex-basis: 100%;
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
+}
+
+@media (min-width: 50rem) {
+	.path-map-note {
+		flex-basis: auto;
+	}
+}

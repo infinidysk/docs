@@ -39,6 +39,7 @@ services:
 1. Run `docker compose up -d`.
 2. Open `http://<host>:3000` and create the admin account.
 3. Add your providers. See [Providers](/v2/install/providers/).
+4. Plan your folders. See [Which path goes where](/v2/install/paths/).
 
 :::caution
 Create the admin account before you expose port 3000 to an untrusted network. Until an admin exists, anyone who reaches the page can create one.
@@ -47,7 +48,7 @@ Create the admin account before you expose port 3000 to an untrusted network. Un
 ## Where things are
 
 - **Port 3000** serves the UI, the SABnzbd API and WebDAV.
-- **The library** is mounted at `/mnt/infinidysk` by default. Change it under Settings > Platform > Mount, or with `INFINIDYSK__MOUNT__DIR`.
+- **The mount** is at `/mnt/infinidysk` by default. Change it under Settings > Platform > Mount, or with `INFINIDYSK__MOUNT__DIR`. It is not your library: your Arrs and media server use normal folders. See [Which path goes where](/v2/install/paths/).
 - **The database** is `/config/infinidysk.sqlite`. To use PostgreSQL instead, see [Move to PostgreSQL](/v2/operate/postgresql/).
 - **Logs** go to `/config/logs/infinidysk.log` and the System page.
 

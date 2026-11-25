@@ -1,0 +1,38 @@
+---
+import type { ComponentProps } from 'astro/types';
+import PathRole from './PathRole.astro';
+
+const roles: { kind: ComponentProps<typeof PathRole>['kind']; path: string; what: string; where: string }[] = [
+	{
+		kind: 'source',
+		path: '/mnt/infinidysk',
+		what: 'The mount. infinidysk shows every download here, streamed from Usenet on demand.',
+		where: 'Mount directory in infinidysk. Never an Arr root folder or a media server library.',
+	},
+	{
+		kind: 'handoff',
+		path: 'completed-symlinks/ or the STRM folder',
+		what: 'Where a finished download waits for the Arr. It holds small pointers, not media.',
+		where: 'No Arr field. infinidysk sends the path to the Arr with each download.',
+	},
+	{
+		kind: 'library',
+		path: '/data/media/tv, /data/media/movies',
+		what: 'Where the Arr moves and renames each import. It holds symlinks or STRM files.',
+		where: 'Root folder in the Arr, library in the media server, library folder in infinidysk.',
+	},
+];
+---
+
+<ol class="not-content path-roles">
+	{
+		roles.map(({ kind, path, what, where }) => (
+			<li class={`path-roles-card is-${kind}`}>
+				<PathRole kind={kind} />
+				<code>{path}</code>
+				<p>{what}</p>
+				<p class="path-roles-where">{where}</p>
+			</li>
+		))
+	}
+</ol>

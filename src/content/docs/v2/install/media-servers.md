@@ -3,6 +3,10 @@ title: Connect your media server
 description: Share the infinidysk 2.x mount with Plex, Jellyfin and the Arrs, and set up Plex so restarts do not cost watch state.
 ---
 
+:::caution
+Add your Arr root folders as libraries, for example `/data/media/tv`. Never add the mount or its `content/` folder. See [Which path goes where](/v2/install/paths/).
+:::
+
 ## Share the mount
 
 infinidysk mounts the library inside its own container. With `/mnt:/mnt:rshared` in its [compose file](/v2/install/docker/#compose-file), the mount also shows on the host. Every container that reads it (Sonarr, Radarr, Plex, Jellyfin) binds the same parent directory with `:rslave`:

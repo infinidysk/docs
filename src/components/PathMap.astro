@@ -1,0 +1,54 @@
+---
+import type { ComponentProps } from 'astro/types';
+import PathRole from './PathRole.astro';
+
+interface Props {
+	strategy: 'symlinks' | 'strm';
+}
+
+type Row = {
+	name: string;
+	depth: number;
+	role?: ComponentProps<typeof PathRole>['kind'];
+	note?: string;
+};
+
+const { strategy } = Astro.props;
+
+const symlinks: Row[] = [
+	{ name: '/mnt/infinidysk/', depth: 0, role: 'source', note: 'The mount. Every app that follows a library symlink needs it, at this exact path.' },
+	{ name: 'content/', depth: 1, role: 'never', note: 'Downloads by category and job. Not a root folder, not a library.' },
+	{ name: 'completed-symlinks/', depth: 1, role: 'handoff', note: 'Finished jobs wait here. infinidysk sends the Arr the path of each job folder.' },
+	{ name: '.ids/', depth: 1, role: 'source', note: 'Every library symlink points into here.' },
+	{ name: 'nzbs/', depth: 1 },
+	{ name: '/data/media/', depth: 0, role: 'library', note: 'A normal folder on disk, outside the mount.' },
+	{ name: 'tv/', depth: 1, role: 'library', note: 'Sonarr root folder and media server TV library.' },
+	{ name: 'movies/', depth: 1, role: 'library', note: 'Radarr root folder and media server movie library.' },
+];
+
+const strm: Row[] = [
+	{ name: '/mnt/infinidysk/', depth: 0, role: 'source', note: 'The mount. The media server does not need it for STRM files.' },
+	{ name: 'content/', depth: 1, role: 'never', note: 'Downloads by category and job. Not a root folder, not a library.' },
+	{ name: '/data/', depth: 0, note: 'One folder for both, so the Arr moves files without copying them.' },
+	{ name: 'completed-downloads/', depth: 1, role: 'handoff', note: 'The Completed STRM directory. Finished jobs wait here as STRM files.' },
+	{ name: 'media/', depth: 1, role: 'library' },
+	{ name: 'tv/', depth: 2, role: 'library', note: 'Sonarr root folder and media server TV library.' },
+	{ name: 'movies/', depth: 2, role: 'library', note: 'Radarr root folder and media server movie library.' },
+];
+
+const rows = strategy === 'strm' ? strm : symlinks;
+---
+
+<figure class="not-content path-map">
+	<ul aria-label="Example folders on the host">
+		{
+			rows.map(({ name, depth, role, note }) => (
+				<li class:list={['path-map-row', role && `is-${role}`]} style={{ '--depth': depth }}>
+					<code>{name}</code>
+					{role && <PathRole kind={role} />}
+					{note && <span class="path-map-note">{note}</span>}
+				</li>
+			))
+		}
+	</ul>
+</figure>

@@ -3,7 +3,7 @@ title: Library folders
 description: Tell infinidysk 2.x where your Arrs keep their libraries, so it can convert the library, move the mount and clean up.
 ---
 
-Library folders are the folders that hold your Arrs' libraries: their root folders. infinidysk only reads its own pointers in them: symlinks into `<mount>/.ids/` and its own `.strm` files. Nothing else is read or changed.
+Library folders are the folders that hold your Arrs' libraries: their root folders. See [Which path goes where](/v2/install/paths/) for how they relate to the mount. infinidysk only reads its own pointers in them: symlinks into `<mount>/.ids/` and its own `.strm` files. Nothing else is read or changed.
 
 They are needed for:
 

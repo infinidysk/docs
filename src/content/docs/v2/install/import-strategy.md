@@ -12,6 +12,8 @@ When a job completes, the Arr imports it in one of two forms. Pick one under Set
 
 Categories owned by a music or book Arr always hand off as symlinks.
 
+[Which path goes where](/v2/install/paths/) shows the folders and fields for each strategy.
+
 STRM needs a [public URL](/v2/operate/reverse-proxy/#public-url) that your media server can reach, because every `.strm` file points to it.
 
 ## Switching strategy
