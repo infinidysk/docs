@@ -1,0 +1,277 @@
+---
+title: Which path goes where
+description: The three kinds of folder in an infinidysk 2.x setup, which path goes in which field, and how to share them between Docker containers.
+---
+
+import { Aside, Steps, TabItem, Tabs } from '@astrojs/starlight/components';
+import Flow from '../../../../components/Flow.astro';
+import PathMap from '../../../../components/PathMap.astro';
+import PathRole from '../../../../components/PathRole.astro';
+import PathRoles from '../../../../components/PathRoles.astro';
+
+An infinidysk setup has three kinds of folder. Each one has a different job, and each one goes in different fields. Most import and playback problems come from putting one kind of folder where another belongs.
+
+<PathRoles />
+
+Two rules cover almost every setup:
+
+1. **Your Arrs and your media server use the library folders.** Never the mount, and never `content/`.
+2. **Every app sees each folder at the same path.** If infinidysk writes `/mnt/infinidysk/completed-symlinks/tv/<job>`, Sonarr must find it at exactly `/mnt/infinidysk/completed-symlinks/tv/<job>`.
+
+<Aside type="danger" title="Do not add the mount to your media server">
+The mount is not a library. `content/` holds every download under its release name, including duplicates, samples and releases the Arr rejected. The Arr never renames anything there.
+
+A file that only your media server reads from the mount has no library symlink or STRM file. The [maintenance job](/v2/operate/maintenance/) counts it as unlinked and can delete it.
+</Aside>
+
+## Your setup
+
+Pick the [import strategy](/v2/install/import-strategy/) you use. The examples use the default mount, `/mnt/infinidysk`, and one library folder, `/data/media`. Your paths can differ. What matters is that each app gets the same path.
+
+<Tabs syncKey="import-strategy">
+<TabItem label="Symlinks (default)">
+
+<PathMap strategy="symlinks" />
+
+<Flow
+	steps={[
+		{
+			title: 'When a download completes',
+			nodes: [
+				['infinidysk', 'Adds a job folder to completed-symlinks/tv/ and tells Sonarr its path.'],
+				['Sonarr', 'Imports the links from that path into its root folder, /data/media/tv.'],
+				['/data/media/tv', 'Holds one symlink per file. Each points into /mnt/infinidysk/.ids/.'],
+			],
+		},
+		{
+			title: 'When you press play',
+			nodes: [
+				['Media server', 'Opens the symlink in /data/media/tv.'],
+				['/mnt/infinidysk/.ids/', 'The symlink leads into the mount.'],
+				['infinidysk', 'Streams the file from Usenet.'],
+			],
+		},
+	]}
+	core={['infinidysk', '/mnt/infinidysk/.ids/']}
+/>
+
+| App | Field | Value |
+|-----|-------|-------|
+| infinidysk | Settings > Platform > Mount > **Directory** | `/mnt/infinidysk` |
+| infinidysk | Settings > Automation > Library > **Import strategy** | Symlinks |
+| infinidysk | Settings > Automation > Library > **Folders** | `/data/media` |
+| Sonarr, Radarr | SABnzbd download client | Host, port, API key and category only. There is no path field. See [Connect Arr instances](/v2/install/connect-arr/). |
+| Sonarr | Settings > Media Management > **Root folder** | `/data/media/tv` |
+| Radarr | Settings > Media Management > **Root folder** | `/data/media/movies` |
+| Media server | Libraries | `/data/media/tv` and `/data/media/movies` |
+
+Every app that follows a library symlink needs the mount, at the same path. Here that is infinidysk, the Arrs and the media server.
+
+This is an excerpt. Add the volumes to your existing services; infinidysk also needs the device and security settings from the [compose file](/v2/install/docker/#compose-file).
+
+```yaml
+services:
+  infinidysk:
+    # image, devices, cap_add and security_opt as in Run with Docker
+    volumes:
+      - ./config:/config
+      - /mnt:/mnt:rshared # the mount, shared out
+      - /data/media:/data/media # library folder, read-write
+
+  sonarr: # the same for radarr
+    volumes:
+      - /mnt:/mnt:rslave # the mount, same path
+      - /data/media:/data/media
+
+  plex:
+    volumes:
+      - /mnt:/mnt:rslave # symlinks point into the mount
+      - /data/media:/data/media
+```
+
+</TabItem>
+<TabItem label="STRM">
+
+<PathMap strategy="strm" />
+
+<Flow
+	steps={[
+		{
+			title: 'When a download completes',
+			nodes: [
+				['infinidysk', 'Writes STRM files to completed-downloads/tv/<job> and tells Sonarr the path.'],
+				['Sonarr', 'Moves the files from that path into its root folder, /data/media/tv.'],
+				['/data/media/tv', 'Holds one .strm file per video. Each holds a playback URL.'],
+			],
+		},
+		{
+			title: 'When you press play',
+			nodes: [
+				['Media server', 'Opens the .strm file in /data/media/tv.'],
+				['Public URL', 'The media server requests the URL in the file, over HTTP.'],
+				['infinidysk', 'Streams the file from Usenet.'],
+			],
+		},
+	]}
+/>
+
+| App | Field | Value |
+|-----|-------|-------|
+| infinidysk | Settings > Automation > Library > **Import strategy** | STRM |
+| infinidysk | Settings > Automation > Library > **Completed STRM directory** | `/data/completed-downloads` |
+| infinidysk | Settings > System > Network > **Public URL** | An address the media server can reach, for example `http://infinidysk:3000`. See [Public URL](/v2/operate/reverse-proxy/#public-url). |
+| infinidysk | Settings > Automation > Library > **Folders** | `/data/media` |
+| Sonarr, Radarr | SABnzbd download client | Host, port, API key and category only. There is no path field. See [Connect Arr instances](/v2/install/connect-arr/). |
+| Sonarr | Settings > Media Management > **Root folder** | `/data/media/tv` |
+| Radarr | Settings > Media Management > **Root folder** | `/data/media/movies` |
+| Media server | Libraries | `/data/media/tv` and `/data/media/movies` |
+
+Bind one parent folder, `/data`, into infinidysk and the Arrs. The STRM folder and the library are then on one filesystem, so the Arr moves files instead of copying them. The media server does not need the mount.
+
+This is an excerpt. Add the settings to your existing services; infinidysk also needs the device and security settings from the [compose file](/v2/install/docker/#compose-file).
+
+```yaml
+services:
+  infinidysk:
+    # image, devices, cap_add and security_opt as in Run with Docker
+    environment:
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - ./config:/config
+      - /mnt:/mnt:rshared
+      - /data:/data # STRM folder and library folder
+
+  sonarr: # the same for radarr
+    environment:
+      PUID: 1000 # the same user as infinidysk; images without PUID use user: 1000:1000
+      PGID: 1000
+    volumes:
+      - /data:/data
+
+  jellyfin:
+    volumes:
+      - /data/media:/data/media
+```
+
+Never copy a URL out of a `.strm` file by hand. Each one is signed for its file.
+
+Lidarr and Chaptarr categories always use symlinks. If you run them, give them and your media server the mount as in the Symlinks tab.
+
+</TabItem>
+</Tabs>
+
+### When paths cannot match
+
+Use the same paths everywhere if you can. If an Arr must see a folder under another path:
+
+- For the completed downloads, add a Remote Path Mapping in the Arr under Settings > Download Clients. **Host** is the host you set in the download client, **Remote Path** is the path in infinidysk, and **Local Path** is the path in the Arr.
+- For library folders, fill in **As the Arrs see it** under Settings > Automation > Library > Folders.
+
+A Remote Path Mapping does not change where library symlinks point. Every symlink holds an absolute path into infinidysk's mount, so the media server must still see the mount at that path.
+
+## Without Docker
+
+On a Linux host or an LXC container, there are no bind mounts to translate paths. Every app that runs on the same host sees the same paths. The two rules still apply.
+
+- The mount exists only on the host or LXC container where infinidysk runs. Run the apps that follow symlinks there too, or use STRM.
+- `PUID` and `PGID` still set the owner of every entry in the mount (default `1000`). Set them to the user and group your Arrs run as.
+- When infinidysk does not run as root, add `user_allow_other` to `/etc/fuse.conf`. See [Run from a Linux archive](/v2/install/linux-archive/#run).
+
+## Right paths, still access denied
+
+Correct paths are only half of it. The apps also need permission to change what infinidysk wrote.
+
+<Tabs syncKey="import-strategy">
+<TabItem label="Symlinks (default)">
+
+Every entry in the mount shows as owned by `PUID`:`PGID`. Any user can read it. Job folders in `completed-symlinks/` also let that group write, so the Arr can remove links after an import.
+
+- Run the Arrs as `PUID`, or as a member of group `PGID`.
+- The Arr needs write access to its root folder.
+- infinidysk needs write access to the library folders, because [conversions](/v2/install/import-strategy/#switching-strategy) and [maintenance](/v2/operate/maintenance/) change the links in them.
+
+</TabItem>
+<TabItem label="STRM">
+
+When infinidysk runs as root, as in Docker, it gives STRM files and their folders to `PUID`:`PGID`. Otherwise they belong to the user infinidysk runs as. Only that owner may write to them:
+
+```
+-rw-r--r--  infinidysk  media  …  <file>.strm
+```
+
+A shared group is not enough. To import, the Arr moves each file out of its job folder and then deletes the folder. That needs write access, which only infinidysk's user has.
+
+- **Run the Arrs that import STRM files as the same user as infinidysk.** In Docker, give them the same `PUID` and `PGID`. In an LXC container or with systemd, run them under the same user.
+- The media server only reads the STRM files. If the files show `-rw-r-----`, a `umask` of `027` removed read access for others. Add the media server's user to the files' group.
+
+</TabItem>
+</Tabs>
+
+## Check your setup
+
+Most commands use Docker Compose service names. On a host without Docker, run the part after the service name.
+
+<Steps>
+
+1. The Arr sees the completed downloads at infinidysk's path:
+
+   ```sh
+   docker compose exec sonarr ls /mnt/infinidysk/completed-symlinks   # Symlinks
+   docker compose exec sonarr ls /data/completed-downloads            # STRM
+   ```
+
+2. With symlinks, the media server sees the mount:
+
+   ```sh
+   docker compose exec plex ls -a /mnt/infinidysk   # expect .ids, completed-symlinks, content, nzbs
+   ```
+
+3. With symlinks, a library symlink resolves in the media server. This prints `ok`:
+
+   ```sh
+   docker compose exec plex sh -c 'f=$(find /data/media -type l -print -quit); test -e "$f" && echo ok'
+   ```
+
+4. With STRM, the media server reaches the public URL. Run the check inside the media server container, because a name like `infinidysk` may only resolve there. It answers `"status":"healthy"`:
+
+   ```sh
+   docker compose exec jellyfin curl -fsS <public URL>/healthz   # or: wget -qO- <public URL>/healthz
+   ```
+
+5. With STRM, the Arrs run as the owner of the STRM files. Run this on the Docker host, or in the LXC container, after the first STRM download. The `UID` of each Arr must match the owner of the folders:
+
+   ```sh
+   ps -o uid,gid,comm -C Sonarr,Radarr   # the user each Arr process runs as
+   ls -ln /data/completed-downloads      # the owner of each category folder
+   ```
+
+   Do not compare with `docker compose exec sonarr id`. That shows the user of the new shell, often root, not the user Sonarr runs as.
+
+</Steps>
+
+## Common mistakes
+
+### The Arr root folder is in the mount
+
+The Arr says the folder is not writable, or imports fail with "read-only file system". The mount is read-only. Set the root folder to a normal folder, for example `/data/media/tv`.
+
+### The media server library is the mount
+
+The library shows release names, samples and duplicates. Files you watch can disappear after [maintenance](/v2/operate/maintenance/). Point the library at the Arr root folders instead.
+
+### The Arr says the download path does not exist
+
+The Arr cannot see the completed downloads at the path infinidysk reports. Bind the mount (Symlinks) or the STRM folder (STRM) into the Arr at the same path as in infinidysk. See [When paths cannot match](#when-paths-cannot-match) if that is not possible.
+
+### Library symlinks are broken
+
+The media server sees the mount at another path, or not at all. Bind `/mnt:/mnt:rslave` and check that infinidysk is healthy before the media server starts. See [Share the mount](/v2/install/media-servers/#share-the-mount).
+
+### The Arr gets "access denied" on STRM files
+
+The Arr runs as another user than infinidysk. See [Right paths, still access denied](#right-paths-still-access-denied).
+
+### Imports copy files instead of moving them
+
+The STRM folder and the library folder are separate binds, for example `/data/completed-downloads` and `/data/media`. Docker treats them as two filesystems, so a move turns into a copy. Bind their parent folder, `/data`, instead.

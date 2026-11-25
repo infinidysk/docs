@@ -36,4 +36,6 @@ The mount and WebDAV show the same tree:
 | `nzbs/` | Queued NZBs, by category. |
 | `README` | A short description of the tree. |
 
+None of these is an Arr root folder or a media server library. See [Which path goes where](/v2/install/paths/).
+
 To share the mount with other containers, see [Share the mount](/v2/install/media-servers/#share-the-mount).

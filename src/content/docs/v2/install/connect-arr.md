@@ -16,7 +16,9 @@ In each Arr, add a **SABnzbd** download client:
 | API key | The API key under Settings > Automation > Download client > Connection |
 | Category | One of the categories under Settings > Automation > Download client > Categories, for example `tv` or `movies` |
 
-The Arr imports from the mount, so it must see the mount at the same path infinidysk does. See [Share the mount](/v2/install/media-servers/#share-the-mount).
+The download client has no path field. infinidysk tells the Arr where each completed download is: in the mount with symlinks, in the STRM folder with STRM. The Arr must see that folder. The same path as in infinidysk is simplest; otherwise add a Remote Path Mapping. See [Which path goes where](/v2/install/paths/#when-paths-cannot-match).
+
+Set the Arr's root folder to a normal folder, for example `/data/media/tv`, never a folder in the mount. See [Which path goes where](/v2/install/paths/).
 
 ## Add the Arr to infinidysk
 

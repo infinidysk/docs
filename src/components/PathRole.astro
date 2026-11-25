@@ -1,0 +1,16 @@
+---
+interface Props {
+	kind: 'source' | 'handoff' | 'library' | 'never';
+}
+
+const roleLabels: Record<Props['kind'], string> = {
+	source: 'Media source',
+	handoff: 'Completed downloads',
+	library: 'Your library',
+	never: 'Do not use',
+};
+
+const { kind } = Astro.props;
+---
+
+<span class={`path-role is-${kind}`}>{roleLabels[kind]}</span>

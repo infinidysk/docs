@@ -11,6 +11,10 @@ Still stuck? Ask in `#infinidysk-development` on [Discord](https://discord.gg/DA
 - The mount shows on the host and in other containers only when the parent directory is bound with `:rshared` here and `:rslave` in the readers. See [Share the mount](/v2/install/media-servers/#share-the-mount).
 - After a crash, readers see "Transport endpoint is not connected" until infinidysk starts again.
 
+## The Arr cannot import a completed download
+
+The Arr says the path does not exist, the folder is not writable, or access is denied. Check which folder goes where, and which user each app runs as. See [Which path goes where](/v2/install/paths/#common-mistakes).
+
 ## Warning: FUSE readahead stays at the kernel default
 
 This section also covers `FUSE readahead could not be set from this process` and `FUSE background limits could not all be set from this process`. These warnings describe infinidysk's own tuning attempts, not a failed mount. Without tuning, smaller kernel limits can reduce read throughput.
