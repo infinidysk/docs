@@ -65,11 +65,14 @@ Pick the [import strategy](/v2/install/import-strategy/) you use. The examples u
 | Radarr | Settings > Media Management > **Root folder** | `/data/media/movies` |
 | Media server | Libraries | `/data/media/tv` and `/data/media/movies` |
 
-Every app that follows a library symlink needs the mount, at the same path. Here that is infinidysk, the Arrs and the media server:
+Every app that follows a library symlink needs the mount, at the same path. Here that is infinidysk, the Arrs and the media server.
+
+This is an excerpt. Add the volumes to your existing services; infinidysk also needs the device and security settings from the [compose file](/v2/install/docker/#compose-file).
 
 ```yaml
 services:
   infinidysk:
+    # image, devices, cap_add and security_opt as in Run with Docker
     volumes:
       - ./config:/config
       - /mnt:/mnt:rshared # the mount, shared out
@@ -123,11 +126,14 @@ services:
 | Radarr | Settings > Media Management > **Root folder** | `/data/media/movies` |
 | Media server | Libraries | `/data/media/tv` and `/data/media/movies` |
 
-Bind one parent folder, `/data`, into infinidysk and the Arrs. The STRM folder and the library are then on one filesystem, so the Arr moves files instead of copying them. The media server does not need the mount:
+Bind one parent folder, `/data`, into infinidysk and the Arrs. The STRM folder and the library are then on one filesystem, so the Arr moves files instead of copying them. The media server does not need the mount.
+
+This is an excerpt. Add the settings to your existing services; infinidysk also needs the device and security settings from the [compose file](/v2/install/docker/#compose-file).
 
 ```yaml
 services:
   infinidysk:
+    # image, devices, cap_add and security_opt as in Run with Docker
     environment:
       PUID: 1000
       PGID: 1000
@@ -138,7 +144,7 @@ services:
 
   sonarr: # the same for radarr
     environment:
-      PUID: 1000 # the same user as infinidysk
+      PUID: 1000 # the same user as infinidysk; images without PUID use user: 1000:1000
       PGID: 1000
     volumes:
       - /data:/data
@@ -188,7 +194,7 @@ Every entry in the mount shows as owned by `PUID`:`PGID`. Any user can read it. 
 </TabItem>
 <TabItem label="STRM">
 
-infinidysk writes STRM files and their folders as its own user. In Docker, that is `PUID`:`PGID`. Only that user may write to them:
+When infinidysk runs as root, as in Docker, it gives STRM files and their folders to `PUID`:`PGID`. Otherwise they belong to the user infinidysk runs as. Only that owner may write to them:
 
 ```
 -rw-r--r--  infinidysk  media  …  <file>.strm
@@ -204,7 +210,7 @@ A shared group is not enough. To import, the Arr moves each file out of its job 
 
 ## Check your setup
 
-These commands use Docker Compose service names. On a host without Docker, run the part after the service name.
+Most commands use Docker Compose service names. On a host without Docker, run the part after the service name.
 
 <Steps>
 
@@ -218,7 +224,7 @@ These commands use Docker Compose service names. On a host without Docker, run t
 2. With symlinks, the media server sees the mount:
 
    ```sh
-   docker compose exec plex ls /mnt/infinidysk   # expect .ids, completed-symlinks, content, nzbs
+   docker compose exec plex ls -a /mnt/infinidysk   # expect .ids, completed-symlinks, content, nzbs
    ```
 
 3. With symlinks, a library symlink resolves in the media server. This prints `ok`:
@@ -227,14 +233,20 @@ These commands use Docker Compose service names. On a host without Docker, run t
    docker compose exec plex sh -c 'f=$(find /data/media -type l -print -quit); test -e "$f" && echo ok'
    ```
 
-4. With STRM, the media server reaches the public URL. Open `<public URL>/healthz` from the media server's host. It answers `"status":"healthy"`.
-
-5. With STRM, the Arr runs as infinidysk's user. Compare the output of both:
+4. With STRM, the media server reaches the public URL. Run the check inside the media server container, because a name like `infinidysk` may only resolve there. It answers `"status":"healthy"`:
 
    ```sh
-   docker compose exec sonarr id
-   docker compose exec infinidysk sh -c 'echo uid=$PUID gid=$PGID'
+   docker compose exec jellyfin curl -fsS <public URL>/healthz   # or: wget -qO- <public URL>/healthz
    ```
+
+5. With STRM, the Arrs run as the owner of the STRM files. Run this on the Docker host, or in the LXC container, after the first STRM download. The `UID` of each Arr must match the owner of the folders:
+
+   ```sh
+   ps -o uid,gid,comm -C Sonarr,Radarr   # the user each Arr process runs as
+   ls -ln /data/completed-downloads      # the owner of each category folder
+   ```
+
+   Do not compare with `docker compose exec sonarr id`. That shows the user of the new shell, often root, not the user Sonarr runs as.
 
 </Steps>
 
