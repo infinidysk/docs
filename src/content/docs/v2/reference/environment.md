@@ -12,13 +12,16 @@ There are two kinds of variables:
 - **Startup variables** (`INFINIDYSK_LISTEN`, `PUID`, …) are read once when the process starts. They are not settings and cannot be changed in the UI.
 - **Setting variables** (`INFINIDYSK__<SECTION>__<KEY>`, with two underscores) force one setting. Use them to manage settings from a Compose file instead of the UI.
 
+Add `_FILE` to a name to read the value from a file; see [`_FILE` variables](#_file-variables). For a full example without the UI, see [Unattended deployment](/v2/install/unattended/).
+
 ## Startup variables
 
 | Variable | Default | What it does |
 |----------|---------|--------------|
 | `INFINIDYSK_LISTEN` | `0.0.0.0:3000` | Address for the UI, the SABnzbd API and WebDAV. The health check asks the same address. |
 | `INFINIDYSK_CONFIG_DIR` | `/config` | The folder infinidysk keeps its files in: the SQLite database, `database.toml`, metrics, logs, backups, the disk cache, and the 1.x install to import. Must be an absolute path; infinidysk creates it when missing. For installs outside Docker; in the container, leave it unset and bind `/config`. See [Container paths](/v2/reference/paths/#container-paths). |
-| `INFINIDYSK_DATABASE_URL` | `sqlite:<config folder>/infinidysk.sqlite` | Database. Use `postgres://…` for PostgreSQL. Wins over `database.toml` in the config folder and turns off the move under Settings > System > Database; see [Move to PostgreSQL](/v2/operate/postgresql/#use-infinidysk_database_url-instead). |
+| `INFINIDYSK_DATABASE_URL` | `sqlite:<config folder>/infinidysk.sqlite` | Database. Use `postgres://…` for PostgreSQL. Query parameters other than `sslmode`, `sslrootcert`, `sslcert`, `sslkey`, `statement-cache-capacity`, `host`, `hostaddr`, `port`, `dbname`, `user`, `password`, `application_name` and `options` stop startup. Also as `INFINIDYSK_DATABASE_URL_FILE`. Wins over `database.toml` in the config folder and turns off the move under Settings > System > Database; see [Move to PostgreSQL](/v2/operate/postgresql/#use-infinidysk_database_url-instead). |
+| `INFINIDYSK_ADMIN_USERNAME` / `INFINIDYSK_ADMIN_PASSWORD` | unset | Create the local admin account on start, before the UI opens, when none exists. Set both or neither. The password needs at least 8 characters. An existing account always wins: the variables never change its name or password. Also as `_FILE`. |
 | `PUID` / `PGID` | `1000` | Owner shown on files in the mount. |
 | `TZ` | UTC | Time zone for the maintenance window and file dates. |
 | `RUST_LOG` | `info` | Log filter. See [Logs and traces](/v2/operate/logs-traces/). |
@@ -66,16 +69,37 @@ INFINIDYSK__… environment variables
 - Forced values are never written to the database. Remove the variable and restart, and the saved value (or the default) comes back.
 - Changing a variable needs a container restart or recreate.
 
+### `_FILE` variables
+
+Add `_FILE` to any `INFINIDYSK__…` name, to `INFINIDYSK_DATABASE_URL` and to `INFINIDYSK_ADMIN_USERNAME` / `INFINIDYSK_ADMIN_PASSWORD`. The value is an absolute path, and the setting is read from that file. Use it with Docker or Compose secrets.
+
+- One line break at the end of the file is removed.
+- Setting both `NAME` and `NAME_FILE` stops startup.
+- A missing, unreadable or non-UTF-8 file stops startup. The error never shows the content.
+- A secret inside a list, such as a provider password, goes in a file with the whole list: `INFINIDYSK__PROVIDERS_FILE`.
+
 ### Validation
 
-- An unknown `INFINIDYSK__…` name logs a warning and is ignored. Check the log after a change for a typo.
-- A number outside its range logs a warning and uses the default.
-- Any other bad value stops startup with an error that names the setting: a relative path, an unknown choice, text where a number belongs, or a list that is not JSON.
-- Secrets are never logged.
+A bad variable stops startup with one line that names the variable or setting, never its value:
+
+- a name that is not a setting, or an `INFINIDYSK_ADMIN_…` name other than the two above;
+- a value of the wrong type, a list that is not JSON, or a JSON property that does not exist or is miscased;
+- a value out of range, a relative path or an unknown choice;
+- a parent and a child set together, such as `INFINIDYSK__QUEUE` and `INFINIDYSK__QUEUE__CONCURRENCY`.
+
+Values saved in the database keep loading as before; an out-of-range saved value logs a warning and uses the default. Secrets are never logged.
+
+### Check without starting
+
+```sh
+docker compose run --rm --no-deps infinidysk config validate
+```
+
+Checks the variables for a new install and exits `0` (`fresh-install configuration valid`), `1` (`invalid: <reason>`) or `2` (wrong arguments). It creates nothing and connects nowhere, and it does not see settings saved in an existing database.
 
 ### Secrets
 
-The SABnzbd API key, admin API key, session key, WebDAV password, WebDAV download key and STRM key are generated on first start when empty. Set them with variables only if another tool must know them in advance.
+The SABnzbd API key, admin API key, session key, WebDAV password, WebDAV download key and STRM key are generated on first start when empty. Set them with variables only if another tool must know them in advance. A key a variable sets is never generated: an empty value stops startup, and so does an object for its section, such as `INFINIDYSK__AUTH`, that leaves the key out.
 
 :::danger
 Resolved secrets are visible to anyone who can run `docker inspect` on the container. Keep them in an uncommitted `.env` file or your orchestrator's secret store. Never paste them into issues or logs.
@@ -110,7 +134,7 @@ Each table lists the setting path, its default and what it takes.
 
 See [Single sign-on](/v2/operate/sso/) for the `auth.oidc` and `auth.local_login` settings.
 
-The admin account itself is created in the UI and has no variable.
+The admin account is not a setting. Create it in the UI, or with `INFINIDYSK_ADMIN_USERNAME` and `INFINIDYSK_ADMIN_PASSWORD` ([startup variables](#startup-variables)).
 
 ### WebDAV (`webdav`)
 
@@ -178,7 +202,7 @@ infinidysk calls the RC server of an rclone mount of the WebDAV root; rclone nev
 
 | Field | Default | Values |
 |-------|---------|--------|
-| `id` | new at every start | A UUID. Set a fixed one, so provider stats and quota usage survive restarts. |
+| `id` | from the name | A UUID. Without one, the ID comes from `name`, else `profile`, else `hostname`, and stays the same across restarts, reordering and credential changes. Two entries with the same ID stop startup. Set one to rename an entry and keep its quota usage. |
 | `name` | profile name or hostname | Text. |
 | `profile` | none | Catalog profile id, the file name in [`providers/`](https://github.com/infinidysk/infinidysk/tree/main/providers) without `.toml` (for example `newshosting`). The port and backbone come from the profile. |
 | `hostname` | profile's first server | With a profile: one of its servers. Without one: required. |
@@ -199,7 +223,7 @@ infinidysk calls the RC server of an rclone mount of the WebDAV root; rclone nev
 
 | Field | Default | Values |
 |-------|---------|--------|
-| `id` | new at every start | A UUID. Set a fixed one. |
+| `id` | from the name | A UUID. Without one, the ID comes from `name` and stays the same across restarts. Set one to rename an instance and keep its webhook URL. |
 | `name` | required | Text, not empty. |
 | `profile` | required | `sonarr`, `radarr`, `lidarr`, `chaptarr`, `whisparr` or `sportarr`. |
 | `url` | required | `http://` or `https://` address. |
@@ -274,7 +298,7 @@ Current experiments, which may be removed or become defaults in any release:
 
 ## Compose example
 
-Secrets use `${VAR:?message}`, so Compose refuses to start when one is missing. Put the values in an uncommitted `.env` file.
+Secrets use `${VAR:?message}`, so Compose refuses to start when one is missing. Put the values in an uncommitted `.env` file. For secret files, the admin account and a check before the first start, see [Unattended deployment](/v2/install/unattended/).
 
 ```yaml
 services:
