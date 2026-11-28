@@ -42,7 +42,7 @@ services:
 4. Plan your folders. See [Which path goes where](/v2/install/paths/).
 
 :::caution
-Create the admin account before you expose port 3000 to an untrusted network. Until an admin exists, anyone who reaches the page can create one.
+Create the admin account before you expose port 3000 to an untrusted network. Until an admin exists, anyone who reaches the page can create one. To create it from the Compose file instead, see [Unattended deployment](/v2/install/unattended/).
 :::
 
 ## Where things are

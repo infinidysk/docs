@@ -25,6 +25,7 @@ const v2Sidebar = [
 		label: 'New install',
 		items: [
 			{ label: 'Run with Docker', slug: 'v2/install/docker' },
+			{ label: 'Unattended deployment', slug: 'v2/install/unattended' },
 			{ label: 'Run from a Linux archive', slug: 'v2/install/linux-archive' },
 			{ label: 'Providers', slug: 'v2/install/providers' },
 			{ label: 'Which path goes where', slug: 'v2/install/paths' },
