@@ -202,7 +202,7 @@ infinidysk calls the RC server of an rclone mount of the WebDAV root; rclone nev
 
 | Field | Default | Values |
 |-------|---------|--------|
-| `id` | from the name | A UUID. Without one, the ID comes from `name`, else `profile`, else `hostname`, and stays the same across restarts, reordering and credential changes. Two entries with the same ID stop startup. Set one to rename an entry and keep its quota usage. |
+| `id` | from the name | A UUID. Without one, the ID comes from `name`, else `profile`, else `hostname`, and stays the same across restarts, reordering and credential changes. Two entries with the same ID stop startup. To rename an entry and keep its quota usage, first set `id` to its current ID from `GET /api/v1/settings`, then change `name`. |
 | `name` | profile name or hostname | Text. |
 | `profile` | none | Catalog profile id, the file name in [`providers/`](https://github.com/infinidysk/infinidysk/tree/main/providers) without `.toml` (for example `newshosting`). The port and backbone come from the profile. |
 | `hostname` | profile's first server | With a profile: one of its servers. Without one: required. |
@@ -223,7 +223,7 @@ infinidysk calls the RC server of an rclone mount of the WebDAV root; rclone nev
 
 | Field | Default | Values |
 |-------|---------|--------|
-| `id` | from the name | A UUID. Without one, the ID comes from `name` and stays the same across restarts. Set one to rename an instance and keep its webhook URL. |
+| `id` | from the name | A UUID. Without one, the ID comes from `name` and stays the same across restarts. To rename an instance and keep its webhook URL, first set `id` to its current ID from `GET /api/v1/settings`, then change `name`. |
 | `name` | required | Text, not empty. |
 | `profile` | required | `sonarr`, `radarr`, `lidarr`, `chaptarr`, `whisparr` or `sportarr`. |
 | `url` | required | `http://` or `https://` address. |

@@ -249,7 +249,7 @@ Values saved in the database before an upgrade keep loading. Out-of-range saved 
 
 ### What needs a restart
 
-A change to any variable or secret file needs `docker compose up -d`, which recreates the container. A restart alone does not read a changed Compose file.
+A change to any variable or secret file needs `docker compose up -d --force-recreate infinidysk`. Compose does not notice a changed secret file, so plain `up -d` can keep the old container, and a restart alone does not read a changed Compose file.
 
 Settings changed in the UI or the API apply at once, except these, which apply after a restart: the mount folder, the built-in FUSE mount on or off, read-ahead memory, FUSE tuning, experiments and the remote rclone mount. `GET /api/v1/settings` then returns `"restart_required": true`. Restart with `POST /api/v1/restart`.
 
